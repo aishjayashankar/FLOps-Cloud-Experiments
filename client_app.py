@@ -82,7 +82,7 @@ class FlowerClient(NumPyClient):
 
 def client_fn(context: Context):
     # Load model and data
-    net = torchvision.models.mobilenet_v3_small(num_classes=10)
+    net = torchvision.models.resnet18(num_classes=10)
     partition_id = context.node_config["partition-id"]
     num_partitions = context.node_config["num-partitions"]
     trainloader, valloader = load_data(partition_id, num_partitions)
