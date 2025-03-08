@@ -1,5 +1,7 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
+
+from flops_infra_drift.CustomFedProx import CustomFedProx
 from flwr.common import Context
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg, FedProx
@@ -20,7 +22,7 @@ def server_fn(context: Context):
     fraction_fit = context.run_config["fraction-fit"]
 
     # Define strategy
-    strategy = FedProx(
+    strategy = CustomFedProx(
         fraction_fit=fraction_fit,
         fraction_evaluate=1.0,
         min_fit_clients=2,
