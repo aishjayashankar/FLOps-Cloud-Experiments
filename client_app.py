@@ -1,5 +1,6 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
+import time
 import torch
 import torchvision.models
 
@@ -34,6 +35,7 @@ class FlowerClient(NumPyClient):
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
     def fit(self, parameters, config):
+        startTime = time.time()
         self.set_parameters(parameters)
         train_loss = train(
             self.model,
@@ -41,6 +43,8 @@ class FlowerClient(NumPyClient):
             self.local_epochs,
             self.device,
         )
+        endTime = time.time()
+        print(f"Training time: {endTime - startTime}")
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
