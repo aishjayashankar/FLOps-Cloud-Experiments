@@ -36,7 +36,7 @@ fds = None  # Cache FederatedDataset
 
 
 def load_data(partition_id: int, num_partitions: int):
-    """Load partition CIFAR10 data."""
+    """Load partition FMNIST data."""
     # Only initialize `FederatedDataset` once
     global fds
     if fds is None:

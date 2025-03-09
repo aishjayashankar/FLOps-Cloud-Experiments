@@ -20,12 +20,13 @@ def server_fn(context: Context):
     fraction_fit = context.run_config["fraction-fit"]
 
     # Define strategy
-    strategy = FedAvg(
+    strategy = FedProx(
         fraction_fit=fraction_fit,
         fraction_evaluate=1.0,
         min_fit_clients=2,
         min_available_clients=2,
-        evaluate_metrics_aggregation_fn=weighted_average
+        evaluate_metrics_aggregation_fn=weighted_average,
+        proximal_mu=1.0
     )
   
     config = ServerConfig(num_rounds=num_rounds)
