@@ -1,6 +1,7 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
 from collections import OrderedDict
+import time
 
 import torch
 import torch.nn as nn
@@ -46,7 +47,6 @@ def load_data(partition_id: int, num_partitions: int):
             partitioners={"train": partitioner},
         )
     partition = fds.load_partition(partition_id)
-    print("Partition features: ", partition)
     # Divide data on each node: 80% train, 20% test
     partition_train_test = partition.train_test_split(test_size=0.2, seed=42)
     pytorch_transforms = Compose(
@@ -66,6 +66,8 @@ def load_data(partition_id: int, num_partitions: int):
 
 def train(net, trainloader, epochs, device):
     """Train the model on the training set."""
+    startTime = time.time()
+    timeout = 25
     net.to(device)  # move model to GPU if available
     criterion = torch.nn.CrossEntropyLoss().to(device)
     optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
@@ -73,6 +75,8 @@ def train(net, trainloader, epochs, device):
     running_loss = 0.0
     for _ in range(epochs):
         for batch in trainloader:
+            if time.time() - startTime > timeout:
+                break
             images = batch["image"]
             labels = batch["label"]
             optimizer.zero_grad()
