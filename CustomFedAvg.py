@@ -110,6 +110,7 @@ class CustomFedAvg(Strategy):
         fit_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         evaluate_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         inplace: bool = True,
+        local_epochs: int = 1,
     ) -> None:
         super().__init__()
 
@@ -132,6 +133,7 @@ class CustomFedAvg(Strategy):
         self.fit_metrics_aggregation_fn = fit_metrics_aggregation_fn
         self.evaluate_metrics_aggregation_fn = evaluate_metrics_aggregation_fn
         self.inplace = inplace
+        self.local_epochs = local_epochs
 
     def __repr__(self) -> str:
         """Compute a string representation of the strategy."""
@@ -179,6 +181,7 @@ class CustomFedAvg(Strategy):
             # Custom fit config function provided
             config = self.on_fit_config_fn(server_round)
         config["current_round"] = server_round
+        config["local_epochs"] = self.local_epochs
         fit_ins = FitIns(parameters, config)
 
         # Sample clients
@@ -252,6 +255,8 @@ class CustomFedAvg(Strategy):
             metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No fit_metrics_aggregation_fn provided")
+
+        self.local_epochs = len(failures) + 1
 
         return parameters_aggregated, metrics_aggregated
 
