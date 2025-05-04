@@ -17,10 +17,8 @@
 Paper: arxiv.org/abs/1602.05629
 """
 
-
 from logging import WARNING
 from typing import Callable, Optional, Union
-
 from flwr.common import (
     EvaluateIns,
     EvaluateRes,
@@ -39,6 +37,12 @@ from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy import aggregate
 from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
+from typing import Any, Callable, Optional, Union
+from flops_infra_drift.LSTMWeightPredictor import consolidate_data, predict_weights
+
+import numpy.typing as npt
+
+NDArray = npt.NDArray[Any]
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
 Setting `min_available_clients` lower than `min_fit_clients` or
@@ -226,11 +230,18 @@ class CustomFedAvg(Strategy):
         failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
     ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
         """Aggregate fit results using weighted average."""
+
         if not results:
             return None, {}
         # Do not aggregate if there are failures and failures are not accepted
         if not self.accept_failures and failures:
             return None, {}
+
+        consolidate_data(results, server_round)
+        # <<TESTING>>
+        # if server_round == 2:
+        #     predict_weights()
+        predict_weights()
 
         if self.inplace:
             # Does in-place weighted average of results
