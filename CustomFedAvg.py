@@ -17,10 +17,8 @@
 Paper: arxiv.org/abs/1602.05629
 """
 
-
 from logging import WARNING
 from typing import Callable, Optional, Union
-
 from flwr.common import (
     EvaluateIns,
     EvaluateRes,
@@ -39,6 +37,18 @@ from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy import aggregate
 from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
+from typing import Any, Callable, Optional, Union
+# from flops_infra_drift.LSTMWeightPredictor import (
+#     consolidate_data,
+#     d_and_c_prediction,
+#     update_results_with_predicted_weights,
+#     print_test_values)
+
+import numpy.typing as npt
+import flops_infra_drift.LSTMWeightPredictor as lstm
+import flops_infra_drift.consts as consts
+
+NDArray = npt.NDArray[Any]
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
 Setting `min_available_clients` lower than `min_fit_clients` or
@@ -46,6 +56,48 @@ Setting `min_available_clients` lower than `min_fit_clients` or
 connected to the server. `min_available_clients` must be set to a value larger
 than or equal to the values of `min_fit_clients` and `min_evaluate_clients`.
 """
+DROPPED_CLIENT_PROXY = None
+DROPPED_CLIENT_FITRES = None
+
+def print_metadata():
+    """Print metadata of client."""
+    global DROPPED_CLIENT_PROXY, DROPPED_CLIENT_FITRES
+
+    print(f"CLIENT PROXY:\nnode_id: {DROPPED_CLIENT_PROXY.node_id},\ncid: {DROPPED_CLIENT_PROXY.cid},\nproperties: {DROPPED_CLIENT_PROXY.properties}")
+    print(f"FITRES:\nstatus___code: {DROPPED_CLIENT_FITRES.status.code},\nstatus___message: {DROPPED_CLIENT_FITRES.status.message},\nnum_examples: {DROPPED_CLIENT_FITRES.num_examples},\nmetrics: {DROPPED_CLIENT_FITRES.metrics}")
+
+def LSTM_Logic(results, server_round, weight_predictor):
+    """LSTM Logic to predict weights of dropped client."""
+    global DROPPED_CLIENT_PROXY, DROPPED_CLIENT_FITRES
+
+    # Get weights of desired client
+    print("CustomFedAvg::LSTM_Logic() Triggering test flow for LSTM")
+
+    weights = None
+    for i in range(len(results)):
+        if results[i][0].cid == consts.DROPPED_CLIENT_ID:
+            # Save client meta-data for reconstruction with predicted weights
+            DROPPED_CLIENT_PROXY = results[i][0]
+            DROPPED_CLIENT_FITRES = results[i][1]
+            weights = parameters_to_ndarrays(results[i][1].parameters)
+            break
+    print_metadata()
+    
+    if server_round >= consts.CLIENT_DROP_START_ROUND  and server_round < consts.CLIENT_DROP_END_ROUND:
+        print("CustomFedAvg::LSTM_Logic() Triggering LSTM prediction")
+        predicted_weights = lstm.d_and_c_prediction(weight_predictor, server_round)
+
+        # TODO: Enable this section after testing
+        DROPPED_CLIENT_FITRES.parameters = ndarrays_to_parameters(predicted_weights)
+        
+        # TODO: Drop this after testing is completed
+        # updated_parameters = lstm.update_results_with_predicted_weights(DROPPED_CLIENT_FITRES.parameters, predicted_weights)
+        # DROPPED_CLIENT_FITRES.parameters = updated_parameters
+
+        results.append((DROPPED_CLIENT_PROXY, DROPPED_CLIENT_FITRES))
+        weights = parameters_to_ndarrays(DROPPED_CLIENT_FITRES.parameters)
+
+    lstm.consolidate_data(weights, server_round)
 
 
 # pylint: disable=line-too-long
@@ -109,8 +161,9 @@ class CustomFedAvg(Strategy):
         initial_parameters: Optional[Parameters] = None,
         fit_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         evaluate_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
-        inplace: bool = True,
+        inplace: bool = True
     ) -> None:
+        print("CustomFedAvg::__init__() Initializing CustomFedAvg")
         super().__init__()
 
         if (
@@ -132,6 +185,11 @@ class CustomFedAvg(Strategy):
         self.fit_metrics_aggregation_fn = fit_metrics_aggregation_fn
         self.evaluate_metrics_aggregation_fn = evaluate_metrics_aggregation_fn
         self.inplace = inplace
+        self.weight_predictor = lstm.LSTMWeightPredictor(
+            input_dim=512,
+            hidden_dim=512,
+            num_layers=2,
+            output_dim=512)
 
     def __repr__(self) -> str:
         """Compute a string representation of the strategy."""
@@ -218,6 +276,7 @@ class CustomFedAvg(Strategy):
 
         # Return client/config pairs
         return [(client, evaluate_ins) for client in clients]
+    
 
     def aggregate_fit(
         self,
@@ -226,11 +285,16 @@ class CustomFedAvg(Strategy):
         failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
     ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
         """Aggregate fit results using weighted average."""
+
         if not results:
             return None, {}
         # Do not aggregate if there are failures and failures are not accepted
         if not self.accept_failures and failures:
             return None, {}
+
+        # <------------------LSTM Addition------------------>
+        LSTM_Logic(results, server_round, self.weight_predictor)
+        # <------------------LSTM Addition------------------>
 
         if self.inplace:
             # Does in-place weighted average of results
