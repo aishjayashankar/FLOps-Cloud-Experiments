@@ -1,9 +1,9 @@
 import torch.nn as nn
 
 
-class WeightAutoencoder(nn.Module):
+class AutoEncoderDecoder(nn.Module):
     def __init__(self, input_dim, latent_dim=512):
-        print(f"WeightAutoencoder::init() input_dim: {input_dim} latent_dim: {latent_dim}")
+        print(f"AutoEncoderDecoder::init() input_dim: {input_dim} latent_dim: {latent_dim}")
         super().__init__()
 
         self.encoder = nn.Sequential(

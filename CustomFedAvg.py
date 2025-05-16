@@ -38,15 +38,13 @@ from flwr.server.strategy import aggregate
 from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
 from typing import Any, Callable, Optional, Union
-# from flops_infra_drift.LSTMWeightPredictor import (
-#     consolidate_data,
-#     d_and_c_prediction,
-#     update_results_with_predicted_weights,
-#     print_test_values)
+from flops_infra_drift.Utils import update_results_with_predicted_weights, print_test_values
 
 import numpy.typing as npt
 import flops_infra_drift.LSTMWeightPredictor as lstm
 import flops_infra_drift.consts as consts
+import flops_infra_drift.AutoEncoderDecoder as ae
+import flops_infra_drift.WeightPredictionDriver as wpd
 
 NDArray = npt.NDArray[Any]
 
@@ -66,7 +64,7 @@ def print_metadata():
     print(f"CLIENT PROXY:\nnode_id: {DROPPED_CLIENT_PROXY.node_id},\ncid: {DROPPED_CLIENT_PROXY.cid},\nproperties: {DROPPED_CLIENT_PROXY.properties}")
     print(f"FITRES:\nstatus___code: {DROPPED_CLIENT_FITRES.status.code},\nstatus___message: {DROPPED_CLIENT_FITRES.status.message},\nnum_examples: {DROPPED_CLIENT_FITRES.num_examples},\nmetrics: {DROPPED_CLIENT_FITRES.metrics}")
 
-def LSTM_Logic(results, server_round, weight_predictor):
+def LSTM_Logic(results, server_round, weight_predictor, autoED):
     """LSTM Logic to predict weights of dropped client."""
     global DROPPED_CLIENT_PROXY, DROPPED_CLIENT_FITRES
 
@@ -85,19 +83,23 @@ def LSTM_Logic(results, server_round, weight_predictor):
     
     if server_round >= consts.CLIENT_DROP_START_ROUND  and server_round < consts.CLIENT_DROP_END_ROUND:
         print("CustomFedAvg::LSTM_Logic() Triggering LSTM prediction")
-        predicted_weights = lstm.d_and_c_prediction(weight_predictor, server_round)
+        predicted_weights = wpd.d_and_c_prediction(weight_predictor, autoED, server_round)
 
         # TODO: Enable this section after testing
         DROPPED_CLIENT_FITRES.parameters = ndarrays_to_parameters(predicted_weights)
         
         # TODO: Drop this after testing is completed
-        # updated_parameters = lstm.update_results_with_predicted_weights(DROPPED_CLIENT_FITRES.parameters, predicted_weights)
-        # DROPPED_CLIENT_FITRES.parameters = updated_parameters
+        """
+        print_test_values(parameters_to_ndarrays(DROPPED_CLIENT_FITRES.parameters))
+        updated_parameters = update_results_with_predicted_weights(DROPPED_CLIENT_FITRES.parameters, predicted_weights)
+        DROPPED_CLIENT_FITRES.parameters = updated_parameters
+        print_test_values(parameters_to_ndarrays(DROPPED_CLIENT_FITRES.parameters))
+        """
 
         results.append((DROPPED_CLIENT_PROXY, DROPPED_CLIENT_FITRES))
         weights = parameters_to_ndarrays(DROPPED_CLIENT_FITRES.parameters)
 
-    lstm.consolidate_data(weights, server_round)
+    wpd.consolidate_data(weights, server_round)
 
 
 # pylint: disable=line-too-long
@@ -190,6 +192,7 @@ class CustomFedAvg(Strategy):
             hidden_dim=512,
             num_layers=2,
             output_dim=512)
+        self.auto_encoder_decoder = ae.AutoEncoderDecoder(consts.SPLIT_SIZE, latent_dim=512)
 
     def __repr__(self) -> str:
         """Compute a string representation of the strategy."""
@@ -292,9 +295,15 @@ class CustomFedAvg(Strategy):
         if not self.accept_failures and failures:
             return None, {}
 
+        # Log the length of results before LSTM_Logic
+        print(f"CustomFedAvg::aggregate_fit() Length of results before LSTM_Logic: {len(results)}")
+
         # <------------------LSTM Addition------------------>
-        LSTM_Logic(results, server_round, self.weight_predictor)
+        LSTM_Logic(results, server_round, self.weight_predictor, self.auto_encoder_decoder)
         # <------------------LSTM Addition------------------>
+
+        # Log the length of results after LSTM_Logic
+        print(f"CustomFedAvg::aggregate_fit() Length of results after LSTM_Logic: {len(results)}")
 
         if self.inplace:
             # Does in-place weighted average of results
