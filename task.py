@@ -9,6 +9,7 @@ from flwr_datasets import FederatedDataset
 from flwr_datasets.partitioner import DirichletPartitioner
 from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, Normalize, ToTensor
+from flops_infra_drift.utils import save_dataset_to_csv
 
 
 class Net(nn.Module):
@@ -62,6 +63,21 @@ def load_data(partition_id: int, num_partitions: int):
     partition_train_test = partition_train_test.with_transform(apply_transforms)
     trainloader = DataLoader(partition_train_test["train"], batch_size=32, shuffle=True)
     testloader = DataLoader(partition_train_test["test"], batch_size=32)
+
+    # Save train and test data only once using a global flag
+    global _data_saved
+    try:
+        _data_saved
+    except NameError:
+        _data_saved = False
+
+    if not _data_saved:
+        train_csv = f"{partition_id}-train-data.csv"
+        test_csv = f"{partition_id}-test-data.csv"
+        save_dataset_to_csv(partition_train_test["train"], train_csv)
+        save_dataset_to_csv(partition_train_test["test"], test_csv)
+        _data_saved = True
+
     return trainloader, testloader
 
 
