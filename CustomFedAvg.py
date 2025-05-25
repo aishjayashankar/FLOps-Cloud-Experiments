@@ -39,6 +39,8 @@ from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy import aggregate
 from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
+import csv
+import os
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
 Setting `min_available_clients` lower than `min_fit_clients` or
@@ -243,6 +245,10 @@ class CustomFedAvg(Strategy):
             ]
             aggregated_ndarrays = aggregate(weights_results)
 
+        # Print random values from the aggregated ndarrays
+        # print(
+        #     f"Sample values from aggregated ndarrays:\naggregated_ndarrays[0][1][2][3][4]: {aggregated_ndarrays[0][1][2][3][4]}\naggregated_ndarrays[1][2]: {aggregated_ndarrays[1][2]}\naggregated_ndarrays[2][3]: {aggregated_ndarrays[2][3]}\naggregated_ndarrays[3][4]: {aggregated_ndarrays[3][4]}"
+        # )
         parameters_aggregated = ndarrays_to_parameters(aggregated_ndarrays)
 
         # Aggregate custom metrics if aggregation fn was provided

@@ -64,6 +64,7 @@ def load_data(partition_id: int, num_partitions: int):
     trainloader = DataLoader(partition_train_test["train"], batch_size=32, shuffle=True)
     testloader = DataLoader(partition_train_test["test"], batch_size=32)
 
+    """
     # Save train and test data only once using a global flag
     global _data_saved
     try:
@@ -77,7 +78,7 @@ def load_data(partition_id: int, num_partitions: int):
         save_dataset_to_csv(partition_train_test["train"], train_csv)
         save_dataset_to_csv(partition_train_test["test"], test_csv)
         _data_saved = True
-
+    """
     return trainloader, testloader
 
 
