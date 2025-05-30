@@ -1,0 +1,159 @@
+
+--- TRAIN DATASETS ---
+
+File: 0-train-data.csv
+Label: 0 | Count: 1114 | Percentage: 10.67%
+Label: 1 | Count: 1366 | Percentage: 13.08%
+Label: 2 | Count: 2809 | Percentage: 26.90%
+Label: 3 | Count: 181 | Percentage: 1.73%
+Label: 4 | Count: 560 | Percentage: 5.36%
+Label: 5 | Count: 783 | Percentage: 7.50%
+Label: 6 | Count: 199 | Percentage: 1.91%
+Label: 7 | Count: 837 | Percentage: 8.01%
+Label: 8 | Count: 2574 | Percentage: 24.65%
+Label: 9 | Count: 20 | Percentage: 0.19%
+Total samples: 10443
+
+File: 1-train-data.csv
+Label: 0 | Count: 1792 | Percentage: 27.01%
+Label: 1 | Count: 186 | Percentage: 2.80%
+Label: 2 | Count: 595 | Percentage: 8.97%
+Label: 3 | Count: 689 | Percentage: 10.39%
+Label: 4 | Count: 55 | Percentage: 0.83%
+Label: 5 | Count: 3 | Percentage: 0.05%
+Label: 6 | Count: 665 | Percentage: 10.02%
+Label: 7 | Count: 68 | Percentage: 1.03%
+Label: 8 | Count: 107 | Percentage: 1.61%
+Label: 9 | Count: 2474 | Percentage: 37.29%
+Total samples: 6634
+
+File: 2-train-data.csv
+Label: 0 | Count: 12 | Percentage: 0.30%
+Label: 1 | Count: 655 | Percentage: 16.25%
+Label: 2 | Count: 17 | Percentage: 0.42%
+Label: 3 | Count: 1039 | Percentage: 25.78%
+Label: 4 | Count: 1363 | Percentage: 33.81%
+Label: 5 | Count: 109 | Percentage: 2.70%
+Label: 6 | Count: 445 | Percentage: 11.04%
+Label: 7 | Count: 197 | Percentage: 4.89%
+Label: 8 | Count: 95 | Percentage: 2.36%
+Label: 9 | Count: 99 | Percentage: 2.46%
+Total samples: 4031
+
+File: 3-train-data.csv
+Label: 0 | Count: 1036 | Percentage: 7.99%
+Label: 1 | Count: 1055 | Percentage: 8.14%
+Label: 2 | Count: 538 | Percentage: 4.15%
+Label: 3 | Count: 2124 | Percentage: 16.39%
+Label: 4 | Count: 878 | Percentage: 6.77%
+Label: 5 | Count: 3026 | Percentage: 23.35%
+Label: 6 | Count: 1610 | Percentage: 12.42%
+Label: 7 | Count: 729 | Percentage: 5.62%
+Label: 8 | Count: 806 | Percentage: 6.22%
+Label: 9 | Count: 1158 | Percentage: 8.94%
+Total samples: 12960
+
+File: 4-train-data.csv
+Label: 0 | Count: 25 | Percentage: 0.42%
+Label: 1 | Count: 717 | Percentage: 12.09%
+Label: 2 | Count: 83 | Percentage: 1.40%
+Label: 3 | Count: 1 | Percentage: 0.02%
+Label: 4 | Count: 1150 | Percentage: 19.39%
+Label: 5 | Count: 10 | Percentage: 0.17%
+Label: 6 | Count: 1115 | Percentage: 18.80%
+Label: 7 | Count: 2178 | Percentage: 36.73%
+Label: 8 | Count: 371 | Percentage: 6.26%
+Label: 9 | Count: 280 | Percentage: 4.72%
+Total samples: 5930
+
+--- SUMMED COUNTS FOR FILES STARTING WITH 0, 1, 2, 4 ---
+Label: 0 | Count: 2943 | Percentage: 10.88%
+Label: 1 | Count: 2924 | Percentage: 10.81%
+Label: 2 | Count: 3504 | Percentage: 12.96%
+Label: 3 | Count: 1910 | Percentage: 7.06%
+Label: 4 | Count: 3128 | Percentage: 11.57%
+Label: 5 | Count: 905 | Percentage: 3.35%
+Label: 6 | Count: 2424 | Percentage: 8.97%
+Label: 7 | Count: 3280 | Percentage: 12.13%
+Label: 8 | Count: 3147 | Percentage: 11.64%
+Label: 9 | Count: 2873 | Percentage: 10.63%
+Total samples: 27038
+
+--- TEST DATASETS ---
+
+File: 0-test-data.csv
+Label: 0 | Count: 289 | Percentage: 11.07%
+Label: 1 | Count: 335 | Percentage: 12.83%
+Label: 2 | Count: 642 | Percentage: 24.59%
+Label: 3 | Count: 48 | Percentage: 1.84%
+Label: 4 | Count: 149 | Percentage: 5.71%
+Label: 5 | Count: 203 | Percentage: 7.77%
+Label: 6 | Count: 54 | Percentage: 2.07%
+Label: 7 | Count: 211 | Percentage: 8.08%
+Label: 8 | Count: 677 | Percentage: 25.93%
+Label: 9 | Count: 3 | Percentage: 0.11%
+Total samples: 2611
+
+File: 1-test-data.csv
+Label: 0 | Count: 442 | Percentage: 26.64%
+Label: 1 | Count: 48 | Percentage: 2.89%
+Label: 2 | Count: 176 | Percentage: 10.61%
+Label: 3 | Count: 147 | Percentage: 8.86%
+Label: 4 | Count: 11 | Percentage: 0.66%
+Label: 6 | Count: 163 | Percentage: 9.83%
+Label: 7 | Count: 12 | Percentage: 0.72%
+Label: 8 | Count: 27 | Percentage: 1.63%
+Label: 9 | Count: 633 | Percentage: 38.16%
+Total samples: 1659
+
+File: 2-test-data.csv
+Label: 0 | Count: 3 | Percentage: 0.30%
+Label: 1 | Count: 167 | Percentage: 16.57%
+Label: 2 | Count: 5 | Percentage: 0.50%
+Label: 3 | Count: 262 | Percentage: 25.99%
+Label: 4 | Count: 313 | Percentage: 31.05%
+Label: 5 | Count: 34 | Percentage: 3.37%
+Label: 6 | Count: 130 | Percentage: 12.90%
+Label: 7 | Count: 48 | Percentage: 4.76%
+Label: 8 | Count: 25 | Percentage: 2.48%
+Label: 9 | Count: 21 | Percentage: 2.08%
+Total samples: 1008
+
+File: 3-test-data.csv
+Label: 0 | Count: 283 | Percentage: 8.73%
+Label: 1 | Count: 280 | Percentage: 8.64%
+Label: 2 | Count: 118 | Percentage: 3.64%
+Label: 3 | Count: 508 | Percentage: 15.67%
+Label: 4 | Count: 216 | Percentage: 6.66%
+Label: 5 | Count: 831 | Percentage: 25.64%
+Label: 6 | Count: 358 | Percentage: 11.05%
+Label: 7 | Count: 180 | Percentage: 5.55%
+Label: 8 | Count: 220 | Percentage: 6.79%
+Label: 9 | Count: 247 | Percentage: 7.62%
+Total samples: 3241
+
+File: 4-test-data.csv
+Label: 0 | Count: 4 | Percentage: 0.27%
+Label: 1 | Count: 191 | Percentage: 12.88%
+Label: 2 | Count: 17 | Percentage: 1.15%
+Label: 3 | Count: 1 | Percentage: 0.07%
+Label: 4 | Count: 305 | Percentage: 20.57%
+Label: 5 | Count: 1 | Percentage: 0.07%
+Label: 6 | Count: 261 | Percentage: 17.60%
+Label: 7 | Count: 540 | Percentage: 36.41%
+Label: 8 | Count: 98 | Percentage: 6.61%
+Label: 9 | Count: 65 | Percentage: 4.38%
+Total samples: 1483
+
+--- SUMMED COUNTS FOR FILES STARTING WITH 0, 1, 2, 4 ---
+Label: 0 | Count: 738 | Percentage: 10.92%
+Label: 1 | Count: 741 | Percentage: 10.96%
+Label: 2 | Count: 840 | Percentage: 12.42%
+Label: 3 | Count: 458 | Percentage: 6.77%
+Label: 4 | Count: 778 | Percentage: 11.51%
+Label: 5 | Count: 238 | Percentage: 3.52%
+Label: 6 | Count: 608 | Percentage: 8.99%
+Label: 7 | Count: 811 | Percentage: 12.00%
+Label: 8 | Count: 827 | Percentage: 12.23%
+Label: 9 | Count: 722 | Percentage: 10.68%
+Total samples: 6761
