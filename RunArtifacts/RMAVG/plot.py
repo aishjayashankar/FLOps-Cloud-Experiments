@@ -38,16 +38,18 @@ def extract_accuracy(file_path):
 
 # File paths
 logs = {
-    "Baseline": "baseline.log",
+    "IID Baseline": "baseline.log",
     "Node Disconnect": "nodeDisconnect.log",
-    "Timeout": "timeout60s.log"
+    "Timeout": "timeout60s.log",
+    "Non-IID Disconnect": "noniid_s43.log"
 }
 
 # Colors and markers for plotting
 plot_styles = {
-    "Baseline": ("blue", "o"),
+    "IID Baseline": ("blue", "o"),
     "Node Disconnect": ("red", "s"),
-    "Timeout": ("green", "D")
+    "Timeout": ("green", "D"),
+    "Non-IID Disconnect": ("orange", "^")
 }
 
 # Extract loss and accuracy data for all experiments

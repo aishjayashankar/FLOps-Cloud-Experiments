@@ -40,14 +40,16 @@ def extract_accuracy(file_path):
 logs = {
     "Baseline": "baseline.log",
     "Node Disconnect": "nodeDisconnect.log",
-    "Timeout": "timeout20s.log"
+    "Timeout": "timeout20s.log",
+    "Non IID Disconnect": "niid_disconnect.log"
 }
 
 # Colors and markers for plotting
 plot_styles = {
     "Baseline": ("blue", "o"),
     "Node Disconnect": ("red", "s"),
-    "Timeout": ("green", "D")
+    "Timeout": ("green", "D"),
+    "Non IID Disconnect": ("orange", "^")
 }
 
 # Extract loss and accuracy data for all experiments
@@ -67,7 +69,7 @@ plt.ylabel("Loss")
 plt.title("Loss vs. Rounds")
 plt.legend()
 plt.grid(True)
-plt.savefig("loss_vs_rounds_overlay.png")
+plt.savefig("loss_vs_rounds_overlay_niid.png")
 plt.close()
 
 # Plot and save accuracy vs. rounds with overlay
@@ -79,7 +81,7 @@ plt.ylabel("Accuracy")
 plt.title("Accuracy vs. Rounds")
 plt.legend()
 plt.grid(True)
-plt.savefig("accuracy_vs_rounds_overlay.png")
+plt.savefig("accuracy_vs_rounds_overlay_niid.png")
 plt.close()
 
 print("Overlay plots saved as loss_vs_rounds_overlay.png and accuracy_vs_rounds_overlay.png")
