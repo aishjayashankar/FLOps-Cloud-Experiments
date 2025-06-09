@@ -39,6 +39,9 @@ from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy import aggregate
 from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
+from flops_infra_drift.dropped_client_replacer import get_dropped_client_parameters
+
+import flops_infra_drift.consts as consts
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
 Setting `min_available_clients` lower than `min_fit_clients` or
@@ -46,7 +49,6 @@ Setting `min_available_clients` lower than `min_fit_clients` or
 connected to the server. `min_available_clients` must be set to a value larger
 than or equal to the values of `min_fit_clients` and `min_evaluate_clients`.
 """
-
 
 # pylint: disable=line-too-long
 class CustomFedAvg(Strategy):
@@ -231,6 +233,11 @@ class CustomFedAvg(Strategy):
         # Do not aggregate if there are failures and failures are not accepted
         if not self.accept_failures and failures:
             return None, {}
+        
+        print(f"Results' length before substitution: {len(results)}")
+        if (consts.CLIENT_DROP_ROUND_START <= server_round < consts.CLIENT_DROP_ROUND_END):
+            get_dropped_client_parameters(results)
+        print(f"Results' length after substitution: {len(results)}")
 
         if self.inplace:
             # Does in-place weighted average of results
@@ -283,5 +290,8 @@ class CustomFedAvg(Strategy):
             metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No evaluate_metrics_aggregation_fn provided")
+
+        print(f"Aggregated loss: {loss_aggregated}")
+        print(f"Aggregated metrics: {metrics_aggregated}")
 
         return loss_aggregated, metrics_aggregated
