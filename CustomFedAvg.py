@@ -234,10 +234,10 @@ class CustomFedAvg(Strategy):
         if not self.accept_failures and failures:
             return None, {}
         
-        print(f"Results' length before substitution: {len(results)}")
-        if (consts.CLIENT_DROP_ROUND_START <= server_round < consts.CLIENT_DROP_ROUND_END):
-            get_dropped_client_parameters(results)
-        print(f"Results' length after substitution: {len(results)}")
+        # print(f"Results' length before substitution: {len(results)}")
+        # if (consts.CLIENT_DROP_ROUND_START <= server_round < consts.CLIENT_DROP_ROUND_END):
+        #     get_dropped_client_parameters(results)
+        # print(f"Results' length after substitution: {len(results)}")
 
         if self.inplace:
             # Does in-place weighted average of results
