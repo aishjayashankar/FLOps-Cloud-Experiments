@@ -97,7 +97,7 @@ class FlowerClient(NumPyClient):
             consts.CLIENT_DROP_ROUND_START
             <= config["current_round"]
             < consts.CLIENT_DROP_ROUND_END
-        ):
+        ) and (self.partition_id == consts.DROPPED_CLIENT_SUBSTITUTE_PARTITION_ID):
             print(
                 f"Training dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
             )

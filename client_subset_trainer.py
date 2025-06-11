@@ -83,7 +83,7 @@ def format_data(df):
     return DictTensorDataset(X_tensor, y_tensor)
 
 def load_data():
-    train_file_name = "subset.csv"
+    train_file_name = "balanced_train_data.csv"
     train_df = pd.read_csv(train_file_name)
 
     print(f"Loading training data from {train_file_name}")

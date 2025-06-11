@@ -27,24 +27,19 @@ def aggregate(parameters):
 def get_dropped_client_parameters(results: list[tuple[ClientProxy, FitRes]]) -> tuple[ClientProxy, FitRes]:
     # Get list of substituted parameters from results
     print("Extracting dropped client parameters from results...")
-    substituted_parameters = []
-    for _, fitRes in results:
+    for clientProxy, fitRes in results:
         parameters_bytes = fitRes.metrics.get("dropped_client_parameters_bytes")
         if parameters_bytes is not None:
+            print(f"Found dropped client parameters in client: {clientProxy.cid}")
             dropped_client_parameters = pickle.loads(parameters_bytes)
-            substituted_parameters.append(dropped_client_parameters)
-    print(f"Extracted {len(substituted_parameters)} sets of substituted parameters.")
-
-    # Aggregate the substituted parameters
-    aggregated_parameters = aggregate(substituted_parameters)
-    
-    # Client 4 sample size: 12960
-    fitRes = FitRes(
-        parameters=ndarrays_to_parameters(aggregated_parameters),
-        num_examples=consts.SUBSTITUTION_SAMPLE_SIZE,
-        metrics=None,
-        status=None
-    ) 
-
-    results.append((None, fitRes))
-    print("Appended substituted parameters to results.")
+            fitRes = FitRes(
+                parameters=ndarrays_to_parameters(dropped_client_parameters),
+                num_examples=consts.SUBSTITUTION_SAMPLE_SIZE,
+                metrics=None,
+                status=None
+            )
+            results.append((None, fitRes))
+            print("Appended substituted parameters to results.")
+            return
+        
+    print("No dropped client parameters found in results.")
