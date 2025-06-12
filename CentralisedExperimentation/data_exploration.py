@@ -3,10 +3,10 @@ import pandas as pd
 import os
 
 def analyze_labels(file_pattern):
-    folder_path = "/media/ketanatri/72B88D23B88CE747/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData"
+    folder_path = "/mnt/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData/"
     files = glob.glob(os.path.join(folder_path, file_pattern))
     total_counts = None
-    selected_prefixes = ('0', '1', '2', '4')
+    selected_prefixes = ('0', '1', '2', '3')
     for file in files:
         df = pd.read_csv(file)
         if 'label' not in df.columns:
@@ -36,8 +36,8 @@ def analyze_labels(file_pattern):
         print(f"Total samples: {total_sum}")
 
 def create_balanced_csv(file_pattern, output_csv, label_counts_dict):
-    folder_path = "/media/ketanatri/72B88D23B88CE747/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData"
-    selected_prefixes = ('0', '1', '2', '4')
+    folder_path = "/mnt/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData/"
+    selected_prefixes = ('0', '1', '2', '3')
     files = [f for f in glob.glob(os.path.join(folder_path, file_pattern))
              if os.path.basename(f).startswith(selected_prefixes)]
     dfs = [pd.read_csv(f) for f in files]
@@ -113,17 +113,17 @@ if __name__ == "__main__":
 
     # Only for train data
     label_counts = {
-        0: 310,
-        1: 316,
-        2: 161,
-        3: 636,
-        4: 263,
-        5: 905,
-        6: 482,
-        7: 218,
-        8: 242,
-        9: 347
+        0: 21,
+        1: 603,
+        2: 70,
+        3: 1,
+        4: 967,
+        5: 9,
+        6: 938,
+        7: 1831,
+        8: 313,
+        9: 236
     }
-    create_split_csvs("*-train-data.csv",
-                        "/home/ketanatri/Desktop/PhD/SplitData",
+    create_balanced_csv("*-train-data.csv",
+                        "/home/ketanatri/Desktop/PhD/client5-balanced-data.csv",
                         label_counts)

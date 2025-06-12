@@ -72,12 +72,12 @@ def format_data(df):
 def load_data(client_number):
     # train_folder_path = "/home/ketanatri/Desktop/PhD/SplitData/"
     # train_folder_path = "/mnt/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData/"
-    train_folder_path = "./"
-    train_file_name = "balanced_train_data.csv"
+    train_folder_path = "/home/ketanatri/Desktop/PhD/"
+    train_file_name = "client5-balanced-data.csv"
     #train_file_name = f"{client_number}_subset.csv"
     train_df = pd.read_csv(train_folder_path + train_file_name)
     folder_path = "/mnt/Users/Ketan/Desktop/PhD/FLOpsInfraDrift/RunArtifacts/ConsolidatedData/TrainTestData/"
-    test_data_path = folder_path + "3-test-data.csv"
+    test_data_path = folder_path + "4-test-data.csv"
     test_df = pd.read_csv(test_data_path)
 
     logging.info(f"Loading training data from {train_file_name}")
@@ -92,7 +92,7 @@ def train(net, trainloader, epochs, device):
     """Train the model on the training set."""
     net.to(device)  # move model to GPU if available
     criterion = torch.nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(net.parameters(), lr=0.0001)
     net.train()
     running_loss = 0.0
     for _ in range(epochs):
