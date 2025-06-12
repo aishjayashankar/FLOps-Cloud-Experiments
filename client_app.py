@@ -14,7 +14,7 @@ from collections import OrderedDict
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 3:
+    if partition_id != 4:
         return False
     # For node n, partition_id is n-1
     # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
@@ -92,25 +92,24 @@ class FlowerClient(NumPyClient):
         )
 
         # Train and get parameters for dropped client
-        dropped_client_parameters = None
-        if (
-            consts.CLIENT_DROP_ROUND_START
-            <= config["current_round"]
-            < consts.CLIENT_DROP_ROUND_END
-        ):
-            print(
-                f"Training dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
-            )
-            client_subset_trainer = cst.client_fn()
-            dropped_client_parameters = client_subset_trainer.fit(parameters_copy)
-
-        # Serialize dropped client parameters
+        # dropped_client_parameters = None
+        # if (
+        #     consts.CLIENT_DROP_ROUND_START
+        #     <= config["current_round"]
+        #     < consts.CLIENT_DROP_ROUND_END
+        # ):
+        #     print(
+        #         f"Training dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
+        #     )
+        #     client_subset_trainer = cst.client_fn()
+        #     dropped_client_parameters = client_subset_trainer.fit(parameters_copy)
+        # # Serialize dropped client parameters
         dropped_client_parameters_bytes = None
-        if dropped_client_parameters:
-            print(
-                f"Serializing dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
-            )
-            dropped_client_parameters_bytes = pickle.dumps(dropped_client_parameters)
+        # if dropped_client_parameters:
+        #     print(
+        #         f"Serializing dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
+        #     )
+        #     dropped_client_parameters_bytes = pickle.dumps(dropped_client_parameters)
 
         end_time = time.time()
         runtime = end_time - start_time
