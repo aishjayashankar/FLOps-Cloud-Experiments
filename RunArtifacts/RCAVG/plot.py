@@ -44,7 +44,12 @@ logs = {
  #   "Node Disconnect": "nodeDisconnect.log",
  #   "Timeout": "timeout40s.log",
  #   "Non-IID Disconnect": "noniid_s42.log",
-    "Non-IID Client 4 Disconnect": "client4Disconnect_niid.log"
+    #"Non-IID Client 4 Disconnect": "client4_drop_redo.log",
+    #"Representative distribution strategy": "dropped_client_substitution.log",
+    #"Representative distribution":   "dcs_lower_weightage.log",
+    #"Central substitution": "client4_central_substitution.log",
+    "Client 5 Disconnect Baseline": "client5_drop_baseline.log",
+    "Client 5 Substitution": "client5_substitution.log"
     #"Multi Epochs": "multi_epoch.log"
 }
 
@@ -55,7 +60,12 @@ plot_styles = {
  #   "Node Disconnect": ("red", "s"),
  #   "Timeout": ("green", "D"),
  #   "Non-IID Disconnect": ("orange", "^"),
-    "Non-IID Client 4 Disconnect": ("cyan", "v")
+    #"Non-IID Client 4 Disconnect": ("cyan", "v"),
+    #"Representative distribution strategy": ("magenta", "d"),
+    #"Representative distribution": ("green", "p"),
+    #"Central substitution": ("brown", "h"),
+    "Client 5 Disconnect Baseline": ("red", "s"),
+    "Client 5 Substitution": ("blue", "o")
     #"Multi Epochs": ("purple", "x")
 }
 
@@ -68,22 +78,22 @@ for label, log_file in logs.items():
     accuracy_data[label] = extract_accuracy(log_file)
 
 # Plot and save accuracy vs. rounds with a focus on 50% to 70% accuracy
-plt.figure(figsize=(10, 12))
+plt.figure(figsize=(10, 6))
 for label, (rounds, accuracies) in accuracy_data.items():
     # Filter accuracies and corresponding rounds to focus on 0.5 to 0.7
-    # filtered_rounds = [r for r, a in zip(rounds, accuracies) if 0.5 <= a <= 0.7]
-    # filtered_accuracies = [a for a in accuracies if 0.5 <= a <= 0.7]
-    # plt.plot(filtered_rounds, filtered_accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
-    plt.plot(rounds, accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
+    filtered_rounds = [r for r, a in zip(rounds, accuracies) if 0.4 <= a <= 0.7]
+    filtered_accuracies = [a for a in accuracies if 0.4 <= a <= 0.7]
+    plt.plot(filtered_rounds, filtered_accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
+    # plt.plot(rounds, accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
 
 plt.xlabel("Rounds")
 plt.ylabel("Accuracy")
-plt.ylim(0.1,0.8)  # Set y-axis limits to 0.5 to 0.7
+#plt.ylim(0.55,0.7)  # Set y-axis limits to 0.5 to 0.7
 plt.title("Accuracy vs. Rounds")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("accuracy_vs_rounds_big.png")
+plt.savefig("accuracy_vs_rounds_5_drop_sub_full.png")
 plt.close()
 
 print("Focused accuracy plot saved as accuracy_vs_rounds_50_to_70.png")
