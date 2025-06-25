@@ -12,16 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""Federated Averaging with Server Momentum (FedAvgM) strategy.
+"""Federated Averaging with Momentum (FedAvgM) [Hsu et al., 2019] strategy.
 
-Implementation based on FedAvg with server-side momentum optimization.
+Paper: arxiv.org/pdf/1909.06335.pdf
 """
 
 
 from logging import WARNING
 from typing import Callable, Optional, Union
-
-import numpy as np
 
 from flwr.common import (
     EvaluateIns,
@@ -38,7 +36,8 @@ from flwr.common import (
 from flwr.common.logger import log
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
-from flwr.server.strategy.aggregate import aggregate, weighted_loss_avg
+from flwr.server.strategy import aggregate
+from flwr.server.strategy.aggregate import aggregate_inplace, weighted_loss_avg
 from flwr.server.strategy.strategy import Strategy
 
 WARNING_MIN_AVAILABLE_CLIENTS_TOO_LOW = """
@@ -49,10 +48,11 @@ than or equal to the values of `min_fit_clients` and `min_evaluate_clients`.
 """
 
 
+# pylint: disable=line-too-long
 class CustomFedAvgM(Strategy):
-    """Federated Averaging with Server Momentum (FedAvgM) strategy.
+    """Federated Averaging with Momentum strategy.
 
-    Implementation of FedAvg with server-side momentum for improved convergence.
+    Implementation based on https://arxiv.org/abs/1909.06335
 
     Parameters
     ----------
@@ -84,13 +84,15 @@ class CustomFedAvgM(Strategy):
         Metrics aggregation function, optional.
     evaluate_metrics_aggregation_fn : Optional[MetricsAggregationFn]
         Metrics aggregation function, optional.
-    server_learning_rate : float, optional
-        Server-side learning rate for applying momentum updates. Defaults to 1.0.
-    server_momentum : float, optional
-        Server-side momentum factor. Should be between 0 and 1. Defaults to 0.0.
-        Setting to 0.0 reduces to standard FedAvg.
+    inplace : bool (default: True)
+        Enable (True) or disable (False) in-place aggregation of model updates.
+    server_learning_rate : float
+        Server-side learning rate used in server-side optimization. Defaults to 1.0.
+    server_momentum : float
+        Server-side momentum factor used for FedAvgM. Defaults to 0.0.
     """
 
+    # pylint: disable=too-many-arguments,too-many-instance-attributes, line-too-long
     def __init__(
         self,
         *,
@@ -111,6 +113,7 @@ class CustomFedAvgM(Strategy):
         initial_parameters: Optional[Parameters] = None,
         fit_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         evaluate_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
+        inplace: bool = True,
         server_learning_rate: float = 1.0,
         server_momentum: float = 0.0,
     ) -> None:
@@ -134,18 +137,19 @@ class CustomFedAvgM(Strategy):
         self.initial_parameters = initial_parameters
         self.fit_metrics_aggregation_fn = fit_metrics_aggregation_fn
         self.evaluate_metrics_aggregation_fn = evaluate_metrics_aggregation_fn
+        self.inplace = inplace
         
         # FedAvgM specific parameters
         self.server_learning_rate = server_learning_rate
         self.server_momentum = server_momentum
-        
-        # Server-side momentum state
+        self.server_opt: bool = (self.server_momentum != 0.0) or (
+            self.server_learning_rate != 1.0
+        )
         self.momentum_vector: Optional[NDArrays] = None
-        self.current_weights: Optional[NDArrays] = None
 
     def __repr__(self) -> str:
         """Compute a string representation of the strategy."""
-        rep = f"CustomFedAvgM(accept_failures={self.accept_failures}, server_momentum={self.server_momentum})"
+        rep = f"FedAvgM(accept_failures={self.accept_failures})"
         return rep
 
     def num_fit_clients(self, num_available_clients: int) -> tuple[int, int]:
@@ -162,12 +166,7 @@ class CustomFedAvgM(Strategy):
         self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         """Initialize global model parameters."""
-        initial_parameters = self.initial_parameters
-        if initial_parameters is not None:
-            # Store the initial weights for FedAvgM server-side momentum
-            self.current_weights = parameters_to_ndarrays(initial_parameters)
-        self.initial_parameters = None  # Don't keep initial parameters in memory
-        return initial_parameters
+        return self.initial_parameters
 
     def evaluate(
         self, server_round: int, parameters: Parameters
@@ -238,93 +237,69 @@ class CustomFedAvgM(Strategy):
         results: list[tuple[ClientProxy, FitRes]],
         failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
     ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
-        """Aggregate fit results using weighted average and server-side momentum."""
-        # Handle case where no successful results
+        """Aggregate fit results using weighted average."""
         if not results:
-            log(WARNING, f"Round {server_round}: No successful client results to aggregate")
             return None, {}
-        
         # Do not aggregate if there are failures and failures are not accepted
         if not self.accept_failures and failures:
-            log(
-                WARNING,
-                f"Round {server_round}: {len(failures)} clients failed and "
-                f"accept_failures=False, skipping aggregation",
-            )
             return None, {}
 
-        # Log failures if any occurred but we're accepting them
-        if failures:
-            log(
-                WARNING,
-                f"Round {server_round}: {len(failures)} clients failed, "
-                f"but continuing with {len(results)} successful clients. "
-                f"Failed clients will be ignored in aggregation.",
-            )
+        if self.inplace:
+            # Does in-place weighted average of results
+            aggregated_ndarrays = aggregate_inplace(results)
+        else:
+            # Convert results
+            weights_results = [
+                (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
+                for _, fit_res in results
+            ]
+            aggregated_ndarrays = aggregate(weights_results)
 
-        # Get current server weights
-        if self.current_weights is None:
-            # If we don't have stored weights, use the first client's weights as baseline
-            log(WARNING, "No stored server weights found, using first client's weights as baseline")
-            self.current_weights = parameters_to_ndarrays(results[0][1].parameters)
+        # Apply server-side optimization (momentum) if enabled
+        if self.server_opt:
+            # You need to initialize the model
+            assert (
+                self.initial_parameters is not None
+            ), "When using server-side optimization, model needs to be initialized."
+            
+            initial_weights = parameters_to_ndarrays(self.initial_parameters)
+            
+            # remember that updates are the opposite of gradients
+            pseudo_gradient: NDArrays = [
+                x - y
+                for x, y in zip(initial_weights, aggregated_ndarrays)
+            ]
+            
+            if self.server_momentum > 0.0:
+                if server_round > 1:
+                    assert (
+                        self.momentum_vector
+                    ), "Momentum should have been created on round 1."
+                    self.momentum_vector = [
+                        self.server_momentum * x + y
+                        for x, y in zip(self.momentum_vector, pseudo_gradient)
+                    ]
+                else:
+                    self.momentum_vector = pseudo_gradient
+                # No nesterov for now
+                pseudo_gradient = self.momentum_vector
+            
+            # SGD
+            aggregated_ndarrays = [
+                x - self.server_learning_rate * y
+                for x, y in zip(initial_weights, pseudo_gradient)
+            ]
+            
+            # Update current weights
+            self.initial_parameters = ndarrays_to_parameters(aggregated_ndarrays)
 
-        # Convert results to get weight updates (only from successful clients)
-        weights_results = []
-        for client_proxy, fit_res in results:
-            try:
-                client_weights = parameters_to_ndarrays(fit_res.parameters)
-                weights_results.append((client_weights, fit_res.num_examples))
-            except Exception as e:
-                log(
-                    WARNING,
-                    f"Round {server_round}: Failed to extract parameters from client "
-                    f"{client_proxy.cid}, skipping this client. Error: {e}",
-                )
-                continue
-        
-        # Check if we have any valid weights after extraction
-        if not weights_results:
-            log(
-                WARNING,
-                f"Round {server_round}: No valid client weights could be extracted, "
-                f"cannot perform aggregation",
-            )
-            return None, {}
+        parameters_aggregated = ndarrays_to_parameters(aggregated_ndarrays)
 
-        # Aggregate client weights using weighted average
-        aggregated_ndarrays = aggregate(weights_results)
-        
-        # Apply server-side momentum
-        updated_weights = self._apply_server_momentum(aggregated_ndarrays)
-        
-        # Update stored server weights for next round
-        self.current_weights = updated_weights
-        
-        parameters_aggregated = ndarrays_to_parameters(updated_weights)
-
-        # Aggregate custom metrics if aggregation fn was provided (only from successful clients)
+        # Aggregate custom metrics if aggregation fn was provided
         metrics_aggregated = {}
         if self.fit_metrics_aggregation_fn:
-            fit_metrics = []
-            for client_proxy, fit_res in results:
-                try:
-                    if fit_res.num_examples > 0 and fit_res.metrics is not None:
-                        fit_metrics.append((fit_res.num_examples, fit_res.metrics))
-                except Exception as e:
-                    log(
-                        WARNING,
-                        f"Round {server_round}: Failed to extract fit metrics from client "
-                        f"{client_proxy.cid}, skipping this client. Error: {e}",
-                    )
-                    continue
-            
-            if fit_metrics:
-                metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
-            else:
-                log(
-                    WARNING,
-                    f"Round {server_round}: No valid fit metrics could be extracted",
-                )
+            fit_metrics = [(res.num_examples, res.metrics) for _, res in results]
+            metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No fit_metrics_aggregation_fn provided")
 
@@ -337,128 +312,26 @@ class CustomFedAvgM(Strategy):
         failures: list[Union[tuple[ClientProxy, EvaluateRes], BaseException]],
     ) -> tuple[Optional[float], dict[str, Scalar]]:
         """Aggregate evaluation losses using weighted average."""
-        # Handle case where no successful results
         if not results:
-            log(WARNING, f"Round {server_round}: No successful evaluation results to aggregate")
             return None, {}
-        
         # Do not aggregate if there are failures and failures are not accepted
         if not self.accept_failures and failures:
-            log(
-                WARNING,
-                f"Round {server_round}: {len(failures)} evaluation clients failed and "
-                f"accept_failures=False, skipping evaluation aggregation",
-            )
             return None, {}
 
-        # Log failures if any occurred but we're accepting them
-        if failures:
-            log(
-                WARNING,
-                f"Round {server_round} evaluation: {len(failures)} clients failed, "
-                f"but continuing with {len(results)} successful clients. "
-                f"Failed clients will be ignored in evaluation.",
-            )
+        # Aggregate loss
+        loss_aggregated = weighted_loss_avg(
+            [
+                (evaluate_res.num_examples, evaluate_res.loss)
+                for _, evaluate_res in results
+            ]
+        )
 
-        # Aggregate loss (only from successful clients)
-        loss_results = []
-        for client_proxy, evaluate_res in results:
-            try:
-                if evaluate_res.loss is not None and evaluate_res.num_examples > 0:
-                    loss_results.append((evaluate_res.num_examples, evaluate_res.loss))
-                else:
-                    log(
-                        WARNING,
-                        f"Round {server_round}: Invalid loss or num_examples from client "
-                        f"{client_proxy.cid}, skipping this client",
-                    )
-            except Exception as e:
-                log(
-                    WARNING,
-                    f"Round {server_round}: Failed to extract loss from client "
-                    f"{client_proxy.cid}, skipping this client. Error: {e}",
-                )
-                continue
-        
-        # Check if we have any valid losses after extraction
-        if not loss_results:
-            log(
-                WARNING,
-                f"Round {server_round}: No valid evaluation losses could be extracted, "
-                f"cannot perform evaluation aggregation",
-            )
-            return None, {}
-            
-        loss_aggregated = weighted_loss_avg(loss_results)
-
-        # Aggregate custom metrics if aggregation fn was provided (only from successful clients)
+        # Aggregate custom metrics if aggregation fn was provided
         metrics_aggregated = {}
         if self.evaluate_metrics_aggregation_fn:
-            eval_metrics = []
-            for client_proxy, evaluate_res in results:
-                try:
-                    if evaluate_res.num_examples > 0 and evaluate_res.metrics is not None:
-                        eval_metrics.append((evaluate_res.num_examples, evaluate_res.metrics))
-                except Exception as e:
-                    log(
-                        WARNING,
-                        f"Round {server_round}: Failed to extract metrics from client "
-                        f"{client_proxy.cid}, skipping this client. Error: {e}",
-                    )
-                    continue
-            
-            if eval_metrics:
-                metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
-            else:
-                log(
-                    WARNING,
-                    f"Round {server_round}: No valid evaluation metrics could be extracted",
-                )
+            eval_metrics = [(res.num_examples, res.metrics) for _, res in results]
+            metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No evaluate_metrics_aggregation_fn provided")
 
         return loss_aggregated, metrics_aggregated
-
-    def _apply_server_momentum(self, aggregated_weights: NDArrays) -> NDArrays:
-        """Apply server-side momentum to the aggregated weights.
-        
-        Implements server-side momentum as:
-        momentum_vector = server_momentum * momentum_vector + server_learning_rate * delta
-        new_weights = current_weights + momentum_vector
-        
-        where delta = aggregated_weights - current_weights
-        """
-        if self.server_momentum == 0.0:
-            # No momentum, return weighted average of aggregated weights and current weights
-            return [
-                self.server_learning_rate * agg_w + (1 - self.server_learning_rate) * curr_w
-                for agg_w, curr_w in zip(aggregated_weights, self.current_weights)
-            ]
-        
-        # Compute the update direction (pseudo-gradient)
-        delta = [
-            agg_w - curr_w 
-            for agg_w, curr_w in zip(aggregated_weights, self.current_weights)
-        ]
-        
-        # Initialize momentum vector if not already done
-        if self.momentum_vector is None:
-            self.momentum_vector = [np.zeros_like(d) for d in delta]
-        
-        # Update momentum vector and apply to weights
-        updated_weights = []
-        new_momentum_vector = []
-        
-        for curr_w, d, m_prev in zip(self.current_weights, delta, self.momentum_vector):
-            # Update momentum: momentum = β * momentum_prev + η * delta
-            momentum = self.server_momentum * m_prev + self.server_learning_rate * d
-            new_momentum_vector.append(momentum)
-            
-            # Update weights: w_new = w_current + momentum
-            new_weight = curr_w + momentum
-            updated_weights.append(new_weight)
-        
-        # Store updated momentum vector
-        self.momentum_vector = new_momentum_vector
-        
-        return updated_weights
