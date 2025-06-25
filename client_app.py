@@ -14,7 +14,7 @@ from collections import OrderedDict
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 0:
+    if partition_id != 1:
         return False
     # For node n, partition_id is n-1
     # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
