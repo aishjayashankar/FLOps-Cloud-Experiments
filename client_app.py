@@ -9,17 +9,13 @@ import flops_infra_drift.client_subset_trainer as cst
 
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
-from flops_infra_drift.task import Net, get_weights, load_data, set_weights, test, train
+from flops_infra_drift.task import load_data, test, train
 from collections import OrderedDict
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 1:
-        return False
-    # For node n, partition_id is n-1
-    # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
-    # start_disconnect = 7 #(partition_id + 3)
-    # end_disconnect = 31
+    if partition_id != 1 and partition_id != 4:
+        return False    
 
     return (
         consts.CLIENT_DROP_ROUND_START <= current_round < consts.CLIENT_DROP_ROUND_END
