@@ -6,7 +6,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from flwr_datasets import FederatedDataset
-from flwr_datasets.partitioner import DirichletPartitioner
+from flwr_datasets.partitioner import IidPartitioner
 from torch.utils.data import DataLoader
 from torchvision.transforms import Compose, Normalize, ToTensor
 from flops_infra_drift.utils import save_dataset_to_csv
@@ -41,9 +41,7 @@ def load_data(partition_id: int, num_partitions: int):
     # Only initialize `FederatedDataset` once
     global fds
     if fds is None:
-        partitioner = DirichletPartitioner(
-            num_partitions=num_partitions, partition_by="label", alpha=0.5, seed=42
-        )
+        partitioner = IidPartitioner(num_partitions=num_partitions)
         fds = FederatedDataset(
             dataset="uoft-cs/cifar10",
             partitioners={"train": partitioner},
@@ -64,21 +62,9 @@ def load_data(partition_id: int, num_partitions: int):
     trainloader = DataLoader(partition_train_test["train"], batch_size=32, shuffle=True)
     testloader = DataLoader(partition_train_test["test"], batch_size=32)
 
-    """
-    # Save train and test data only once using a global flag
-    global _data_saved
-    try:
-        _data_saved
-    except NameError:
-        _data_saved = False
-
-    if not _data_saved:
-        train_csv = f"{partition_id}-train-data.csv"
-        test_csv = f"{partition_id}-test-data.csv"
-        save_dataset_to_csv(partition_train_test["train"], train_csv)
-        save_dataset_to_csv(partition_train_test["test"], test_csv)
-        _data_saved = True
-    """
+    train_csv = f"{partition_id}-train-data.csv"
+    save_dataset_to_csv(partition_train_test["train"], train_csv)
+    
     return trainloader, testloader
 
 

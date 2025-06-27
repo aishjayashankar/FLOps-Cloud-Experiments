@@ -62,14 +62,14 @@ class FlowerClient(NumPyClient):
         self.set_parameters(parameters)
 
         # Save parameters to CSV for the first round
-        if config["current_round"] == 1:
-            csv_filename = f"{self.partition_id}-parameters-round-0.csv"
-            with open(csv_filename, mode="w", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow(["Parameter Name", "Values"])
-                parameters = self.get_parameters({})
-                for name, param in zip(self.model.state_dict().keys(), parameters):
-                    writer.writerow([name, param.tolist()])
+        # if config["current_round"] == 1:
+        #     csv_filename = f"{self.partition_id}-parameters-round-0.csv"
+        #     with open(csv_filename, mode="w", newline="") as file:
+        #         writer = csv.writer(file)
+        #         writer.writerow(["Parameter Name", "Values"])
+        #         parameters = self.get_parameters({})
+        #         for name, param in zip(self.model.state_dict().keys(), parameters):
+        #             writer.writerow([name, param.tolist()])
 
         train_loss = train(
             self.model,
@@ -82,15 +82,15 @@ class FlowerClient(NumPyClient):
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
 
         # Save parameters to a separate CSV file for each round
-        csv_filename = (
-            f"{self.partition_id}-parameters-round-{config['current_round']}.csv"
-        )
-        with open(csv_filename, mode="w", newline="") as file:
-            writer = csv.writer(file)
-            writer.writerow(["Parameter Name", "Values"])
-            parameters = self.get_parameters({})
-            for name, param in zip(self.model.state_dict().keys(), parameters):
-                writer.writerow([name, param.tolist()])
+        # csv_filename = (
+        #     f"{self.partition_id}-parameters-round-{config['current_round']}.csv"
+        # )
+        # with open(csv_filename, mode="w", newline="") as file:
+        #     writer = csv.writer(file)
+        #     writer.writerow(["Parameter Name", "Values"])
+        #     parameters = self.get_parameters({})
+        #     for name, param in zip(self.model.state_dict().keys(), parameters):
+        #         writer.writerow([name, param.tolist()])
 
         return (
             self.get_parameters({}),
@@ -117,13 +117,13 @@ class FlowerClient(NumPyClient):
         #     f"Sample values from parameters:\nparameters[0][1][2][3][4]: {parameters[0][1][2][3][4]}\nparameters:[1][2]: {parameters[1][2]}\nparameters[2][3]: {parameters[2][3]}\nparameters[3][4]: {parameters[3][4]}"
         # )
         # Save parameters to a separate CSV file for each round
-        if self.partition_id == 1:
-            csv_filename = f"aggregated-parameters-round-{config['current_round']}.csv"
-            with open(csv_filename, mode="w", newline="") as file:
-                writer = csv.writer(file)
-                writer.writerow(["Parameter Name", "Values"])
-                for name, param in zip(self.model.state_dict().keys(), parameters):
-                    writer.writerow([name, param.tolist()])
+        # if self.partition_id == 1:
+        #     csv_filename = f"aggregated-parameters-round-{config['current_round']}.csv"
+        #     with open(csv_filename, mode="w", newline="") as file:
+        #         writer = csv.writer(file)
+        #         writer.writerow(["Parameter Name", "Values"])
+        #         for name, param in zip(self.model.state_dict().keys(), parameters):
+        #             writer.writerow([name, param.tolist()])
 
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
@@ -131,21 +131,21 @@ class FlowerClient(NumPyClient):
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
 
         # Save loss and accuracy to CSV
-        csv_filename = f"{self.partition_id}-loss-accuracy.csv"
-        file_exists = False
-        try:
-            with open(csv_filename, mode="r") as file:
-                file_exists = True
-        except FileNotFoundError:
-            pass
+        # csv_filename = f"{self.partition_id}-loss-accuracy.csv"
+        # file_exists = False
+        # try:
+        #     with open(csv_filename, mode="r") as file:
+        #         file_exists = True
+        # except FileNotFoundError:
+        #     pass
 
-        with open(csv_filename, mode="a", newline="") as file:
-            writer = csv.writer(file)
-            if not file_exists:
-                writer.writerow(["Round", "Loss", "Dataset Size", "Accuracy"])
-            writer.writerow(
-                [config["current_round"], loss, len(self.valloader.dataset), accuracy]
-            )
+        # with open(csv_filename, mode="a", newline="") as file:
+        #     writer = csv.writer(file)
+        #     if not file_exists:
+        #         writer.writerow(["Round", "Loss", "Dataset Size", "Accuracy"])
+        #     writer.writerow(
+        #         [config["current_round"], loss, len(self.valloader.dataset), accuracy]
+        #     )
 
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
