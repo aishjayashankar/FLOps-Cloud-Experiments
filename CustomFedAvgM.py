@@ -114,8 +114,8 @@ class CustomFedAvgM(Strategy):
         fit_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         evaluate_metrics_aggregation_fn: Optional[MetricsAggregationFn] = None,
         inplace: bool = True,
-        server_learning_rate: float = 1.0,
-        server_momentum: float = 0.0,
+        server_learning_rate: float = 0.5,
+        server_momentum: float = 0.9,
     ) -> None:
         super().__init__()
 

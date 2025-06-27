@@ -11,11 +11,11 @@ from task_noniid import Net, get_weights, load_data, set_weights, test, train
 from collections import OrderedDict
 
 def ShouldNodeDisconnect(partition_id, current_round):
-        if (partition_id != 2):
+        if (partition_id != 4):
             return False
         # For node n, partition_id is n-1
         # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
-        start_disconnect = 10
+        start_disconnect = 7
         end_disconnect = 31
 
         return start_disconnect <= current_round < end_disconnect
@@ -70,9 +70,11 @@ class FlowerClient(NumPyClient):
     def evaluate(self, parameters, config):
         start_time = time.time()
         # Simulating client disconnection
+        '''
         if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
             print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
             return "Garbage"
+        '''
         self.set_parameters(parameters)
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()

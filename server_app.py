@@ -40,12 +40,10 @@ def server_fn(context: Context):
     strategy = CustomFedAvgM(
         fraction_fit=1.0,
         fraction_evaluate=1.0,
-        min_fit_clients=4,
-        min_evaluate_clients=4,
-        min_available_clients=4,
+        min_fit_clients=2,
+        min_available_clients=2,
         evaluate_metrics_aggregation_fn=weighted_average_accuracy,
-        fit_metrics_aggregation_fn=weighted_average_train_loss,
-        initial_parameters=get_initial_parameters(),
+        initial_parameters=get_initial_parameters()
     )
   
     config = ServerConfig(num_rounds=num_rounds)
