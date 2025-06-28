@@ -1,10 +1,11 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
-from collections import OrderedDict
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+
+from collections import OrderedDict
+from flops_infra_drift.utils import save_dataset_to_csv
 from flwr_datasets import FederatedDataset
 from flwr_datasets.partitioner import DirichletPartitioner
 from torch.utils.data import DataLoader
@@ -67,6 +68,10 @@ def load_data(partition_id: int, num_partitions: int):
     partition_train_test = partition_train_test.with_transform(apply_transforms)
     trainloader = DataLoader(partition_train_test["train"], batch_size=32, shuffle=True)
     testloader = DataLoader(partition_train_test["test"], batch_size=32)
+
+    train_csv = f"{partition_id}-train-data.csv"
+    save_dataset_to_csv(partition_train_test["train"], train_csv)
+
     return trainloader, testloader
 
 
