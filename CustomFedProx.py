@@ -17,15 +17,17 @@
 Paper: arxiv.org/abs/1812.06127
 """
 
+from logging import WARNING
+from typing import Callable, Optional, Union
 
-from typing import Callable, Optional
-
-from flwr.common import FitIns, MetricsAggregationFn, NDArrays, Parameters, Scalar
+from flwr.common import EvaluateRes, FitIns, MetricsAggregationFn, NDArrays, Parameters, Scalar
+from flwr.common.logger import log
 from flwr.common.typing import EvaluateIns
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 
 from flwr.server.strategy import FedAvg
+from flwr.server.strategy.aggregate import weighted_loss_avg
 
 
 # pylint: disable=line-too-long
@@ -201,3 +203,37 @@ class CustomFedProx(FedAvg):
             )
             for client, evaluate_ins in client_config_pairs
         ]
+    
+    def aggregate_evaluate(
+        self,
+        server_round: int,
+        results: list[tuple[ClientProxy, EvaluateRes]],
+        failures: list[Union[tuple[ClientProxy, EvaluateRes], BaseException]],
+    ) -> tuple[Optional[float], dict[str, Scalar]]:
+        """Aggregate evaluation losses using weighted average."""
+        if not results:
+            return None, {}
+        # Do not aggregate if there are failures and failures are not accepted
+        if not self.accept_failures and failures:
+            return None, {}
+
+        # Aggregate loss
+        loss_aggregated = weighted_loss_avg(
+            [
+                (evaluate_res.num_examples, evaluate_res.loss)
+                for _, evaluate_res in results
+            ]
+        )
+
+        # Aggregate custom metrics if aggregation fn was provided
+        metrics_aggregated = {}
+        if self.evaluate_metrics_aggregation_fn:
+            eval_metrics = [(res.num_examples, res.metrics) for _, res in results]
+            metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
+        elif server_round == 1:  # Only log this warning once
+            log(WARNING, "No evaluate_metrics_aggregation_fn provided")
+
+        print(f"Aggregated loss: {loss_aggregated}")
+        print(f"Aggregated metrics: {metrics_aggregated}")
+
+        return loss_aggregated, metrics_aggregated
