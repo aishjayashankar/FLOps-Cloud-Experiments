@@ -10,6 +10,7 @@ from flops_infra_drift.task import Net, get_weights, load_data, set_weights, tes
 from collections import OrderedDict
 
 def ShouldNodeDisconnect(partition_id, current_round):
+        return False
         if (partition_id < 2):
             return False
         # For node n, partition_id is n-1
