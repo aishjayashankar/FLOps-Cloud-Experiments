@@ -14,7 +14,7 @@ from collections import OrderedDict
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 4:
+    if partition_id != 2:
         return False
     # For node n, partition_id is n-1
     # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
@@ -140,7 +140,7 @@ class FlowerClient(NumPyClient):
 
 def client_fn(context: Context):
     # Load model and data
-    net = torchvision.models.resnet18(num_classes=10)
+    net = torchvision.models.mobilenet_v3_small(num_classes=10)
     partition_id = context.node_config["partition-id"]
     num_partitions = context.node_config["num-partitions"]
     trainloader, valloader = load_data(partition_id, num_partitions)
