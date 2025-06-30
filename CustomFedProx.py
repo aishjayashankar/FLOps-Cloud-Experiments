@@ -17,16 +17,20 @@
 Paper: arxiv.org/abs/1812.06127
 """
 
+import flops_infra_drift.consts as consts
+
 from logging import WARNING
 from typing import Callable, Optional, Union
 
-from flwr.common import EvaluateRes, FitIns, MetricsAggregationFn, NDArrays, Parameters, Scalar
+from flops_infra_drift.dropped_client_replacer import get_dropped_client_parameters
+from flwr.common import EvaluateRes, FitIns, FitRes, MetricsAggregationFn, NDArrays, Parameters, Scalar, ndarrays_to_parameters, parameters_to_ndarrays
 from flwr.common.logger import log
 from flwr.common.typing import EvaluateIns
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 
 from flwr.server.strategy import FedAvg
+from flwr.server.strategy.aggregate import aggregate, aggregate_inplace
 from flwr.server.strategy.aggregate import weighted_loss_avg
 
 
@@ -203,6 +207,47 @@ class CustomFedProx(FedAvg):
             )
             for client, evaluate_ins in client_config_pairs
         ]
+    
+    def aggregate_fit(
+        self,
+        server_round: int,
+        results: list[tuple[ClientProxy, FitRes]],
+        failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
+    ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
+        """Aggregate fit results using weighted average."""
+        if not results:
+            return None, {}
+        # Do not aggregate if there are failures and failures are not accepted
+        if not self.accept_failures and failures:
+            return None, {}
+        
+        print(f"Results' length before substitution: {len(results)}")
+        if (consts.CLIENT_DROP_ROUND_START <= server_round < consts.CLIENT_DROP_ROUND_END):
+            get_dropped_client_parameters(results)
+        print(f"Results' length after substitution: {len(results)}")
+
+        if self.inplace:
+            # Does in-place weighted average of results
+            aggregated_ndarrays = aggregate_inplace(results)
+        else:
+            # Convert results
+            weights_results = [
+                (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
+                for _, fit_res in results
+            ]
+            aggregated_ndarrays = aggregate(weights_results)
+
+        parameters_aggregated = ndarrays_to_parameters(aggregated_ndarrays)
+
+        # Aggregate custom metrics if aggregation fn was provided
+        metrics_aggregated = {}
+        if self.fit_metrics_aggregation_fn:
+            fit_metrics = [(res.num_examples, res.metrics) for _, res in results]
+            metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
+        elif server_round == 1:  # Only log this warning once
+            log(WARNING, "No fit_metrics_aggregation_fn provided")
+
+        return parameters_aggregated, metrics_aggregated
     
     def aggregate_evaluate(
         self,

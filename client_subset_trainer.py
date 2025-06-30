@@ -78,7 +78,7 @@ def format_data(df):
             return self.X.shape[0]
 
         def __getitem__(self, idx):
-            return {"img": self.X[idx], "label": self.y[idx]}
+            return {"image": self.X[idx], "label": self.y[idx]}
 
     return DictTensorDataset(X_tensor, y_tensor)
 
@@ -92,7 +92,7 @@ def load_data():
 
 def client_fn():
     # Load model and data
-    net = torchvision.models.resnet18(num_classes=10)
+    net = torchvision.models.mobilenet_v3_small(num_classes=10)
     trainloader = load_data()
 
     # Return Client instance
