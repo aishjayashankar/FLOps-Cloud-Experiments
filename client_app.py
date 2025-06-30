@@ -14,12 +14,8 @@ from collections import OrderedDict
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 1:
+    if partition_id not in consts.DROPPED_CLIENT_PARITIONS_IDS:
         return False
-    # For node n, partition_id is n-1
-    # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
-    # start_disconnect = 7 #(partition_id + 3)
-    # end_disconnect = 31
 
     return (
         consts.CLIENT_DROP_ROUND_START <= current_round < consts.CLIENT_DROP_ROUND_END
@@ -72,6 +68,10 @@ class FlowerClient(NumPyClient):
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
     def fit(self, parameters, config):
+        if config.get("custom_rpc") == "handle_missing_clients":
+            print("Client received custom RPC: handle_missing_clients")
+            self.subset_fit()
+            return parameters, 0, {"status": "handled_custom_rpc"}
         start_time = time.time()
         # Simulating client disconnection
         if ShouldNodeDisconnect(self.partition_id, config["current_round"]):
@@ -92,24 +92,24 @@ class FlowerClient(NumPyClient):
         )
 
         # Train and get parameters for dropped client
-        dropped_client_parameters = None
-        if (
-            consts.CLIENT_DROP_ROUND_START
-            <= config["current_round"]
-            < consts.CLIENT_DROP_ROUND_END
-        ):
-            print(
-                f"Training dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
-            )
-            client_subset_trainer = cst.client_fn()
-            dropped_client_parameters = client_subset_trainer.fit(parameters_copy)
+        # dropped_client_parameters = None
+        # if (
+        #     consts.CLIENT_DROP_ROUND_START
+        #     <= config["current_round"]
+        #     < consts.CLIENT_DROP_ROUND_END
+        # ):
+        #     print(
+        #         f"Training dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
+        #     )
+        #     client_subset_trainer = cst.client_fn()
+        #     dropped_client_parameters = client_subset_trainer.fit(parameters_copy)
         # Serialize dropped client parameters
         dropped_client_parameters_bytes = None
-        if dropped_client_parameters:
-            print(
-                f"Serializing dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
-            )
-            dropped_client_parameters_bytes = pickle.dumps(dropped_client_parameters)
+        # if dropped_client_parameters:
+        #     print(
+        #         f"Serializing dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
+        #     )
+        #     dropped_client_parameters_bytes = pickle.dumps(dropped_client_parameters)
 
         end_time = time.time()
         runtime = end_time - start_time
@@ -126,16 +126,15 @@ class FlowerClient(NumPyClient):
 
     def evaluate(self, parameters, config):
         start_time = time.time()
-        # Simulating client disconnection
-        # if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
-        #     print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
-        #     return "Garbage"
         self.set_parameters(parameters)
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
+    
+    def subset_fit(self):
+        print("-----------------Subset fit called---------------------")
 
 
 def client_fn(context: Context):
