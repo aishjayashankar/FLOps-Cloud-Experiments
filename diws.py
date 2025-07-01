@@ -1,4 +1,5 @@
 import flops_infra_drift.consts as consts
+import pickle
 
 from concurrent.futures import ThreadPoolExecutor
 from flops_infra_drift.dropped_client_replacer import get_dropped_client_parameters
@@ -43,6 +44,7 @@ class DIWS(Strategy):
         super().__init__()
         self.aggregator_strategy = aggregator_strategy
         self.global_parameters = None
+        self.label_distribution = {}
 
     def __repr__(self) -> str:
         return repr(self.aggregator_strategy)
@@ -75,7 +77,17 @@ class DIWS(Strategy):
         results: list[tuple[ClientProxy, FitRes]],
         failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
     ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
+        """Aggregate fit results from clients, substituting dropped clients if necessary."""
+
+        # Initialize label distribution for the first round
+        if server_round == 1:
+            for _, fitres in results:
+                client_label_distribution = pickle.loads(fitres.metrics.get("label_distribution"))
+                self.label_distribution[client_label_distribution[0]] = client_label_distribution[1]
+        print(f"Label distribution for clients: {self.label_distribution}")
+
         self.substitute_dropped_clients(server_round, results, failures)
+
         return self.aggregator_strategy.aggregate_fit(server_round, results, failures)
 
     def aggregate_evaluate(

@@ -11,6 +11,7 @@ from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
 from flops_infra_drift.task import Net, get_weights, load_data, set_weights, test, train
 from collections import OrderedDict
+from collections import Counter
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
@@ -22,24 +23,24 @@ def ShouldNodeDisconnect(partition_id, current_round):
     )
 
 
-def get_label_distribution(trainloader):
-    print("Calculating label distribution...")
-    label_counts = {}
-    total = 0
-    for batch in trainloader:
-        labels = batch["label"]
-        for label in labels:
-            label_int = int(label)
-            label_counts[label_int] = label_counts.get(label_int, 0) + 1
-            total += 1
-    print(f"Total samples counted: {total}")
-    distribution = {}
-    for label, count in label_counts.items():
-        percentage = (count / total) * 100 if total > 0 else 0
-        distribution[label] = (count, percentage)
-        print(f"Label {label}: count = {count}, percentage = {percentage:.2f}%")
-    print("Label distribution calculation complete.")
-    return distribution
+# def get_label_distribution(trainloader):
+#     print("Calculating label distribution...")
+#     label_counts = {}
+#     total = 0
+#     for batch in trainloader:
+#         labels = batch["label"]
+#         for label in labels:
+#             label_int = int(label)
+#             label_counts[label_int] = label_counts.get(label_int, 0) + 1
+#             total += 1
+#     print(f"Total samples counted: {total}")
+#     distribution = {}
+#     for label, count in label_counts.items():
+#         percentage = (count / total) * 100 if total > 0 else 0
+#         distribution[label] = (count, percentage)
+#         print(f"Label {label}: count = {count}, percentage = {percentage:.2f}%")
+#     print("Label distribution calculation complete.")
+#     return distribution
 
 
 # Define Flower Client and client_fn
@@ -68,11 +69,16 @@ class FlowerClient(NumPyClient):
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
 
     def fit(self, parameters, config):
+        """Fit model parameters using local training data."""
+
+        # Trigger subset trainer for missing clients
         if config.get("custom_rpc") == "handle_missing_clients":
             print("Client received custom RPC: handle_missing_clients")
             self.subset_fit()
             return parameters, 0, {"status": "handled_custom_rpc"}
+        
         start_time = time.time()
+
         # Simulating client disconnection
         if ShouldNodeDisconnect(self.partition_id, config["current_round"]):
             print(
@@ -82,6 +88,7 @@ class FlowerClient(NumPyClient):
                 config["current_round"],
             )
             return "Garbage"
+        
         self.set_parameters(parameters)
         parameters_copy = self.get_parameters({})
         train_loss = train(
@@ -104,7 +111,7 @@ class FlowerClient(NumPyClient):
         #     client_subset_trainer = cst.client_fn()
         #     dropped_client_parameters = client_subset_trainer.fit(parameters_copy)
         # Serialize dropped client parameters
-        dropped_client_parameters_bytes = None
+        # dropped_client_parameters_bytes = None
         # if dropped_client_parameters:
         #     print(
         #         f"Serializing dropped client parameters for round: {config['current_round']} in partition: {self.partition_id}"
@@ -116,8 +123,14 @@ class FlowerClient(NumPyClient):
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
 
         metrics = {"train_loss": train_loss}
-        if dropped_client_parameters_bytes is not None:
-            metrics["dropped_client_parameters_bytes"] = dropped_client_parameters_bytes
+        # Share label distribution if it's the first round
+        if config["current_round"] == 1:
+            label_distribution = self.get_label_distribution()
+            metrics["label_distribution"] = pickle.dumps(label_distribution)
+
+        # if dropped_client_parameters_bytes is not None:
+        #     metrics["dropped_client_parameters_bytes"] = dropped_client_parameters_bytes        
+
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
@@ -135,6 +148,19 @@ class FlowerClient(NumPyClient):
     
     def subset_fit(self):
         print("-----------------Subset fit called---------------------")
+
+    def get_label_distribution(self) -> tuple:
+        """Calculate and return label distribution in the training data."""
+        print("Calculating label distribution for partition:", self.partition_id)
+
+        label_counter = Counter()
+        for batch in self.trainloader:
+            labels = batch["label"]
+            label_counter.update([int(label) for label in labels])
+
+        print(f"Label distribution for partition {self.partition_id}: {label_counter}")
+        return (self.partition_id, dict(label_counter))
+
 
 
 def client_fn(context: Context):
