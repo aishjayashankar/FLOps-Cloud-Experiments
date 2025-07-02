@@ -1,6 +1,6 @@
 # DIWS: Distribution-Informed Weight Substitution for Infrastructure Drift in Federated Learning
 
-This repository contains the implementation of **DIWS (Data-Informed Weight Substitution)**, a lightweight and privacy-preserving method for handling client dropouts in Federated Learning (FL). DIWS enables robust model training by approximating the statistical contribution of unavailable clients using label distribution metadata.
+This repository contains the implementation of **DIWS (Distribution-Informed Weight Substitution)**, a lightweight and privacy-preserving method for handling client dropouts in Federated Learning (FL). DIWS enables robust model training by approximating the statistical contribution of unavailable clients using label distribution metadata.
 
 ## Key Features
 
