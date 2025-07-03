@@ -5,7 +5,7 @@ This repository contains the implementation of **DIWS (Distribution-Informed Wei
 ## Key Features
 
 - **Dropout Recovery**: Approximates missing client updates using label distributions.
-- **Privacy-Preserving**: No raw data sharing—uses only pre-shared metadata.
+- **Privacy-Preserving**: No raw data sharing. Uses only pre-shared metadata.
 - **Compatible**: Seamlessly integrates with standard FL workflows (e.g., Flower).
 - **Scalable**: Designed to support real-world FL environments with heterogeneous and unreliable clients.
 
