@@ -89,6 +89,14 @@ def load_subset_data(
 
     inputs_tensor = torch.stack(collected_inputs)
     labels_tensor = torch.stack(collected_labels)
+
+    print("Sample input tensor:")
+    print(inputs_tensor[0][0][0][0][0])
+    print(inputs_tensor[0][0][0][0][1])
+    print(inputs_tensor.shape)
+
+    print("Sample label tensor:")
+    print(labels_tensor[0])
     target_dataset = DictStyleDataset(inputs_tensor, labels_tensor)
     targetDL = DataLoader(target_dataset, batch_size=trainloader.batch_size, shuffle=False)
 
