@@ -283,5 +283,5 @@ class CustomFedAvg(Strategy):
             metrics_aggregated = self.evaluate_metrics_aggregation_fn(eval_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No evaluate_metrics_aggregation_fn provided")
-
+        print(f"Aggregated evaluation loss: {loss_aggregated}, metrics: {metrics_aggregated}")
         return loss_aggregated, metrics_aggregated

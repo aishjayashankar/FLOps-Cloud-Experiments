@@ -10,8 +10,8 @@ from flops_infra_drift.task import Net, get_weights, load_data, set_weights, tes
 from collections import OrderedDict
 
 def ShouldNodeDisconnect(partition_id, current_round):
-        return False
-        if (partition_id != 3):
+        
+        if (partition_id % 2 != 0):
             return False
         # For node n, partition_id is n-1
         # start_disconnect = 5, 6, 7 for partition_ids 2, 3, 4
@@ -60,7 +60,7 @@ class FlowerClient(NumPyClient):
         )
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
+        # print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
@@ -70,20 +70,20 @@ class FlowerClient(NumPyClient):
     def evaluate(self, parameters, config):
         start_time = time.time()
         # Simulating client disconnection
-        if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
-            print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
-            return "Garbage"
+        # if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
+        #     print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
+        #     return "Garbage"
         self.set_parameters(parameters)
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
+        # print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
 
 def client_fn(context: Context):
     # Load model and data
-    net = torchvision.models.resnet18(num_classes=10)
+    net = Net()
     partition_id = context.node_config["partition-id"]
     num_partitions = context.node_config["num-partitions"]
     trainloader, valloader = load_data(partition_id, num_partitions)
