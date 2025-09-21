@@ -100,7 +100,7 @@ class FlowerClient(NumPyClient):
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
+        # print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
     def get_label_distribution(self) -> dict:
@@ -118,7 +118,7 @@ class FlowerClient(NumPyClient):
 
 def client_fn(context: Context):
     # Load model and data
-    net = torchvision.models.resnet18(num_classes=10)
+    net = Net()
     partition_id = context.node_config["partition-id"]
     num_partitions = context.node_config["num-partitions"]
     trainloader, valloader = load_data(partition_id, num_partitions)

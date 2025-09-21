@@ -1,11 +1,24 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
 from flops_infra_drift.diws import DIWS
+import logging
+import sys
+
 from flwr.common import Context
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg
 from typing import List, Tuple
 from flwr.common import Metrics
+
+# Set root logger level to INFO to suppress DEBUG logs from all loggers
+logging.getLogger().setLevel(logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    handlers=[
+        logging.FileHandler("temp.log"),
+        logging.StreamHandler(sys.stdout),  # optional: keep console output
+    ]
+)
 
 def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # Multiply accuracy of each client by number of examples used
