@@ -12,6 +12,10 @@ from flops_infra_drift.subset_client_trainer import get_subset_client_trainer
 from flops_infra_drift.task import load_data, test, train
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
+from flops_infra_drift.task import Net, get_weights, load_data, set_weights, test, train
+from flops_infra_drift.logger_config import configure_logging
+from collections import OrderedDict
+
 
 def ShouldNodeDisconnect(partition_id, current_round):
     if partition_id not in consts.DROPPED_CLIENT_PARITIONS_IDS:
@@ -100,7 +104,7 @@ class FlowerClient(NumPyClient):
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
+        logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
     def get_label_distribution(self) -> dict:
