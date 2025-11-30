@@ -9,11 +9,15 @@ import flops_infra_drift.consts as consts
 from collections import OrderedDict
 from collections import Counter
 from flops_infra_drift.subset_client_trainer import get_subset_client_trainer
-from flops_infra_drift.task import load_data, test, train
+from flops_infra_drift.task import load_data, test, train, Net
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
 
 def ShouldNodeDisconnect(partition_id, current_round):
+
+    # if partition_id%2 != 0:
+    #     return False
+    
     if partition_id not in consts.DROPPED_CLIENT_PARITIONS_IDS:
         return False
 
@@ -51,7 +55,7 @@ class FlowerClient(NumPyClient):
 
         # Trigger subset trainer for missing clients
         if config.get("custom_rpc") == "handle_missing_clients":
-            print("Perform fit on representative subset")
+            print(f"Perform fit on representative subset for clientId: {self.partition_id}")
             subsetClientTrainer = get_subset_client_trainer(
                 self.model,
                 pickle.loads(config["subset_distribution"]),

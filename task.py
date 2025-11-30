@@ -76,6 +76,8 @@ def train(net, trainloader, epochs, device):
         for batch in trainloader:
             images = batch["img"]
             labels = batch["label"]
+            if len(images) <= 1:
+                continue  # Skip training if batch has only one record
             optimizer.zero_grad()
             loss = criterion(net(images.to(device)), labels.to(device))
             loss.backward()
