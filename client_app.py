@@ -10,11 +10,16 @@ import flops_infra_drift.client_subset_trainer as cst
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
 from flops_infra_drift.task import Net, get_weights, load_data, set_weights, test, train
+from flops_infra_drift.logger_config import configure_logging
 from collections import OrderedDict
+import logging
+
+# Configure logging
+configure_logging()
 
 
 def ShouldNodeDisconnect(partition_id, current_round):
-    if partition_id != 1 and partition_id != 4:
+    if partition_id != 1:
         return False
 
     return (
@@ -70,13 +75,8 @@ class FlowerClient(NumPyClient):
     def fit(self, parameters, config):
         start_time = time.time()
         # Simulating client disconnection
-        if ShouldNodeDisconnect(self.partition_id, config["current_round"]):
-            print(
-                "Disconnecting partition: ",
-                self.partition_id,
-                " for round: ",
-                config["current_round"],
-            )
+        if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
+            logging.info(f"Disconnecting partition: {self.partition_id} for round: {config['current_round']}")
             return "Garbage"
         self.set_parameters(parameters)
         parameters_copy = self.get_parameters({})
@@ -109,11 +109,11 @@ class FlowerClient(NumPyClient):
 
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
 
         metrics = {"train_loss": train_loss}
         if dropped_client_parameters_bytes is not None:
             metrics["dropped_client_parameters_bytes"] = dropped_client_parameters_bytes
+        logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
@@ -122,15 +122,11 @@ class FlowerClient(NumPyClient):
 
     def evaluate(self, parameters, config):
         start_time = time.time()
-        # Simulating client disconnection
-        # if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
-        #     print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
-        #     return "Garbage"
         self.set_parameters(parameters)
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
+        logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
 
