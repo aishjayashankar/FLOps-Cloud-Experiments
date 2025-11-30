@@ -3,11 +3,15 @@
 
 from flops_infra_drift.CustomFedAvg import CustomFedAvg
 from flops_infra_drift.CustomFedProx import CustomFedProx
+from flops_infra_drift.logger_config import configure_logging
 from flwr.common import Context
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg, FedProx
 from typing import List, Tuple
 from flwr.common import Metrics
+
+# Configure logging
+configure_logging()
 
 def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # Multiply accuracy of each client by number of examples used

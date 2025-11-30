@@ -7,11 +7,25 @@ import torchvision.models
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
 from flops_infra_drift.task import Net, get_weights, load_data, set_weights, test, train
+from flops_infra_drift.logger_config import configure_logging
 from collections import OrderedDict
+import logging
+
+# Configure logging
+configure_logging()
 
 def ShouldNodeDisconnect(partition_id, current_round):
+<<<<<<< HEAD
         if (partition_id != 1):
             return False
+=======
+    if partition_id != 1:
+        return False
+
+    return (
+        consts.CLIENT_DROP_ROUND_START <= current_round < consts.CLIENT_DROP_ROUND_END
+    )
+>>>>>>> Add logging mechanism
 
         start_disconnect = 2
         end_disconnect = 3
@@ -47,7 +61,11 @@ class FlowerClient(NumPyClient):
         start_time = time.time()
         # Simulating client disconnection
         if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
+<<<<<<< HEAD
             print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
+=======
+            logging.info(f"Disconnecting partition: {self.partition_id} for round: {config['current_round']}")
+>>>>>>> Add logging mechanism
             return "Garbage"
         self.set_parameters(parameters)
         train_loss = train(
@@ -58,7 +76,15 @@ class FlowerClient(NumPyClient):
         )
         end_time = time.time()
         runtime = end_time - start_time
+<<<<<<< HEAD
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
+=======
+
+        metrics = {"train_loss": train_loss}
+        if dropped_client_parameters_bytes is not None:
+            metrics["dropped_client_parameters_bytes"] = dropped_client_parameters_bytes
+        logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
+>>>>>>> Add logging mechanism
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
@@ -71,7 +97,7 @@ class FlowerClient(NumPyClient):
         loss, accuracy = test(self.model, self.valloader, self.device)
         end_time = time.time()
         runtime = end_time - start_time
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
+        logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to evaluate.")
         return loss, len(self.valloader.dataset), {"accuracy": accuracy}
 
 
