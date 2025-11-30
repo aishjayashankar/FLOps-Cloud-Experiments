@@ -132,6 +132,10 @@ class CustomFedAvg(Strategy):
         self.fit_metrics_aggregation_fn = fit_metrics_aggregation_fn
         self.evaluate_metrics_aggregation_fn = evaluate_metrics_aggregation_fn
         self.inplace = inplace
+        self.last_client_weights = {}
+        from collections import defaultdict
+        self.similarity_avg = defaultdict(lambda: defaultdict(float))
+        self.similarity_count = defaultdict(lambda: defaultdict(int))
 
     def __repr__(self) -> str:
         """Compute a string representation of the strategy."""
@@ -189,6 +193,9 @@ class CustomFedAvg(Strategy):
             num_clients=sample_size, min_num_clients=min_num_clients
         )
 
+        # Track sampled clients for failure detection
+        self.current_round_sampled_cids = [client.cid for client in clients]
+
         # Return client/config pairs
         return [(client, fit_ins) for client in clients]
 
@@ -232,14 +239,125 @@ class CustomFedAvg(Strategy):
         if not self.accept_failures and failures:
             return None, {}
 
+        # Filter out failures and get successful results
+        successful_results = results
+        
+        # Step 1: Update History for successful clients
+        import numpy as np
+        
+        def flatten_weights(weights):
+            """Flatten a list of numpy arrays into a single 1D array."""
+            return np.concatenate([w.flatten() for w in weights])
+
+        def cosine_similarity(w1, w2):
+            """Calculate cosine similarity between two weight vectors."""
+            norm_w1 = np.linalg.norm(w1)
+            norm_w2 = np.linalg.norm(w2)
+            if norm_w1 == 0 or norm_w2 == 0:
+                return 0.0
+            return np.dot(w1, w2) / (norm_w1 * norm_w2)
+
+        # Filter out failures and get successful results
+        successful_results = results
+        
+        from collections import defaultdict
+        
+        successful_cids = set()
+        current_round_weights = {}
+        
+        # Store weights for successful clients and prepare for pairwise calculation
+        for client_proxy, fit_res in successful_results:
+            cid = client_proxy.cid
+            successful_cids.add(cid)
+            current_weights = parameters_to_ndarrays(fit_res.parameters)
+            flat_weights = flatten_weights(current_weights)
+            current_round_weights[cid] = flat_weights
+            
+            # Update last known weights (still useful for fallback or other logic)
+            self.last_client_weights[cid] = flat_weights
+            log(WARNING, f"Success Client CID: {cid}")
+
+        # Update pairwise similarity averages using the running average formula
+        successful_clients_list = list(current_round_weights.keys())
+        for i in range(len(successful_clients_list)):
+            cid_i = successful_clients_list[i]
+            weights_i = current_round_weights[cid_i]
+            
+            for j in range(i + 1, len(successful_clients_list)):
+                cid_j = successful_clients_list[j]
+                weights_j = current_round_weights[cid_j]
+                
+                # Instantaneous similarity s_{i,j}^t
+                s_t = cosine_similarity(weights_i, weights_j)
+                
+                # Previous count N_{i,j}^{t-1}
+                N_prev = self.similarity_count[cid_i][cid_j]
+                
+                # Previous average R_{i,j}^{t-1}
+                R_prev = self.similarity_avg[cid_i][cid_j]
+                
+                # Calculate new average R_{i,j}^t
+                # Formula: R^t = (N / (N + 1)) * R^{t-1} + (1 / (N + 1)) * s^t
+                R_new = (N_prev / (N_prev + 1)) * R_prev + (1 / (N_prev + 1)) * s_t
+                
+                # Update symmetric similarity stats
+                self.similarity_avg[cid_i][cid_j] = R_new
+                self.similarity_count[cid_i][cid_j] += 1
+                
+                self.similarity_avg[cid_j][cid_i] = R_new
+                self.similarity_count[cid_j][cid_i] += 1
+
+        # Check if we have any failures that need substitution
+        if failures and self.accept_failures:
+            log(WARNING, f"Found {len(failures)} failures. Attempting substitution...")
+            
+            # Deduce failed clients
+            failed_cids = [cid for cid in self.current_round_sampled_cids if cid not in successful_cids]
+            
+            if not successful_results:
+                log(WARNING, "No successful results to substitute from. Skipping substitution.")
+            else:
+                import random
+                
+                # For each deduced failure, pick the best friend from successful results based on Average Similarity
+                for failed_cid in failed_cids:
+                    best_friend = None
+                    best_avg_similarity = -1.0
+                    
+                    log(WARNING, f"--- Finding Best Friend for Failed Client {failed_cid} ---")
+                    
+                    # Iterate over all potential friends (currently successful clients)
+                    for friend_proxy, friend_res in successful_results:
+                        friend_cid = friend_proxy.cid
+                        
+                        # Retrieve the running average similarity
+                        avg_similarity = self.similarity_avg[failed_cid][friend_cid]
+                        
+                        log(WARNING, f"Candidate Friend {friend_cid}: Running Avg Similarity = {avg_similarity:.4f}")
+                        
+                        if avg_similarity > best_avg_similarity:
+                            best_avg_similarity = avg_similarity
+                            best_friend = (friend_proxy, friend_res)
+                    
+                    if best_friend and best_avg_similarity > -1.0: # Ensure we found at least one match with history
+                        friend_client_proxy, friend_fit_res = best_friend
+                        log(WARNING, f">>> Substituting failed client {failed_cid} with BEST friend {friend_client_proxy.cid} (Running Avg Similarity: {best_avg_similarity:.4f})")
+                    else:
+                        # Fallback to random if no history or no match found
+                        friend_client_proxy, friend_fit_res = random.choice(successful_results)
+                        log(WARNING, f">>> Substituting failed client {failed_cid} with RANDOM friend {friend_client_proxy.cid} (No history available)")
+
+                    # Create a substitute result
+                    successful_results.append((friend_client_proxy, friend_fit_res))
+
         if self.inplace:
             # Does in-place weighted average of results
-            aggregated_ndarrays = aggregate_inplace(results)
+            aggregated_ndarrays = aggregate_inplace(successful_results)
         else:
             # Convert results
             weights_results = [
                 (parameters_to_ndarrays(fit_res.parameters), fit_res.num_examples)
-                for _, fit_res in results
+                for _, fit_res in successful_results
             ]
             aggregated_ndarrays = aggregate(weights_results)
 
@@ -248,7 +366,7 @@ class CustomFedAvg(Strategy):
         # Aggregate custom metrics if aggregation fn was provided
         metrics_aggregated = {}
         if self.fit_metrics_aggregation_fn:
-            fit_metrics = [(res.num_examples, res.metrics) for _, res in results]
+            fit_metrics = [(res.num_examples, res.metrics) for _, res in successful_results]
             metrics_aggregated = self.fit_metrics_aggregation_fn(fit_metrics)
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No fit_metrics_aggregation_fn provided")
