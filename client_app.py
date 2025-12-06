@@ -15,22 +15,13 @@ import logging
 configure_logging()
 
 def ShouldNodeDisconnect(partition_id, current_round):
-<<<<<<< HEAD
-        if (partition_id != 1):
-            return False
-=======
     if partition_id != 1:
         return False
 
-    return (
-        consts.CLIENT_DROP_ROUND_START <= current_round < consts.CLIENT_DROP_ROUND_END
-    )
->>>>>>> Add logging mechanism
+    start_disconnect = 7
+    end_disconnect = 31
 
-        start_disconnect = 2
-        end_disconnect = 3
-
-        return start_disconnect <= current_round < end_disconnect
+    return start_disconnect <= current_round < end_disconnect
 
 # Define Flower Client and client_fn
 class FlowerClient(NumPyClient):
@@ -61,11 +52,7 @@ class FlowerClient(NumPyClient):
         start_time = time.time()
         # Simulating client disconnection
         if (ShouldNodeDisconnect(self.partition_id, config["current_round"])):
-<<<<<<< HEAD
-            print("Disconnecting partition: ", self.partition_id, " for round: ", config["current_round"])
-=======
             logging.info(f"Disconnecting partition: {self.partition_id} for round: {config['current_round']}")
->>>>>>> Add logging mechanism
             return "Garbage"
         self.set_parameters(parameters)
         train_loss = train(
@@ -76,19 +63,13 @@ class FlowerClient(NumPyClient):
         )
         end_time = time.time()
         runtime = end_time - start_time
-<<<<<<< HEAD
-        print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
-=======
 
         metrics = {"train_loss": train_loss}
-        if dropped_client_parameters_bytes is not None:
-            metrics["dropped_client_parameters_bytes"] = dropped_client_parameters_bytes
         logging.info(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
->>>>>>> Add logging mechanism
         return (
             self.get_parameters({}),
             len(self.trainloader.dataset),
-            {"train_loss": train_loss},
+            metrics,
         )
 
     def evaluate(self, parameters, config):
