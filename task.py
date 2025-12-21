@@ -39,15 +39,28 @@ def load_data(partition_id: int, num_partitions: int):
     """Load partition CIFAR10 data."""
     # Only initialize `FederatedDataset` once
     global fds
+    
+    # We want 2 out of 5 clients to have the same data.
+    # So we effectively need 4 partitions for 5 clients.
+    # We will map partition_id 4 to partition_id 0.
+    
+    effective_num_partitions = num_partitions
+    if num_partitions == 5:
+        effective_num_partitions = 4
+        
+    actual_partition_id = partition_id
+    if num_partitions == 5 and partition_id == 4:
+        actual_partition_id = 0
+
     if fds is None:
         partitioner = DirichletPartitioner(
-            num_partitions=num_partitions, partition_by="label", alpha=0.5, seed=42
+            num_partitions=effective_num_partitions, partition_by="label", alpha=0.5, seed=42
         )
         fds = FederatedDataset(
             dataset="uoft-cs/cifar10",
             partitioners={"train": partitioner},
         )
-    partition = fds.load_partition(partition_id)
+    partition = fds.load_partition(actual_partition_id)
     # Divide data on each node: 80% train, 20% test
     partition_train_test = partition.train_test_split(test_size=0.2, seed=42)
     pytorch_transforms = Compose(
