@@ -19,6 +19,17 @@ from flwr.server.strategy.strategy import Strategy
 from math import floor
 from typing import Union
 from typing import Optional, Union
+import tenseal as ts
+import pickle
+import random
+import os
+import flops_infra_drift.consts as consts
+import flops_infra_drift.keys as keys
+import datetime
+
+def log_debug(msg):
+    with open("debug_diws.log", "a") as f:
+        f.write(f"[{datetime.datetime.now()}] {msg}\n")
 
 # pylint: disable=line-too-long
 class DIWS(Strategy):
@@ -45,6 +56,7 @@ class DIWS(Strategy):
         self.aggregator_strategy = aggregator_strategy
         self.global_parameters = None
         self.label_distribution = {}
+        self.context = None
 
     def __repr__(self) -> str:
         return repr(self.aggregator_strategy)
@@ -53,6 +65,15 @@ class DIWS(Strategy):
         self, client_manager: ClientManager
     ) -> Optional[Parameters]:
         self.global_parameters = self.aggregator_strategy.initialize_parameters(client_manager)
+        # Load server context
+        if not os.path.exists(consts.SERVER_CONTEXT_PATH):
+            print("Generating new FHE keys...")
+            keys.create_and_save_context(consts.SERVER_CONTEXT_PATH, consts.CLIENT_CONTEXT_PATH)
+
+        if self.context is None:
+             self.context = keys.load_context(consts.SERVER_CONTEXT_PATH)
+        self.cid_to_partition = {}
+        self.inv_num_cache = {}
         return self.global_parameters
 
     def evaluate(
@@ -78,15 +99,39 @@ class DIWS(Strategy):
         failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
     ) -> tuple[Optional[Parameters], dict[str, Scalar]]:
         """Aggregate fit results from clients, substituting dropped clients if necessary."""
+        
+        # Filter out clients that signaled dropout
+        valid_results = []
+        for client_proxy, fit_res in results:
+             if fit_res.metrics.get("is_dropped"):
+                 print(f"Detected dropout signal from {client_proxy.cid}")
+             else:
+                 valid_results.append((client_proxy, fit_res))
+        
+        results = valid_results
 
         # Initialize label distribution for the first round
         if server_round == 1:
             for client_proxy, fitres in results:
-                client_label_distribution = pickle.loads(fitres.metrics.get("label_distribution"))
-                self.label_distribution[client_proxy.cid] = client_label_distribution
+                # Deserialize encrypted distribution
+                client_dist_bytes = pickle.loads(fitres.metrics.get("label_distribution"))
+                client_dist = {}
+                for label, enc_bytes in client_dist_bytes.items():
+                    client_dist[label] = ts.ckks_vector_from(self.context, enc_bytes)
+                
+                # Use partition ID for storage if available
+                pid = fitres.metrics.get("partition_id")
+                if pid:
+                    self.cid_to_partition[client_proxy.cid] = str(pid)
+                    self.label_distribution[str(pid)] = client_dist
+                    print(f"Mapped CID {client_proxy.cid} to Partition {pid}")
+                else:
+                    self.label_distribution[client_proxy.cid] = client_dist
+                    print(f"Warning: No partition ID for {client_proxy.cid}")
 
         print(f"Number of results before substitution: {len(results)}")
-        self.substitute_dropped_clients(server_round, results, failures)
+        if server_round >= consts.CLIENT_DROP_ROUND_START and server_round < consts.CLIENT_DROP_ROUND_END:
+             self.substitute_dropped_clients(server_round, results, failures)
         print(f"Number of results after substitution: {len(results)}")
 
         return self.aggregator_strategy.aggregate_fit(server_round, results, failures)
@@ -106,17 +151,308 @@ class DIWS(Strategy):
                                 results: list[tuple[ClientProxy, FitRes]],
                                 failures: list[Union[tuple[ClientProxy, FitRes], BaseException]]) -> None:
         """Substitute dropped clients with subset training, if required"""
-        if (len(failures) == 0):
-            print(f"No dropped clients to substitute in round {server_round}.")
-            return
         
-        client_subset_distributions = self.get_subset_distribution_for_active_clients([x[0].cid for x in results])
+        # Identify dropped clients (naive check based on previous knowledge or assumption)
+        # In this simulation, we know who dropped based on results vs expected?
+        # Actually failures list contains the dropped ones if they failed during fit.
+        # But if they simply didn't participate, we need to know who was SUPPOSED to.
+        # For this specific task, we rely on `failures` or explicit check.
+        # If failures is empty but we expect substitution, it might be that they were not sampled?
+        # The prompt implies we substitute the *missing* contribution.
+        
+        # Let's assume we substitute for explicit dropouts as defined in consts for simulation
+        dropped_cids = [str(cid) for cid in consts.DROPPED_CLIENT_PARITIONS_IDS]
+        active_client_proxies = [res[0] for res in results]
+        active_cids = [p.cid for p in active_client_proxies]
+        
+        # Map active CIDs to partition IDs for comparison
+        active_pids = []
+        for cid in active_cids:
+            if cid in self.cid_to_partition:
+                active_pids.append(self.cid_to_partition[cid])
+            else:
+                active_pids.append(str(cid)) # Fallback
+                
+        # Filter dropped_cids that are NOT in active_pids
+        # dropped_cids are partition IDs (e.g. "1")
+        actual_dropped = [pid for pid in dropped_cids if pid not in active_pids]
+        
+        if not actual_dropped:
+             print("No dropped clients to substitute.")
+             return
 
+        print(f"Substituting for dropped clients: {actual_dropped}")
+        log_debug(f"Substituting for dropped clients: {actual_dropped}")
+        log_debug(f"Available label distributions for CIDs: {list(self.label_distribution.keys())}")
+        print(f"Available label distributions for CIDs: {list(self.label_distribution.keys())}")
+
+        # 1. Calculate Total Dropped Demand (Encrypted)
+        dropped_demand = {}
+        for cid in actual_dropped:
+            dist = self.label_distribution.get(cid, {})
+            log_debug(f"Dist for {cid}: {len(dist)} labels")
+            print(f"Dist for {cid}: {len(dist)} labels")
+            for label, count_enc in dist.items():
+                if label not in dropped_demand:
+                    dropped_demand[label] = count_enc.copy()
+                else:
+                    dropped_demand[label] += count_enc
+        
+        print(f"Dropped Demand Keys: {list(dropped_demand.keys())}")
+        log_debug(f"Dropped Demand Keys: {list(dropped_demand.keys())}")
+
+        # --- Distributed Target Scaling (Blind Binary Search) ---
+        # Calculate Scaled Target to ensure global feasibility
+        # Target = min(1.0, Total_Active / Total_Dropped) * Total_Dropped
+        
+        # 1. Aggregate Active Stock (Encrypted)
+        active_stock = {}
+        for cid in active_cids:
+            cid_key = self.cid_to_partition.get(cid, cid)
+            dist = self.label_distribution.get(str(cid_key), {})
+            if not dist: dist = self.label_distribution.get(cid, {})
+            
+            for label, count_enc in dist.items():
+                if label not in active_stock:
+                    active_stock[label] = count_enc.copy()
+                else:
+                    active_stock[label] += count_enc
+
+
+        # 2. Blind Binary Search for Scaling Factor k
+        # We need a helper client to check feasibility (Oracle)
+        helper_proxy = active_client_proxies[0]
+        
+        k_min = 0.0
+        k_max = 1.0
+        # Precision: 5 iterations gives ~3% error margin (1/32), sufficient for rough scaling
+        iterations = 5 
+        
+        print(f"Starting Blind Binary Search for Scaling Factor (5 iterations)...")
+        
+        for i in range(iterations):
+            k_mid = (k_min + k_max) / 2.0
+            
+            # Check Feasibility: Active >= k_mid * Dropped for ALL labels?
+            # Metric: Diff = Active - (Dropped * k_mid)
+            # Blinded = Diff * Mask
+            
+            blinded_checks = {}
+            # Must check ALL dropped labels to preserve distribution ratio
+            labels_to_check = list(dropped_demand.keys())
+            
+            # Generate k_mid encrypted scalar
+            # Optimization: Cache k_mid encryption if possible, but it changes every iter
+            k_enc = ts.ckks_vector(self.context, [k_mid])
+            mask_val = random.uniform(10, 100)
+            mask_enc = ts.ckks_vector(self.context, [mask_val])
+            zero_enc = ts.ckks_vector(self.context, [0])
+
+            for label in labels_to_check:
+                if label in active_stock:
+                    stock_total = active_stock[label]
+                else:
+                    stock_total = zero_enc # No stock means 0
+                
+                dropped_total = dropped_demand[label]
+                
+                # Active - (Dropped * k)
+                diff = stock_total - (dropped_total * k_enc)
+                blinded = diff * mask_enc
+                blinded_checks[label] = blinded.serialize()
+            
+            if not blinded_checks: # Should not happen if dropped_demand is not empty
+                 k_min = 1.0; k_max = 1.0; break
+
+            # Send to Helper
+            ins = EvaluateIns(
+                 parameters=self.global_parameters,
+                 config={"check_global_feasibility": pickle.dumps(blinded_checks)}
+            )
+            
+            # Synchronous call for simplicity in this logic block
+            # In production, could be async but we need result to proceed
+            # Note: We use the helper_proxy directly. We need to wrap in ClientManager/Ray logic?
+            # Strategy doesn't usually call proxy directly but we can try evaluate() on proxy
+            # Wait, verify proxy has evaluate method. Standard ClientProxy does.
+            res = None
+            try:
+                # We need to run this on the main thread or via the client manager? 
+                # Strategy runs in Driver. Proxy is a handle.
+                # However, calling evaluate directly on proxy is synchronous usually? 
+                # RayProxy might be async. Let's use the futures pattern from existing code.
+                with ThreadPoolExecutor(max_workers=1) as executor:
+                    future = executor.submit(helper_proxy.evaluate, ins, consts.SUBSTITUTION_TIMEOUT, server_round)
+                    res = future.result()
+            except Exception as e:
+                print(f"Optimization failed: {e}")
+                k_min = k_mid # Fail safe? Or break?
+                break
+                
+            is_feasible = res.metrics.get("is_feasible", False)
+            
+            if is_feasible:
+                k_min = k_mid # Try higher k
+            else:
+                k_max = k_mid # Too high, lower k
+                
+        final_k = k_min
+        print(f"Converged Scaling Factor: {final_k:.4f}")
+        
+        # 3. Apply Scaling to Dropped Demand
+        # Target = Dropped * final_k
+        k_final_enc = ts.ckks_vector(self.context, [final_k])
+        
+        scaled_dropped_demand = {}
+        for label, val in dropped_demand.items():
+            scaled_dropped_demand[label] = val * k_final_enc
+            
+        # Replace dropped_demand with scaled version for Protocol
+        # But we need to keep 'dropped_demand' variable name for next steps
+        original_dropped_demand = dropped_demand
+        dropped_demand = scaled_dropped_demand
+        # --------------------------------------------------------
+        
+        # 2. Run Masked Interactive Protocol
+        # We process all labels in parallel (conceptually) but loop per iteration
+        
+        # Final shares to be assigned to active clients
+        final_shares = {cid: {} for cid in active_cids} 
+        
+        # Helper to track remaining demand per label
+        remaining_demand = dropped_demand.copy()
+        
+        # Helper to track active clients per label (initially all)
+        # We need the set of labels under consideration
+        all_labels = set(remaining_demand.keys())
+        active_set = {label: list(active_client_proxies) for label in all_labels}
+
+        # Iteration Loop (Max 2-3 iterations)
+        for i_loop in range(3):
+            print(f"--- Protocol Iteration {i_loop + 1} ---")
+            log_debug(f"--- Protocol Iteration {i_loop + 1} ---")
+            
+            # Prepare Blinded Checks
+            blinded_checks_per_client = {cid: {} for cid in active_cids}
+            client_proxy_map = {p.cid: p for p in active_client_proxies}
+            
+            labels_to_check = []
+            
+            for label in all_labels:
+                if not active_set[label]: continue # No one left to ask
+                
+                # Calculate Fair Share (Encrypted)
+                target = remaining_demand[label]
+                num_active = len(active_set[label])
+                
+                # Use Vector Mult for stability
+                if num_active not in self.inv_num_cache:
+                    self.inv_num_cache[num_active] = ts.ckks_vector(self.context, [1.0 / num_active])
+                inv_num_enc = self.inv_num_cache[num_active]
+                fair_share = target * inv_num_enc
+                
+                for client in active_set[label]:
+                    cid = client.cid
+                    cid_key = self.cid_to_partition.get(cid, cid)
+                    dist = self.label_distribution.get(str(cid_key), {})
+                    if not dist:
+                         # Try fallback
+                         dist = self.label_distribution.get(cid, {})
+
+                    stock_enc = dist.get(label)
+                    
+                    if stock_enc is None:
+                         # Assume 0 if unknown label
+                         stock_enc = ts.ckks_vector(self.context, [0]) # Should encrypt 0
+                    else:
+                         stock_enc = stock_enc.copy() # CRITICAL: Copy to prevent in-place modulus switching degradation
+
+                    
+                    # Generate Random Mask
+                    mask_val = random.uniform(10, 100) # Arbitrary positive mask
+                    
+                    # Blinded Diff = (Fair_Share - Stock) * Encrypted(Mask)
+                    mask_enc = ts.ckks_vector(self.context, [mask_val])
+                    blinded_diff = (fair_share - stock_enc) * mask_enc 
+                    
+                    blinded_checks_per_client[cid][label] = blinded_diff.serialize()
+                    labels_to_check.append(label)
+
+            if not labels_to_check:
+                break # Done
+
+            # Send requests (Parallel)
+            with ThreadPoolExecutor() as executor:
+                futures = {}
+                for cid, checks in blinded_checks_per_client.items():
+                    if not checks: continue
+                    
+                    # Encrypted values are already serialized
+                    serialized_checks = checks
+                    
+                    ins = EvaluateIns(
+                         parameters=self.global_parameters, # Not used but required
+                         config={"blinded_diff": pickle.dumps(serialized_checks)}
+                    )
+                    futures[cid] = executor.submit(
+                        client_proxy_map[cid].evaluate, ins, consts.SUBSTITUTION_TIMEOUT, server_round
+                    )
+                
+                # Collect Responses
+                for cid, future in futures.items():
+                    res = future.result() # EvaluateRes
+                    res = future.result() # EvaluateRes
+                    # If execution failed, future.result() would have raised exception
+                    metrics = res.metrics
+                    is_capped_map = pickle.loads(metrics["is_capped"])
+                    
+                    for label, is_capped in is_capped_map.items():
+                        if is_capped:
+                             # Client is Capped
+                             # Final Share = Stock
+                             # Final Share = Stock
+                             cid_key = self.cid_to_partition.get(cid, cid)
+                             dist = self.label_distribution.get(str(cid_key), {})
+                             if not dist:
+                                 dist = self.label_distribution.get(cid, {})
+                             stock = dist.get(label, ts.ckks_vector(self.context, [0]))
+                             final_shares[cid][label] = stock
+                             
+                             # Subtract Stock from Remaining Demand
+                             remaining_demand[label] -= stock
+                             
+                             # Remove from Active Set
+                             # Find proxy by cid
+                             proxy = client_proxy_map[cid]
+                             if proxy in active_set[label]:
+                                 active_set[label].remove(proxy)
+                        else:
+                             # Client is Capable
+                             # Keep in active set, wait for next round or final assignment
+                             pass
+
+        # 3. Final Assignment for Remaining Active Clients
+        for label in all_labels:
+            active_clients = active_set[label]
+            if not active_clients: continue
+            
+            target = remaining_demand[label]
+            fair_share = target * (1.0 / len(active_clients))
+            
+            for client in active_clients:
+                 final_shares[client.cid][label] = fair_share
+
+        # 4. Trigger Subset Training with Final Encrypted Shares
         with ThreadPoolExecutor() as executor:
             futures = []
-            for client_proxy, _ in results:
-                subset_distribution_bytes = pickle.dumps(client_subset_distributions[client_proxy.cid])
-                config = {"subset_distribution": subset_distribution_bytes,
+            for client_proxy in active_client_proxies:
+                cid = client_proxy.cid
+                share_map = final_shares.get(cid, {})
+                
+                # Serialize shares
+                serialized_shares = {l: v.serialize() for l, v in share_map.items()}
+                
+                config = {"subset_distribution": pickle.dumps(serialized_shares),
                           "custom_rpc": "handle_missing_clients"}
                 fitIns = FitIns(parameters=self.global_parameters, config=config)
                 futures.append(executor.submit(client_proxy.fit, fitIns, consts.SUBSTITUTION_TIMEOUT, server_round))
@@ -125,93 +461,6 @@ class DIWS(Strategy):
         substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
         results.append((None, substituted_parameters_fitRes))
 
-
-    def consolidate_label_distributions(self, active_clients_ids):
-        dropped_clients_ids = set(self.label_distribution.keys()) - set(active_clients_ids)
-        print(f"Dropped clients IDs: {dropped_clients_ids}")
-        print(f"Active clients IDs: {active_clients_ids}")
-
-        # Consolidate label distribution for dropped clients
-        dropped_clients_distribution = {}
-        for cid in dropped_clients_ids:
-            client_dist = self.label_distribution.get(cid, {})
-            for label, count in client_dist.items():
-                dropped_clients_distribution[label] = dropped_clients_distribution.get(label, 0) + count
-
-        # Consolidate label distribution for active clients
-        active_clients_distribution = {}
-        for cid in active_clients_ids:
-            client_dist = self.label_distribution.get(cid, {})
-            for label, count in client_dist.items():
-                active_clients_distribution[label] = active_clients_distribution.get(label, 0) + count
-
-        print(f"Dropped clients distribution: {dropped_clients_distribution}")
-        print(f"Active clients distribution: {active_clients_distribution}")
-
-        return dropped_clients_distribution, active_clients_distribution
-    
-    
-    def get_consolidated_representative_distribution(self, dropped_clients_distribution, active_clients_distribution):
-        # Calculate the representative subset distribution
-        representative_subset_distribution = {}
-        total_dropped = sum(dropped_clients_distribution.values())
-
-        target_percentages = {
-            label: count / total_dropped
-            for label, count in dropped_clients_distribution.items()
-        }
-
-        anchor_label = max(
-            dropped_clients_distribution,
-            key=lambda label: dropped_clients_distribution[label],
-        )
-
-        representative_subset_distribution[anchor_label] = min(
-            active_clients_distribution[anchor_label],
-            dropped_clients_distribution[anchor_label])
-        
-        # Calculate the total count based on dropped percentage and chosen anchor label value
-        anchor_label_total = floor(representative_subset_distribution[anchor_label] / target_percentages[anchor_label])
-
-        for label, count in active_clients_distribution.items():
-            if label == anchor_label:
-                continue
-            target_count = floor(target_percentages[label] * anchor_label_total)
-            representative_subset_distribution[label] = min(target_count, count)        
-
-        print(f"Subset distribution for active clients: {representative_subset_distribution}")
-        return representative_subset_distribution
-    
-    
-    def get_subset_distribution_for_active_clients(
-            self,
-            active_clients_ids) -> dict:
-        """Get representative subset distribution for active clients."""
-        
-        dropped_clients_distribution, active_clients_distribution = self.consolidate_label_distributions(active_clients_ids)
-
-        representative_subset_distribution = self.get_consolidated_representative_distribution(
-            dropped_clients_distribution, active_clients_distribution)        
-
-        # Distribute the representative subset among active clients
-        subset_distribution_per_client = {cid: {} for cid in active_clients_ids}
-        for label, total_needed in representative_subset_distribution.items():
-            client_counts = [
-                (cid, self.label_distribution.get(cid, {}).get(label, 0))
-                for cid in active_clients_ids
-            ]
-            idx = 0
-            while total_needed > 0 and any(count > 0 for _, count in client_counts):
-                cid, available = client_counts[idx % len(client_counts)]
-                if available > 0:
-                    subset_distribution_per_client[cid][label] = subset_distribution_per_client[cid].get(label, 0) + 1
-                    client_counts[idx % len(client_counts)] = (cid, available - 1)
-                    total_needed -= 1
-                idx += 1
-
-        print(f"Subset distribution per client: {subset_distribution_per_client}")
-        return subset_distribution_per_client
-    
     
     def aggregate_substitution_parameters(self, results: list[FitRes]) -> FitRes:
         results = [(None, fitRes) for fitRes in results]

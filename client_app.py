@@ -5,13 +5,17 @@ import torch
 import torchvision.models
 import pickle
 import flops_infra_drift.consts as consts
+import copy
 
 from collections import OrderedDict
 from collections import Counter
 from flops_infra_drift.subset_client_trainer import get_subset_client_trainer
 from flops_infra_drift.task import load_data, test, train
 from flwr.client import ClientApp, NumPyClient
+from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
+import flops_infra_drift.keys as keys
+import tenseal as ts
 
 def ShouldNodeDisconnect(partition_id, current_round):
     if partition_id not in consts.DROPPED_CLIENT_PARITIONS_IDS:
@@ -29,8 +33,12 @@ class FlowerClient(NumPyClient):
         self.valloader = valloader
         self.local_epochs = local_epochs
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        print(f"Client {partition_id} initialized on device: {self.device} (CUDA available: {torch.cuda.is_available()})")
         self.model.to(self.device)
         self.partition_id = partition_id
+        
+        # Load FHE Context (Secret key needed for decryption/encryption)
+        self.context = keys.load_context(consts.CLIENT_CONTEXT_PATH)
 
     def set_parameters(self, params):
         """Set model weights from a list of NumPy ndarrays."""
@@ -52,9 +60,19 @@ class FlowerClient(NumPyClient):
         # Trigger subset trainer for missing clients
         if config.get("custom_rpc") == "handle_missing_clients":
             print("Perform fit on representative subset")
+            # Decrypt target needed
+            encrypted_target = pickle.loads(config["subset_distribution"])
+            target_distribution = {}
+            for label, enc_data in encrypted_target.items():
+                 # Decrypt: Result is a vector, take 0th element
+                 val = ts.ckks_vector_from(self.context, enc_data).decrypt()[0]
+                 target_distribution[label] = max(0, int(round(val)))
+
+            print("Perform fit on representative subset", target_distribution)
+            # Use deepcopy to prevent in-place modification of the client's main model
             subsetClientTrainer = get_subset_client_trainer(
-                self.model,
-                pickle.loads(config["subset_distribution"]),
+                copy.deepcopy(self.model),
+                target_distribution,
                 self.trainloader)
             return subsetClientTrainer.fit(parameters)            
         
@@ -68,7 +86,8 @@ class FlowerClient(NumPyClient):
                 " for round: ",
                 config["current_round"],
             )
-            return "Garbage"
+            # Return dropped signal instead of raising exception to preserve simulation flow
+            return [], 0, {"is_dropped": True}
         
         self.set_parameters(parameters)
         train_loss = train(
@@ -81,12 +100,23 @@ class FlowerClient(NumPyClient):
         end_time = time.time()
         runtime = end_time - start_time
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
+        
+        # Explicit GC to prevent memory leaks in Ray actors
+        import gc
+        gc.collect()
 
         metrics = {"train_loss": train_loss}
         # Share label distribution if it's the first round
         if config["current_round"] == 1:
             label_distribution = self.get_label_distribution()
-            metrics["label_distribution"] = pickle.dumps(label_distribution)
+            
+            # Encrypt label distribution
+            encrypted_dist = {}
+            for label, count in label_distribution.items():
+                encrypted_dist[label] = ts.ckks_vector(self.context, [count]).serialize()
+                
+            metrics["label_distribution"] = pickle.dumps(encrypted_dist)
+            metrics["partition_id"] = str(self.partition_id)
 
         return (
             self.get_parameters({}),
@@ -95,6 +125,37 @@ class FlowerClient(NumPyClient):
         )
 
     def evaluate(self, parameters, config):
+        # Masked Interactive Protocol Check
+        if "blinded_diff" in config:
+            blinded_diff_map = pickle.loads(config["blinded_diff"])
+            is_capped_map = {}
+            for label, enc_diff in blinded_diff_map.items():
+                # Decrypt: (Fair - Stock) * Mask
+                # Mask is positive, so sign is preserved.
+                # If > 0: Capped (Fair > Stock)
+                # If < 0: Capable (Stock > Fair)
+                val = ts.ckks_vector_from(self.context, enc_diff).decrypt()[0]
+                is_capped_map[label] = (val > 0)
+            
+            return float(0.0), 0, {"is_capped": pickle.dumps(is_capped_map)}
+
+        # Distributed Target Scaling Check
+        if "check_global_feasibility" in config:
+            blinded_checks_map = pickle.loads(config["check_global_feasibility"])
+            # Returns simple boolean: Is the proposal feasible?
+            # Proposal is feasible if ALL checks are >= 0
+            is_feasible = True
+            for label, enc_val in blinded_checks_map.items():
+                 # Decrypt: Active - (Dropped * k)
+                 # Masked with positive random value
+                 val = ts.ckks_vector_from(self.context, enc_val).decrypt()[0]
+                 # Use epsilon for robustness against FHE noise
+                 if val < -0.01: # Means Active < Dropped * k (significantly)
+                     is_feasible = False
+                     break
+            
+            return float(0.0), 0, {"is_feasible": is_feasible}
+
         start_time = time.time()
         self.set_parameters(parameters)
         loss, accuracy = test(self.model, self.valloader, self.device)

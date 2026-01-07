@@ -44,6 +44,10 @@ class SubsetClientTrainer:
         start_time = time.time()
 
         self.set_parameters(parameters)
+        # if len(self.trainloader) == 0:
+        #     print("SubsetClientTrainer: Empty trainloader, skipping training.")
+        #     return (self.get_parameters(), 0, {})
+
         train_loss = train(
             self.model,
             self.trainloader,
@@ -86,6 +90,12 @@ def load_subset_data(
                 break
         if all(current_counts[l] >= subset_distribution[l] for l in subset_distribution):
             break 
+
+    # if not collected_inputs:
+    #     print("Warning: No inputs collected for subset training.")
+    #     # Create empty dataset/dataloader
+    #     target_dataset = DictStyleDataset([], [])
+    #     return DataLoader(target_dataset, batch_size=trainloader.batch_size, shuffle=False)
 
     inputs_tensor = torch.stack(collected_inputs)
     labels_tensor = torch.stack(collected_labels)
