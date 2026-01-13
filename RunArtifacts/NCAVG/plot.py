@@ -42,7 +42,8 @@ logs = {
     # "Node Disconnect": "nodeDisconnect.log",
     # "Timeout": "timeout20s.log",
     # "Non IID Disconnect": "niid_disconnect.log",
-    "NIID 100 Rounds": "niid-mcavg-5-100-rounds-baseline.log"
+    "NIID 500 Baseline": "niid-nnavg-500-baseline.log",
+    "NIID 500 Node Disconnect": "niid_ncavg_500_drop_250_baseline.log",
 }
 
 # Colors and markers for plotting
@@ -51,7 +52,8 @@ plot_styles = {
     # "Node Disconnect": ("red", "s"),
     # "Timeout": ("green", "D"),
     # "Non IID Disconnect": ("orange", "^"),
-    "NIID 100 Rounds": ("purple", "v")
+    "NIID 500 Baseline": ("purple", "v"),
+    "NIID 500 Node Disconnect": ("cyan", "x"),
 }
 
 # Extract loss and accuracy data for all experiments
@@ -71,11 +73,12 @@ plt.ylabel("Loss")
 plt.title("Loss vs. Rounds")
 plt.legend()
 plt.grid(True)
-plt.savefig("loss_vs_rounds_overlay_niid_100.png")
+plt.savefig("loss_vs_rounds_overlay_niid_500_250_drop.png")
 plt.close()
 
 # Plot and save accuracy vs. rounds with overlay
 plt.figure(figsize=(10, 5))
+# plt.ylim(0.2,0.4)
 for label, (rounds, accuracies) in accuracy_data.items():
     plt.plot(rounds, accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
 plt.xlabel("Rounds")
@@ -83,7 +86,7 @@ plt.ylabel("Accuracy")
 plt.title("Accuracy vs. Rounds")
 plt.legend()
 plt.grid(True)
-plt.savefig("accuracy_vs_rounds_overlay_niid_100.png")
+plt.savefig("accuracy_vs_rounds_overlay_niid_500_250_drop.png")
 plt.close()
 
 print("Overlay plots saved.")
