@@ -9,16 +9,17 @@ from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg
 from typing import List, Tuple
 from flwr.common import Metrics
+from flops_infra_drift.task import prepare_dataset
 
 # Set root logger level to INFO to suppress DEBUG logs from all loggers
-logging.getLogger().setLevel(logging.INFO)
-logging.basicConfig(
-    level=logging.INFO,
-    handlers=[
-        logging.FileHandler("temp.log"),
-        logging.StreamHandler(sys.stdout),  # optional: keep console output
-    ]
-)
+# logging.getLogger().setLevel(logging.INFO)
+# logging.basicConfig(
+#     level=logging.INFO,
+#     handlers=[
+#         logging.FileHandler("temp.log"),
+#         logging.StreamHandler(sys.stdout),  # optional: keep console output
+#     ]
+# )
 
 def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # Multiply accuracy of each client by number of examples used
@@ -28,10 +29,14 @@ def weighted_average(metrics: List[Tuple[int, Metrics]]) -> Metrics:
     # Aggregate and return custom metric (weighted average)
     return {"accuracy": sum(accuracies) / sum(examples)}
 
+
 def server_fn(context: Context):
     # Read from config
     num_rounds = context.run_config["num-server-rounds"]
     fraction_fit = context.run_config["fraction-fit"]
+
+    # Initialize dataset
+    prepare_dataset()
 
     # Define strategy
     aggregator_strategy = FedAvg(
