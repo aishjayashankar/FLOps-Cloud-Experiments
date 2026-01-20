@@ -25,7 +25,7 @@ MAX_LEN = 32
 class TextClassifier(nn.Module):
     """Simple LSTM model for text classification."""
 
-    def __init__(self, vocab_size=VOCAB_SIZE, embed_dim=64, hidden_dim=64, num_classes=3):
+    def __init__(self, vocab_size=VOCAB_SIZE, embed_dim=64, hidden_dim=64, num_classes=14):
         super(TextClassifier, self).__init__()
         self.embedding = nn.Embedding(vocab_size, embed_dim)
         self.lstm = nn.LSTM(embed_dim, hidden_dim, batch_first=True)
@@ -60,32 +60,22 @@ fds = None  # Cache FederatedDataset
 
 def prepare_dataset():
     """Download dataset if not already present."""
-    print("Preparing dataset... this might take a few minutes.")
-    # Initialize FederatedDataset to trigger download
-    partitioner = IidPartitioner(num_partitions=1)
-    
-    # Pass storage_options to increase timeout for download
-    # This helps with slow connections or large files
-    fds = FederatedDataset(
-        dataset="sentiment140",
-        partitioners={"train": partitioner},
-        storage_options={"timeout": 1200}
-    )
-    # Force download by loading the first partition
-    fds.load_partition(0)
-    print("Dataset prepared.")
+    # Local files used, no download needed
+    print("Using local DBPedia dataset.")
 
 
 def load_data(partition_id: int, num_partitions: int):
-    """Load partition Sentiment140 data."""
+    """Load partition DBPedia data."""
     # Only initialize `FederatedDataset` once
     global fds
     if fds is None:
-        partitioner =  DirichletPartitioner(
-            num_partitions=num_partitions, partition_by="sentiment", alpha=1.0, seed=42
+        partitioner = DirichletPartitioner(
+            num_partitions=num_partitions, partition_by="label", alpha=0.1, seed=42
         )
         fds = FederatedDataset(
-            dataset="sentiment140",
+            dataset="csv",
+            # Point to local files
+            data_files={"train": "DBPedia/train.csv", "test": "DBPedia/test.csv"},
             partitioners={"train": partitioner},
         )
     
@@ -95,18 +85,13 @@ def load_data(partition_id: int, num_partitions: int):
 
     def apply_transforms(batch):
         """Tokenize text and map labels."""
-        # Tokenize "text" column
-        batch["text"] = [tokenize_and_pad(t) for t in batch["text"]]
-        
-        # Map labels: 0 -> 0, 2 -> 1, 4 -> 2
-        # sentiment140 uses 0=negative, 2=neutral, 4=positive
-        # But commonly it only has 0 and 4. Let's map 4->1.
-        # Actually checking dataset, it has 0, 2, 4.
-        label_map = {0: 0, 2: 1, 4: 2}
-        batch["label"] = [label_map[l] for l in batch["sentiment"]]
+        # Tokenize "content" column for DBPedia
+        batch["text"] = [tokenize_and_pad(t) for t in batch["content"]]
         return batch
 
     partition_train_test = partition_train_test.with_transform(apply_transforms)
+
+    # print(f"Partition {partition_id} has {len(partition_train_test['train'])} training samples and {len(partition_train_test['test'])} test samples.")
     
     # Custom collate_fn to stack tensors
     # Datasets with list of tensors need this to form batch tensors
