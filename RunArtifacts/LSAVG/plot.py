@@ -40,7 +40,8 @@ def extract_accuracy(file_path):
 # File paths
 logs = {
     # "IID Baseline": "baseline.log",
-    "Non-IID Baseline": "logs/niid_baseline.log",
+    # "Non-IID Baseline": "logs/niid_baseline.log",
+    "Non-IID LSAVG 100 Clients Baseline": "new_logs/lsavg_niid_100_baseline.log",
     # "Non-IID Dup Baseline": "new_logs/niid_rcavg_dup_clients_baseline.log",
     # "Less NIID Baseline": "new_logs/rcavg_less_niid_baseline.log",
     # "Node Disconnect": "nodeDisconnect.log",
@@ -52,7 +53,8 @@ logs = {
     #"Central substitution": "client4_central_substitution.log",
     # "Client 5 Disconnect": "client5_drop_baseline.log",
     #"Client 1 Disconenct Baseline": "client1_drop.log",
-    "Client 2 Disconnect": "new_logs/niid_client2_drop_baseline.log",
+    # "Client 2 Disconnect": "new_logs/niid_client2_drop_baseline.log",
+    "55 Clients Continuous Drop": "new_logs/lsavg_niid_100_55_continuous_drop.log",
     # "Dup Client 5 Disconnect": "new_logs/niid_rcavg_dup_node_drop.log",
     # "Less NIID Client 2 Disconnect": "new_logs/rcavg_less_niid_client2_drop.log",
     #"Client 3 Disconenct Baseline": "client3_drop.log",
@@ -60,8 +62,8 @@ logs = {
     #"Client 1 Substitution": "client1_drop_substitution.log",
     # "Client 2 Disconnect with DIWS": "client2_drop_substitution.log",
     # "Client 2 Disconnect with DIWS Clean": "logs/client2-drop-substition-clean.log",
-    "Client 2 Disconnect with DIWS Substitution": "new_logs/rcavg_niid_client2_diws_sub.log",
-    "Client 2 Disconnect with DIWS Rerun": "new_logs/rcavg_niid_client2_diws_rerun.log",
+    # "Client 2 Disconnect with DIWS Substitution": "new_logs/rcavg_niid_client2_diws_sub.log",
+    # "Client 2 Disconnect with DIWS Rerun": "new_logs/rcavg_niid_client2_diws_rerun.log",
     # "Client 2 Disconnect with DIWS and FHE": "new_logs/rcavg_niid_client2_drop_diws_fhe_multiplicative.log",
     # "Client 2 Disconnect with DIWS, FHE and Binary Search": "new_logs/rcavg_niid_client2_drop_diws_fhe_binary_search.log",
     # "Client 2 Disconnect with DIWS and FHE": "new_logs/rcavg_niid_client2_drop_diws_fhe_binary_search.log",
@@ -81,7 +83,8 @@ logs = {
 # Colors and markers for plotting
 plot_styles = {
     # "IID Baseline": ("blue", "o"),
-    "Non-IID Baseline": ("blue", "o"),
+    # "Non-IID Baseline": ("blue", "o"),
+    "Non-IID LSAVG 100 Clients Baseline": ("blue", "o"),
     # "Non-IID Dup Baseline": ("blue", "o"),
     # "Less NIID Baseline": ("blue", "o"),
     # "Node Disconnect": ("red", "s"),
@@ -93,7 +96,8 @@ plot_styles = {
     #"Central substitution": ("brown", "h"),
     # "Client 5 Disconnect": ("red", "s"),
     #"Client 1 Disconenct Baseline": ("black", "D"),
-    "Client 2 Disconnect": ("red", "s"),
+    # "Client 2 Disconnect": ("red", "s"),
+    "55 Clients Continuous Drop": ("red", "s"),
     # "Dup Client 5 Disconnect": ("red", "s"),
     # "Less NIID Client 2 Disconnect": ("red", "s"),
     #"Client 3 Disconenct Baseline": ("black", "D"),
@@ -101,8 +105,8 @@ plot_styles = {
     #"Client 1 Substitution": ("green", "p"),
     # "Client 2 Disconnect with DIWS": ("green", "s"),
     # "Client 2 Disconnect with DIWS Clean": ("green", "s"),
-    "Client 2 Disconnect with DIWS Substitution": ("green", "s"),
-    "Client 2 Disconnect with DIWS Rerun": ("purple", "s"),
+    # "Client 2 Disconnect with DIWS Substitution": ("green", "s"),
+    # "Client 2 Disconnect with DIWS Rerun": ("purple", "s"),
     # "Client 2 Disconnect with DIWS and FHE": ("purple", "s"),
     # "Client 2 Disconnect with DIWS, FHE and Binary Search": ("purple", "s"),
     # "Client 2 Disconnect with DIWS and FHE": ("green", "s"),
@@ -139,42 +143,14 @@ for label, (rounds, accuracies) in accuracy_data.items():
 
 plt.xlabel("Rounds")
 plt.ylabel("Accuracy")
-plt.ylim(0.4,0.7)
-# plt.xlim(7,53)  # Set y-axis limits to 0.5 to 0.7
+plt.ylim(0.7,0.77)
+plt.xlim(5,53)  # Set y-axis limits to 0.5 to 0.7
 plt.title("Accuracy vs. Rounds")
 plt.legend()
 plt.grid(True)
 plt.tight_layout()
-plt.savefig("new_plots/niid_client2_diws_rerun.png")
+plt.savefig("new_plots/lsavg_niid_100_55_drop.png")
 plt.close()
 
 print("Focused accuracy plot saved")
 
-"""
-# Plot and save loss vs. rounds with overlay
-plt.figure(figsize=(10, 5))
-for label, (rounds, losses) in loss_data.items():
-    plt.plot(rounds, losses, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Loss")
-plt.xlabel("Rounds")
-plt.ylabel("Loss")
-plt.title("Loss vs. Rounds")
-plt.legend()
-plt.grid(True)
-plt.savefig("loss_vs_rounds_overlay_2_expts.png")
-plt.close()
-
-# Plot and save accuracy vs. rounds with overlay
-#plt.figure(figsize=(10, 5))
-for label, (rounds, accuracies) in accuracy_data.items():
-    plt.plot(rounds, accuracies, marker=plot_styles[label][1], color=plot_styles[label][0], label=f"{label} Accuracy")
-plt.xlabel("Rounds")
-plt.ylabel("Accuracy")
-plt.tight_layout()
-plt.title("Accuracy vs. Rounds")
-plt.legend()
-plt.grid(True)
-plt.savefig("accuracy_vs_rounds_overlay_2_expts.png")
-plt.close()
-
-print("Overlay plots saved as loss_vs_rounds_overlay.png and accuracy_vs_rounds_overlay.png")
-"""
