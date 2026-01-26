@@ -86,7 +86,7 @@ class DIWS(Strategy):
                 self.label_distribution[client_proxy.cid] = client_label_distribution
 
         print(f"Number of results before substitution: {len(results)}")
-        self.substitute_dropped_clients(server_round, results, failures)
+        # self.substitute_dropped_clients(server_round, results, failures)
         print(f"Number of results after substitution: {len(results)}")
 
         return self.aggregator_strategy.aggregate_fit(server_round, results, failures)

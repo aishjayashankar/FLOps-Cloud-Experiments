@@ -36,7 +36,7 @@ fds = None  # Cache FederatedDataset
 
 
 def load_data(partition_id: int, num_partitions: int):
-    """Load partition CIFAR10 data."""
+    """Load partition CINIC10 data."""
     # Only initialize `FederatedDataset` once
     global fds
     if fds is None:
@@ -44,7 +44,7 @@ def load_data(partition_id: int, num_partitions: int):
             num_partitions=num_partitions, partition_by="label", alpha=0.5, seed=42
         )
         fds = FederatedDataset(
-            dataset="uoft-cs/cifar10",
+            dataset="flwrlabs/cinic10",
             partitioners={"train": partitioner},
         )
     partition = fds.load_partition(partition_id)
@@ -56,25 +56,27 @@ def load_data(partition_id: int, num_partitions: int):
 
     def apply_transforms(batch):
         """Apply transforms to the partition from FederatedDataset."""
-        batch["img"] = [pytorch_transforms(img) for img in batch["img"]]
+        batch["image"] = [pytorch_transforms(img.convert("RGB")) for img in batch["image"]]
         return batch
 
     partition_train_test = partition_train_test.with_transform(apply_transforms)
+    # print("Trainloader size: ", len(partition_train_test["train"]), " for partition: ", partition_id)
+    
     trainloader = DataLoader(partition_train_test["train"], batch_size=32, shuffle=True)
     testloader = DataLoader(partition_train_test["test"], batch_size=32)
     return trainloader, testloader
 
 
-def train(net, trainloader, epochs, device):
+def train(net, trainloader, epochs, lr, device):
     """Train the model on the training set."""
     net.to(device)  # move model to GPU if available
     criterion = torch.nn.CrossEntropyLoss().to(device)
-    optimizer = torch.optim.Adam(net.parameters(), lr=0.01)
+    optimizer = torch.optim.Adam(net.parameters(), lr=lr)
     net.train()
     running_loss = 0.0
     for _ in range(epochs):
         for batch in trainloader:
-            images = batch["img"]
+            images = batch["image"]
             labels = batch["label"]
             optimizer.zero_grad()
             loss = criterion(net(images.to(device)), labels.to(device))
@@ -89,11 +91,12 @@ def train(net, trainloader, epochs, device):
 def test(net, testloader, device):
     """Validate the model on the test set."""
     net.to(device)
+    net.eval()
     criterion = torch.nn.CrossEntropyLoss()
     correct, loss = 0, 0.0
     with torch.no_grad():
         for batch in testloader:
-            images = batch["img"].to(device)
+            images = batch["image"].to(device)
             labels = batch["label"].to(device)
             outputs = net(images)
             loss += criterion(outputs, labels).item()

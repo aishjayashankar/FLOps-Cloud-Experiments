@@ -2,14 +2,13 @@
 
 import time
 import torch
-import torchvision.models
 import pickle
 import flops_infra_drift.consts as consts
 
 from collections import OrderedDict
 from collections import Counter
 from flops_infra_drift.subset_client_trainer import get_subset_client_trainer
-from flops_infra_drift.task import load_data, test, train
+from flops_infra_drift.task import load_data, test, train, Net
 from flwr.client import ClientApp, NumPyClient
 from flwr.common import Context
 
@@ -23,11 +22,12 @@ def ShouldNodeDisconnect(partition_id, current_round):
 
 # Define Flower Client and client_fn
 class FlowerClient(NumPyClient):
-    def __init__(self, net, trainloader, valloader, local_epochs, partition_id):
+    def __init__(self, net, trainloader, valloader, local_epochs, lr, partition_id):
         self.model = net
         self.trainloader = trainloader
         self.valloader = valloader
         self.local_epochs = local_epochs
+        self.lr = lr
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
         self.partition_id = partition_id
@@ -75,6 +75,7 @@ class FlowerClient(NumPyClient):
             self.model,
             self.trainloader,
             self.local_epochs,
+            self.lr,
             self.device,
         )
 
@@ -105,28 +106,29 @@ class FlowerClient(NumPyClient):
 
     def get_label_distribution(self) -> dict:
         """Calculate and return label distribution in the training data."""
-        print("Calculating label distribution for partition:", self.partition_id)
+        # print("Calculating label distribution for partition:", self.partition_id)
 
         label_counter = Counter()
         for batch in self.trainloader:
             labels = batch["label"]
             label_counter.update([int(label) for label in labels])
 
-        print(f"Label distribution for partition {self.partition_id}: {label_counter}")
+        # print(f"Label distribution for partition {self.partition_id}: {label_counter}")
         return dict(label_counter)
 
 
 def client_fn(context: Context):
     # Load model and data
-    net = torchvision.models.resnet18(num_classes=10)
+    net = Net()
     partition_id = context.node_config["partition-id"]
     num_partitions = context.node_config["num-partitions"]
     trainloader, valloader = load_data(partition_id, num_partitions)
     local_epochs = context.run_config["local-epochs"]
+    lr = context.run_config["learning-rate"]
 
     # Return Client instance
     return FlowerClient(
-        net, trainloader, valloader, local_epochs, partition_id
+        net, trainloader, valloader, local_epochs, lr, partition_id
     ).to_client()
 
 

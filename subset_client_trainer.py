@@ -12,7 +12,7 @@ class DictStyleDataset(Dataset):
 
     def __getitem__(self, idx):
         return {
-            "img": self.images[idx],
+            "image": self.images[idx],
             "label": self.labels[idx]
         }
 
@@ -72,7 +72,7 @@ def load_subset_data(
 
     # Collect required number of records
     for batch in trainloader:
-        images = batch["img"]
+        images = batch["image"]
         labels = batch["label"]
 
         for img, label in zip(images, labels):
