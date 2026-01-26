@@ -20,9 +20,11 @@ class DictStyleDataset(Dataset):
         return len(self.labels)
 
 class SubsetClientTrainer:
-    def __init__(self, net, trainloader):
+    def __init__(self, net, trainloader, lr, local_epochs):
         self.model = net
         self.trainloader = trainloader
+        self.lr = lr
+        self.local_epochs = local_epochs
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         self.model.to(self.device)
 
@@ -47,7 +49,8 @@ class SubsetClientTrainer:
         train_loss = train(
             self.model,
             self.trainloader,
-            1,
+            self.local_epochs,
+            self.lr,
             self.device,
         )
 
@@ -97,10 +100,12 @@ def load_subset_data(
 def get_subset_client_trainer(
         net,
         subset_distribution: dict,
-        trainloader: DataLoader) -> SubsetClientTrainer:
+        trainloader: DataLoader,
+        lr: float,
+        local_epochs: int) -> SubsetClientTrainer:
     """
     Create a SubsetClientTrainer instance with the provided subset distribution and trainloader.
     """
     print(f"Creating SubsetClientTrainer with subset distribution: {subset_distribution}")
     subset_trainloader = load_subset_data(subset_distribution, trainloader)
-    return SubsetClientTrainer(net, subset_trainloader)
+    return SubsetClientTrainer(net, subset_trainloader, lr, local_epochs)

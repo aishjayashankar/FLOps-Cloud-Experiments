@@ -86,7 +86,7 @@ class DIWS(Strategy):
                 self.label_distribution[client_proxy.cid] = client_label_distribution
 
         print(f"Number of results before substitution: {len(results)}")
-        # self.substitute_dropped_clients(server_round, results, failures)
+        self.substitute_dropped_clients(server_round, results, failures)
         print(f"Number of results after substitution: {len(results)}")
 
         return self.aggregator_strategy.aggregate_fit(server_round, results, failures)
@@ -110,20 +110,43 @@ class DIWS(Strategy):
             print(f"No dropped clients to substitute in round {server_round}.")
             return
         
-        client_subset_distributions = self.get_subset_distribution_for_active_clients([x[0].cid for x in results])
+        active_clients_ids = [x[0].cid for x in results]
+        dropped_clients_ids = set(self.label_distribution.keys()) - set(active_clients_ids)
+        print(f"Dropped clients IDs: {dropped_clients_ids}")
 
-        with ThreadPoolExecutor() as executor:
-            futures = []
+        # Get active clients distribution
+        _, active_clients_distribution = self.consolidate_label_distributions(active_clients_ids)
+
+        for dropped_cid in dropped_clients_ids:
+            print(f"Substituting for dropped client: {dropped_cid}")
+            dropped_client_distribution = self.label_distribution.get(dropped_cid, {})
+            
+            client_subset_distributions = self.get_subset_distribution_for_active_clients(
+                dropped_client_distribution, active_clients_distribution, active_clients_ids)
+
+            outputs = []
             for client_proxy, _ in results:
+                if client_proxy is None:
+                    continue
+                    
+                # Check if this client needs to train (has non-empty distribution)
+                if not client_subset_distributions.get(client_proxy.cid):
+                    continue
+
                 subset_distribution_bytes = pickle.dumps(client_subset_distributions[client_proxy.cid])
                 config = {"subset_distribution": subset_distribution_bytes,
-                          "custom_rpc": "handle_missing_clients"}
+                        "custom_rpc": "handle_missing_clients"}
                 fitIns = FitIns(parameters=self.global_parameters, config=config)
-                futures.append(executor.submit(client_proxy.fit, fitIns, consts.SUBSTITUTION_TIMEOUT, server_round))
-            outputs = [f.result() for f in futures]
-
-        substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
-        results.append((None, substituted_parameters_fitRes))
+                
+                # Sequential execution
+                fitRes = client_proxy.fit(fitIns, consts.SUBSTITUTION_TIMEOUT, server_round)
+                outputs.append(fitRes)
+            
+            if outputs:
+                substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
+                results.append((None, substituted_parameters_fitRes))
+            else:
+                print(f"No active clients could substitute for {dropped_cid}")
 
 
     def consolidate_label_distributions(self, active_clients_ids):
@@ -176,6 +199,9 @@ class DIWS(Strategy):
         for label, count in active_clients_distribution.items():
             if label == anchor_label:
                 continue
+            if label not in target_percentages:
+                representative_subset_distribution[label] = 0
+                continue
             target_count = floor(target_percentages[label] * anchor_label_total)
             representative_subset_distribution[label] = min(target_count, count)        
 
@@ -185,11 +211,11 @@ class DIWS(Strategy):
     
     def get_subset_distribution_for_active_clients(
             self,
-            active_clients_ids) -> dict:
+            dropped_clients_distribution: dict,
+            active_clients_distribution: dict,
+            active_clients_ids: list[str]) -> dict:
         """Get representative subset distribution for active clients."""
         
-        dropped_clients_distribution, active_clients_distribution = self.consolidate_label_distributions(active_clients_ids)
-
         representative_subset_distribution = self.get_consolidated_representative_distribution(
             dropped_clients_distribution, active_clients_distribution)        
 

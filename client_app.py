@@ -55,7 +55,9 @@ class FlowerClient(NumPyClient):
             subsetClientTrainer = get_subset_client_trainer(
                 self.model,
                 pickle.loads(config["subset_distribution"]),
-                self.trainloader)
+                self.trainloader,
+                self.lr,
+                self.local_epochs)
             return subsetClientTrainer.fit(parameters)            
         
         start_time = time.time()
