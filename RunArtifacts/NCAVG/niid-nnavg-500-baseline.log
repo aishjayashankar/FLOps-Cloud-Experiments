@@ -1,0 +1,429 @@
+INFO:flwr:Starting Flower ServerApp, config: num_rounds=50, no round_timeout
+INFO:flwr:
+INFO:flwr:[INIT]
+INFO:flwr:Requesting initial parameters from one random client
+DEBUG:flwr:Registered 500 nodes
+DEBUG:flwr:Supported backends: ['ray']
+DEBUG:flwr:Flower SuperNode will load and validate ClientApp `flops_infra_drift.client_app:app`
+DEBUG:flwr:Loading ClientApp `flops_infra_drift.client_app:app`
+INFO:datasets:PyTorch version 2.8.0 available.
+DEBUG:flwr:Initialising: RayBackend
+DEBUG:flwr:Backend config: {'client_resources': {'num_cpus': 2, 'num_gpus': 0.25}, 'init_args': {'logging_level': 30, 'log_to_driver': True}, 'actor': {'tensorflow': 0}}
+DEBUG:flwr:Constructed ActorPool with: 4 actors
+DEBUG:flwr:Using InMemoryState
+INFO:flwr:Received initial parameters from one random client
+INFO:flwr:Starting evaluation of initial global parameters
+INFO:flwr:Evaluation returned no results (`None`)
+INFO:flwr:
+INFO:flwr:[ROUND 1]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+WARNING:flwr:No fit_metrics_aggregation_fn provided
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 2]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 3]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 4]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 5]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 6]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 7]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 8]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 9]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 10]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 11]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 12]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 13]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 14]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 15]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 16]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 17]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 18]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 19]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 20]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 21]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 22]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 23]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 24]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 25]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 26]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 27]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 28]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 29]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 30]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 31]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 32]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 33]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 34]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 35]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 36]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 37]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 38]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 39]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 40]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 41]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 42]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 43]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 44]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 45]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 46]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 47]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 48]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 49]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[ROUND 50]
+INFO:flwr:configure_fit: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_fit: received 500 results and 0 failures
+INFO:flwr:configure_evaluate: strategy sampled 500 clients (out of 500)
+INFO:flwr:aggregate_evaluate: received 500 results and 0 failures
+INFO:flwr:
+INFO:flwr:[SUMMARY]
+INFO:flwr:Run finished 50 round(s) in 729.63s
+INFO:flwr:	History (loss, distributed):
+INFO:flwr:		round 1: 2.303278572271215
+INFO:flwr:		round 2: 2.2926694768911626
+INFO:flwr:		round 3: 2.262185663856056
+INFO:flwr:		round 4: 2.211820579941001
+INFO:flwr:		round 5: 2.184474791759179
+INFO:flwr:		round 6: 2.132428618799548
+INFO:flwr:		round 7: 2.116850961042849
+INFO:flwr:		round 8: 2.077462722822711
+INFO:flwr:		round 9: 2.058720397182088
+INFO:flwr:		round 10: 2.0323249911101913
+INFO:flwr:		round 11: 2.01486434078413
+INFO:flwr:		round 12: 1.9875865525443437
+INFO:flwr:		round 13: 1.9792374774114931
+INFO:flwr:		round 14: 1.9515446897684556
+INFO:flwr:		round 15: 1.939939247525765
+INFO:flwr:		round 16: 1.9168833479861174
+INFO:flwr:		round 17: 1.9098799479447417
+INFO:flwr:		round 18: 1.8847057343359574
+INFO:flwr:		round 19: 1.8786619456405613
+INFO:flwr:		round 20: 1.8610174490852591
+INFO:flwr:		round 21: 1.8529071840955529
+INFO:flwr:		round 22: 1.8384260639785106
+INFO:flwr:		round 23: 1.830554171592693
+INFO:flwr:		round 24: 1.818170542293187
+INFO:flwr:		round 25: 1.8109265157164651
+INFO:flwr:		round 26: 1.8012457163469076
+INFO:flwr:		round 27: 1.7921659279353763
+INFO:flwr:		round 28: 1.7815437386415742
+INFO:flwr:		round 29: 1.7728332201125272
+INFO:flwr:		round 30: 1.769474118784266
+INFO:flwr:		round 31: 1.7580749827996407
+INFO:flwr:		round 32: 1.7497085147051805
+INFO:flwr:		round 33: 1.7404965311961242
+INFO:flwr:		round 34: 1.735737292888657
+INFO:flwr:		round 35: 1.7288158979337778
+INFO:flwr:		round 36: 1.7181364693067718
+INFO:flwr:		round 37: 1.7122506353523956
+INFO:flwr:		round 38: 1.704357348980332
+INFO:flwr:		round 39: 1.6985071400158167
+INFO:flwr:		round 40: 1.686797361169723
+INFO:flwr:		round 41: 1.6883501026217367
+INFO:flwr:		round 42: 1.6752380941904408
+INFO:flwr:		round 43: 1.6714365907175672
+INFO:flwr:		round 44: 1.6623652237804585
+INFO:flwr:		round 45: 1.6587374351037256
+INFO:flwr:		round 46: 1.651550978270142
+INFO:flwr:		round 47: 1.6499759752901952
+INFO:flwr:		round 48: 1.6416283530220228
+INFO:flwr:		round 49: 1.6351516442641993
+INFO:flwr:		round 50: 1.634158141523664
+INFO:flwr:	History (metrics, distributed, evaluate):
+INFO:flwr:	{'accuracy': [(1, 0.0979007259172062),
+INFO:flwr:	              (2, 0.15371787325877967),
+INFO:flwr:	              (3, 0.1613694329998038),
+INFO:flwr:	              (4, 0.20355110849519326),
+INFO:flwr:	              (5, 0.2342554443790465),
+INFO:flwr:	              (6, 0.24259368255836766),
+INFO:flwr:	              (7, 0.2659407494604669),
+INFO:flwr:	              (8, 0.26427310182460273),
+INFO:flwr:	              (9, 0.2799686089856778),
+INFO:flwr:	              (10, 0.2799686089856778),
+INFO:flwr:	              (11, 0.2886992348440259),
+INFO:flwr:	              (12, 0.2917402393564842),
+INFO:flwr:	              (13, 0.29978418677653523),
+INFO:flwr:	              (14, 0.3045909358446145),
+INFO:flwr:	              (15, 0.30655287423974886),
+INFO:flwr:	              (16, 0.3122424955856386),
+INFO:flwr:	              (17, 0.3195016676476359),
+INFO:flwr:	              (18, 0.3232293505983912),
+INFO:flwr:	              (19, 0.32882087502452423),
+INFO:flwr:	              (20, 0.3304885226603885),
+INFO:flwr:	              (21, 0.3360800470865215),
+INFO:flwr:	              (22, 0.3375515008828723),
+INFO:flwr:	              (23, 0.3402001177163037),
+INFO:flwr:	              (24, 0.3445163821855994),
+INFO:flwr:	              (25, 0.3466745144202472),
+INFO:flwr:	              (26, 0.3510888758092996),
+INFO:flwr:	              (27, 0.3514812634883265),
+INFO:flwr:	              (28, 0.3583480478712968),
+INFO:flwr:	              (29, 0.3571708848342162),
+INFO:flwr:	              (30, 0.36678438297037474),
+INFO:flwr:	              (31, 0.36295860309986266),
+INFO:flwr:	              (32, 0.3727682950755346),
+INFO:flwr:	              (33, 0.37021777516185994),
+INFO:flwr:	              (34, 0.3770845595448303),
+INFO:flwr:	              (35, 0.3750245242299392),
+INFO:flwr:	              (36, 0.38591328232293504),
+INFO:flwr:	              (37, 0.38179321169315283),
+INFO:flwr:	              (38, 0.39150480674906807),
+INFO:flwr:	              (39, 0.3867961546007455),
+INFO:flwr:	              (40, 0.3966058465764175),
+INFO:flwr:	              (41, 0.39287816362566214),
+INFO:flwr:	              (42, 0.4002354326074161),
+INFO:flwr:	              (43, 0.3969982342554444),
+INFO:flwr:	              (44, 0.4045516970767118),
+INFO:flwr:	              (45, 0.40131449872474007),
+INFO:flwr:	              (46, 0.4080831861879537),
+INFO:flwr:	              (47, 0.40582695703354915),
+INFO:flwr:	              (48, 0.4120070629782225),
+INFO:flwr:	              (49, 0.4120070629782225),
+INFO:flwr:	              (50, 0.4176966843241122)]}
+INFO:flwr:
+DEBUG:flwr:ServerApp finished running.
+DEBUG:flwr:ServerApp finished running.
+DEBUG:flwr:Triggered stop event for Simulation Engine.
+DEBUG:flwr:Terminated 4 actors
+DEBUG:flwr:Terminated RayBackend
+DEBUG:flwr:Stopping Simulation Engine now.

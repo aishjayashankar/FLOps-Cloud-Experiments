@@ -1,0 +1,860 @@
+Loading project configuration... 
+Success
+🎊 Successfully built defadmin.flops-infra-drift.1-0-0.a3d6f37b.fab
+🎊 Successfully started run 8052828355815333026
+[92mINFO [0m:      Starting Flower ServerApp
+[32m[1m🎊 Successfully installed flops-infra-drift to /home/defadmin/.flwr/apps/defadmin.flops-infra-drift.1.0.0.a3d6f37b.[0m
+[92mINFO [0m:      Starting Flower ServerApp, config: num_rounds=50, no round_timeout
+[92mINFO [0m:      
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+[92mINFO [0m:      Received initial parameters from one random client
+[92mINFO [0m:      Starting evaluation of initial global parameters
+[92mINFO [0m:      Evaluation returned no results (`None`)
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[93mWARNING [0m:   No fit_metrics_aggregation_fn provided
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 2.299907052778575
+Aggregated metrics: {'accuracy': 0.22545490901819637}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 2.0072436619290337
+Aggregated metrics: {'accuracy': 0.28224355128974205}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.8204758667711958
+Aggregated metrics: {'accuracy': 0.3193361327734453}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.6899561344092195
+Aggregated metrics: {'accuracy': 0.3787242551489702}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5809261611616596
+Aggregated metrics: {'accuracy': 0.41561687662467506}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.480921632152343
+Aggregated metrics: {'accuracy': 0.46450709858028394}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4725027456943534
+Aggregated metrics: {'accuracy': 0.47850429914017195}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.41588040627363
+Aggregated metrics: {'accuracy': 0.5134973005398921}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.339989402011232
+Aggregated metrics: {'accuracy': 0.5371925614877024}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3242482657661367
+Aggregated metrics: {'accuracy': 0.5477904419116176}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 11]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2837199722197925
+Aggregated metrics: {'accuracy': 0.5646870625874825}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 12]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.266133277428336
+Aggregated metrics: {'accuracy': 0.5781843631273745}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 13]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2405160004509441
+Aggregated metrics: {'accuracy': 0.5911817636472706}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 14]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2453087560617795
+Aggregated metrics: {'accuracy': 0.5955808838232354}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 15]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2215560362444096
+Aggregated metrics: {'accuracy': 0.6033793241351729}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 16]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2340747848103524
+Aggregated metrics: {'accuracy': 0.6145770845830834}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 17]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2543280554216536
+Aggregated metrics: {'accuracy': 0.6154769046190762}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 18]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.232457299331058
+Aggregated metrics: {'accuracy': 0.6220755848830234}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 19]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2325919258761933
+Aggregated metrics: {'accuracy': 0.6266746650669867}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 20]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2659117649275102
+Aggregated metrics: {'accuracy': 0.6239752049590082}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 21]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.2733651248699007
+Aggregated metrics: {'accuracy': 0.6299740051989602}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 22]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3304862043871368
+Aggregated metrics: {'accuracy': 0.6330733853229354}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 23]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.330613448609035
+Aggregated metrics: {'accuracy': 0.6372725454909018}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 24]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3513459624303035
+Aggregated metrics: {'accuracy': 0.6306738652269546}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 25]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3798426297697444
+Aggregated metrics: {'accuracy': 0.6313737252549491}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 26]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4003486571112334
+Aggregated metrics: {'accuracy': 0.6308738252349531}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 27]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4104271150435848
+Aggregated metrics: {'accuracy': 0.638372325534893}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 28]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4857599704753865
+Aggregated metrics: {'accuracy': 0.6395720855828835}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 29]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4428022808830734
+Aggregated metrics: {'accuracy': 0.6419716056788642}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 30]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Results' length before substitution: 4
+Extracting dropped client parameters from results...
+Extracted 4 sets of substituted parameters.
+Starting aggregation of parameters...
+Aggregating parameters for client 0 with 1018 samples.
+Aggregating parameters for client 1 with 444 samples.
+Aggregating parameters for client 2 with 2153 samples.
+Aggregating parameters for client 3 with 556 samples.
+All client parameters collected. Performing in-place aggregation...
+Aggregation complete.
+Appended substituted parameters to results.
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5110057207795091
+Aggregated metrics: {'accuracy': 0.6391721655668866}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 31]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3776009315756363
+Aggregated metrics: {'accuracy': 0.6480703859228154}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 32]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.363402003514601
+Aggregated metrics: {'accuracy': 0.6519696060787843}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 33]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3899741690180862
+Aggregated metrics: {'accuracy': 0.6519696060787843}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 34]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3794902530096589
+Aggregated metrics: {'accuracy': 0.6558688262347531}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 35]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.3750154776799588
+Aggregated metrics: {'accuracy': 0.6519696060787843}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 36]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4057574738396093
+Aggregated metrics: {'accuracy': 0.6500699860027994}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 37]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4226378211053012
+Aggregated metrics: {'accuracy': 0.6541691661667667}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 38]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4467888510815439
+Aggregated metrics: {'accuracy': 0.6567686462707458}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 39]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.4763292632118852
+Aggregated metrics: {'accuracy': 0.6579684063187362}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 40]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.473287110830813
+Aggregated metrics: {'accuracy': 0.6607678464307138}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 41]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5289693555812598
+Aggregated metrics: {'accuracy': 0.6585682863427315}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 42]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.506549643180778
+Aggregated metrics: {'accuracy': 0.6577684463107378}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 43]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5247603264655112
+Aggregated metrics: {'accuracy': 0.6624675064987002}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 44]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5239254694282098
+Aggregated metrics: {'accuracy': 0.6625674865026995}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 45]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.5716914834999836
+Aggregated metrics: {'accuracy': 0.6612677464507098}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 46]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.556340083652519
+Aggregated metrics: {'accuracy': 0.6621675664867026}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 47]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.6045828153945172
+Aggregated metrics: {'accuracy': 0.6635672865426915}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 48]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.6236715150978969
+Aggregated metrics: {'accuracy': 0.6626674665066986}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 49]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.560425378049766
+Aggregated metrics: {'accuracy': 0.6691661667666466}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 50]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Results' length before substitution: 5
+Results' length after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Aggregated loss: 1.6168202468539328
+Aggregated metrics: {'accuracy': 0.6644671065786842}
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 50 round(s) in 8021.52s
+[92mINFO [0m:      	History (loss, distributed):
+[92mINFO [0m:      		round 1: 2.299907052778575
+[92mINFO [0m:      		round 2: 2.0072436619290337
+[92mINFO [0m:      		round 3: 1.8204758667711958
+[92mINFO [0m:      		round 4: 1.6899561344092195
+[92mINFO [0m:      		round 5: 1.5809261611616596
+[92mINFO [0m:      		round 6: 1.480921632152343
+[92mINFO [0m:      		round 7: 1.4725027456943534
+[92mINFO [0m:      		round 8: 1.41588040627363
+[92mINFO [0m:      		round 9: 1.339989402011232
+[92mINFO [0m:      		round 10: 1.3242482657661367
+[92mINFO [0m:      		round 11: 1.2837199722197925
+[92mINFO [0m:      		round 12: 1.266133277428336
+[92mINFO [0m:      		round 13: 1.2405160004509441
+[92mINFO [0m:      		round 14: 1.2453087560617795
+[92mINFO [0m:      		round 15: 1.2215560362444096
+[92mINFO [0m:      		round 16: 1.2340747848103524
+[92mINFO [0m:      		round 17: 1.2543280554216536
+[92mINFO [0m:      		round 18: 1.232457299331058
+[92mINFO [0m:      		round 19: 1.2325919258761933
+[92mINFO [0m:      		round 20: 1.2659117649275102
+[92mINFO [0m:      		round 21: 1.2733651248699007
+[92mINFO [0m:      		round 22: 1.3304862043871368
+[92mINFO [0m:      		round 23: 1.330613448609035
+[92mINFO [0m:      		round 24: 1.3513459624303035
+[92mINFO [0m:      		round 25: 1.3798426297697444
+[92mINFO [0m:      		round 26: 1.4003486571112334
+[92mINFO [0m:      		round 27: 1.4104271150435848
+[92mINFO [0m:      		round 28: 1.4857599704753865
+[92mINFO [0m:      		round 29: 1.4428022808830734
+[92mINFO [0m:      		round 30: 1.5110057207795091
+[92mINFO [0m:      		round 31: 1.3776009315756363
+[92mINFO [0m:      		round 32: 1.363402003514601
+[92mINFO [0m:      		round 33: 1.3899741690180862
+[92mINFO [0m:      		round 34: 1.3794902530096589
+[92mINFO [0m:      		round 35: 1.3750154776799588
+[92mINFO [0m:      		round 36: 1.4057574738396093
+[92mINFO [0m:      		round 37: 1.4226378211053012
+[92mINFO [0m:      		round 38: 1.4467888510815439
+[92mINFO [0m:      		round 39: 1.4763292632118852
+[92mINFO [0m:      		round 40: 1.473287110830813
+[92mINFO [0m:      		round 41: 1.5289693555812598
+[92mINFO [0m:      		round 42: 1.506549643180778
+[92mINFO [0m:      		round 43: 1.5247603264655112
+[92mINFO [0m:      		round 44: 1.5239254694282098
+[92mINFO [0m:      		round 45: 1.5716914834999836
+[92mINFO [0m:      		round 46: 1.556340083652519
+[92mINFO [0m:      		round 47: 1.6045828153945172
+[92mINFO [0m:      		round 48: 1.6236715150978969
+[92mINFO [0m:      		round 49: 1.560425378049766
+[92mINFO [0m:      		round 50: 1.6168202468539328
+[92mINFO [0m:      	History (metrics, distributed, evaluate):
+[92mINFO [0m:      	{'accuracy': [(1, 0.22545490901819637),
+[92mINFO [0m:      	              (2, 0.28224355128974205),
+[92mINFO [0m:      	              (3, 0.3193361327734453),
+[92mINFO [0m:      	              (4, 0.3787242551489702),
+[92mINFO [0m:      	              (5, 0.41561687662467506),
+[92mINFO [0m:      	              (6, 0.46450709858028394),
+[92mINFO [0m:      	              (7, 0.47850429914017195),
+[92mINFO [0m:      	              (8, 0.5134973005398921),
+[92mINFO [0m:      	              (9, 0.5371925614877024),
+[92mINFO [0m:      	              (10, 0.5477904419116176),
+[92mINFO [0m:      	              (11, 0.5646870625874825),
+[92mINFO [0m:      	              (12, 0.5781843631273745),
+[92mINFO [0m:      	              (13, 0.5911817636472706),
+[92mINFO [0m:      	              (14, 0.5955808838232354),
+[92mINFO [0m:      	              (15, 0.6033793241351729),
+[92mINFO [0m:      	              (16, 0.6145770845830834),
+[92mINFO [0m:      	              (17, 0.6154769046190762),
+[92mINFO [0m:      	              (18, 0.6220755848830234),
+[92mINFO [0m:      	              (19, 0.6266746650669867),
+[92mINFO [0m:      	              (20, 0.6239752049590082),
+[92mINFO [0m:      	              (21, 0.6299740051989602),
+[92mINFO [0m:      	              (22, 0.6330733853229354),
+[92mINFO [0m:      	              (23, 0.6372725454909018),
+[92mINFO [0m:      	              (24, 0.6306738652269546),
+[92mINFO [0m:      	              (25, 0.6313737252549491),
+[92mINFO [0m:      	              (26, 0.6308738252349531),
+[92mINFO [0m:      	              (27, 0.638372325534893),
+[92mINFO [0m:      	              (28, 0.6395720855828835),
+[92mINFO [0m:      	              (29, 0.6419716056788642),
+[92mINFO [0m:      	              (30, 0.6391721655668866),
+[92mINFO [0m:      	              (31, 0.6480703859228154),
+[92mINFO [0m:      	              (32, 0.6519696060787843),
+[92mINFO [0m:      	              (33, 0.6519696060787843),
+[92mINFO [0m:      	              (34, 0.6558688262347531),
+[92mINFO [0m:      	              (35, 0.6519696060787843),
+[92mINFO [0m:      	              (36, 0.6500699860027994),
+[92mINFO [0m:      	              (37, 0.6541691661667667),
+[92mINFO [0m:      	              (38, 0.6567686462707458),
+[92mINFO [0m:      	              (39, 0.6579684063187362),
+[92mINFO [0m:      	              (40, 0.6607678464307138),
+[92mINFO [0m:      	              (41, 0.6585682863427315),
+[92mINFO [0m:      	              (42, 0.6577684463107378),
+[92mINFO [0m:      	              (43, 0.6624675064987002),
+[92mINFO [0m:      	              (44, 0.6625674865026995),
+[92mINFO [0m:      	              (45, 0.6612677464507098),
+[92mINFO [0m:      	              (46, 0.6621675664867026),
+[92mINFO [0m:      	              (47, 0.6635672865426915),
+[92mINFO [0m:      	              (48, 0.6626674665066986),
+[92mINFO [0m:      	              (49, 0.6691661667666466),
+[92mINFO [0m:      	              (50, 0.6644671065786842)]}
+[92mINFO [0m:      

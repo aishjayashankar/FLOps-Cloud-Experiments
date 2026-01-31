@@ -1,0 +1,158 @@
+INFO :      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 47.
+Number of results after substitution: 5
+INFO :      configure_evaluate: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74693) Client: 2 took 0.4479 seconds to evaluate.
+INFO :      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4504012922446277, {'accuracy': 0.6559688062387522})
+INFO :      
+INFO :      [ROUND 48]
+INFO :      configure_fit: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74694) Client: 2 took 5.1200 seconds to fit.
+(ClientAppActor pid=74695) Client: 3 took 1.2744 seconds to evaluate. [repeated 4x across cluster]
+(ClientAppActor pid=74693) Client: 1 took 8.6930 seconds to fit.
+(ClientAppActor pid=74696) Client: 3 took 14.1082 seconds to fit. [repeated 3x across cluster]
+INFO :      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 48.
+Number of results after substitution: 5
+INFO :      configure_evaluate: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74694) Client: 2 took 0.4413 seconds to evaluate.
+INFO :      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4374039020733849, {'accuracy': 0.6624675064987002})
+INFO :      
+INFO :      [ROUND 49]
+INFO :      configure_fit: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74696) Client: 2 took 5.5851 seconds to fit.
+(ClientAppActor pid=74693) Client: 3 took 1.3301 seconds to evaluate. [repeated 4x across cluster]
+(ClientAppActor pid=74694) Client: 1 took 8.4060 seconds to fit.
+(ClientAppActor pid=74695) Client: 3 took 13.9185 seconds to fit. [repeated 3x across cluster]
+INFO :      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 49.
+Number of results after substitution: 5
+INFO :      configure_evaluate: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74693) Client: 2 took 0.4245 seconds to evaluate.
+INFO :      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4758906486762413, {'accuracy': 0.6595680863827235})
+INFO :      
+INFO :      [ROUND 50]
+INFO :      configure_fit: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74695) Client: 2 took 5.2490 seconds to fit.
+(ClientAppActor pid=74694) Client: 3 took 1.2671 seconds to evaluate. [repeated 4x across cluster]
+(ClientAppActor pid=74693) Client: 1 took 8.6281 seconds to fit.
+(ClientAppActor pid=74696) Client: 3 took 13.8566 seconds to fit. [repeated 3x across cluster]
+INFO :      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 50.
+Number of results after substitution: 5
+INFO :      configure_evaluate: strategy sampled 5 clients (out of 5)
+(ClientAppActor pid=74694) Client: 2 took 0.4093 seconds to evaluate.
+INFO :      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4700463416360492, {'accuracy': 0.6580683863227355})
+INFO :      
+INFO :      [SUMMARY]
+INFO :      Run finished 50 round(s) in 762.70s
+INFO :          History (loss, distributed):
+INFO :                  round 1: 2.326412515647855
+INFO :                  round 2: 1.9618300397103683
+INFO :                  round 3: 1.8257159711615247
+INFO :                  round 4: 1.7121918596291434
+INFO :                  round 5: 1.6353391675633802
+INFO :                  round 6: 1.552345162051465
+INFO :                  round 7: 1.5714005113366232
+INFO :                  round 8: 1.5217224409324224
+INFO :                  round 9: 1.4983541173552588
+INFO :                  round 10: 1.4515111067615762
+INFO :                  round 11: 1.3966749939502976
+INFO :                  round 12: 1.391060624943459
+INFO :                  round 13: 1.348070057326921
+INFO :                  round 14: 1.3502909114185042
+INFO :                  round 15: 1.32725865148801
+INFO :                  round 16: 1.3134826877982027
+INFO :                  round 17: 1.274106458466989
+INFO :                  round 18: 1.2760664359082707
+INFO :                  round 19: 1.2686860396585025
+INFO :                  round 20: 1.2698360239725603
+INFO :                  round 21: 1.3231523777817085
+INFO :                  round 22: 1.3141711290719427
+INFO :                  round 23: 1.2906508705804576
+INFO :                  round 24: 1.2929188742196516
+INFO :                  round 25: 1.3677594128524053
+INFO :                  round 26: 1.3497768575813158
+INFO :                  round 27: 1.3298420571527096
+INFO :                  round 28: 1.3770479622653145
+INFO :                  round 29: 1.3979359099536361
+INFO :                  round 30: 1.3968964419705094
+INFO :                  round 31: 1.2451489429073566
+INFO :                  round 32: 1.1906656175157102
+INFO :                  round 33: 1.178204447457162
+INFO :                  round 34: 1.1749126537824348
+INFO :                  round 35: 1.2031377410623336
+INFO :                  round 36: 1.2196901628420411
+INFO :                  round 37: 1.2220099264099455
+INFO :                  round 38: 1.2602481719709604
+INFO :                  round 39: 1.253653190692955
+INFO :                  round 40: 1.2942232898354062
+INFO :                  round 41: 1.302364732239239
+INFO :                  round 42: 1.3477453674083597
+INFO :                  round 43: 1.3698849311183314
+INFO :                  round 44: 1.3710351932439107
+INFO :                  round 45: 1.362922000378276
+INFO :                  round 46: 1.4278288333618425
+INFO :                  round 47: 1.4504012922446277
+INFO :                  round 48: 1.4374039020733849
+INFO :                  round 49: 1.4758906486762413
+INFO :                  round 50: 1.4700463416360492
+INFO :          History (metrics, distributed, evaluate):
+INFO :          {'accuracy': [(1, 0.21195760847830433),
+INFO :                        (2, 0.27194561087782443),
+INFO :                        (3, 0.3255348930213957),
+INFO :                        (4, 0.3745250949810038),
+INFO :                        (5, 0.40671865626874626),
+INFO :                        (6, 0.4353129374125175),
+INFO :                        (7, 0.4449110177964407),
+INFO :                        (8, 0.4652069586082783),
+INFO :                        (9, 0.47390521895620874),
+INFO :                        (10, 0.48890221955608876),
+INFO :                        (11, 0.5162967406518696),
+INFO :                        (12, 0.520995800839832),
+INFO :                        (13, 0.5365926814637073),
+INFO :                        (14, 0.5448910217956409),
+INFO :                        (15, 0.5550889822035593),
+INFO :                        (16, 0.5596880623875224),
+INFO :                        (17, 0.5672865426914617),
+INFO :                        (18, 0.5732853429314138),
+INFO :                        (19, 0.5820835832833433),
+INFO :                        (20, 0.5856828634273146),
+INFO :                        (21, 0.5882823435312937),
+INFO :                        (22, 0.5921815636872626),
+INFO :                        (23, 0.5955808838232354),
+INFO :                        (24, 0.6009798040391922),
+INFO :                        (25, 0.5941811637672465),
+INFO :                        (26, 0.6062787442511498),
+INFO :                        (27, 0.6119776044791042),
+INFO :                        (28, 0.6071785642871426),
+INFO :                        (29, 0.6117776444711058),
+INFO :                        (30, 0.6076784643071386),
+INFO :                        (31, 0.6300739852029594),
+INFO :                        (32, 0.6375724855028995),
+INFO :                        (33, 0.6405718856228754),
+INFO :                        (34, 0.6447710457908419),
+INFO :                        (35, 0.6461707658468306),
+INFO :                        (36, 0.643871225754849),
+INFO :                        (37, 0.6491701659668067),
+INFO :                        (38, 0.6535692861427714),
+INFO :                        (39, 0.6580683863227355),
+INFO :                        (40, 0.6572685462907418),
+INFO :                        (41, 0.6548690261947611),
+INFO :                        (42, 0.6560687862427514),
+INFO :                        (43, 0.6642671465706859),
+INFO :                        (44, 0.6580683863227355),
+INFO :                        (45, 0.6608678264347131),
+INFO :                        (46, 0.6574685062987402),
+INFO :                        (47, 0.6559688062387522),
+INFO :                        (48, 0.6624675064987002),
+INFO :                        (49, 0.6595680863827235),
+INFO :                        (50, 0.6580683863227355)]}

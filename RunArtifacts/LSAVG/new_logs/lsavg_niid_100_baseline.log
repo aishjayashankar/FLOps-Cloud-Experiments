@@ -1,0 +1,158 @@
+INFO :      [SUMMARY]
+INFO:flwr:[SUMMARY]
+INFO :      Run finished 50 round(s) in 1997.14s
+INFO:flwr:Run finished 50 round(s) in 1997.14s
+INFO :          History (loss, distributed):
+INFO:flwr:      History (loss, distributed):
+INFO :                  round 1: 0.6990368892837521
+INFO:flwr:              round 1: 0.6990368892837521
+INFO :                  round 2: 0.6936714098377949
+INFO:flwr:              round 2: 0.6936714098377949
+INFO :                  round 3: 0.6825323452105873
+INFO:flwr:              round 3: 0.6825323452105873
+INFO :                  round 4: 0.6628190463342686
+INFO:flwr:              round 4: 0.6628190463342686
+INFO :                  round 5: 0.6499000920021639
+INFO:flwr:              round 5: 0.6499000920021639
+INFO :                  round 6: 0.6347350759529253
+INFO:flwr:              round 6: 0.6347350759529253
+INFO :                  round 7: 0.6204895258699855
+INFO:flwr:              round 7: 0.6204895258699855
+INFO :                  round 8: 0.6125649877022596
+INFO:flwr:              round 8: 0.6125649877022596
+INFO :                  round 9: 0.5983100895166075
+INFO:flwr:              round 9: 0.5983100895166075
+INFO :                  round 10: 0.590055807590538
+INFO:flwr:              round 10: 0.590055807590538
+INFO :                  round 11: 0.5854051906628217
+INFO:flwr:              round 11: 0.5854051906628217
+INFO :                  round 12: 0.5745860877120149
+INFO:flwr:              round 12: 0.5745860877120149
+INFO :                  round 13: 0.5695061723322885
+INFO:flwr:              round 13: 0.5695061723322885
+INFO :                  round 14: 0.5576552499458582
+INFO:flwr:              round 14: 0.5576552499458582
+INFO :                  round 15: 0.5553128163931846
+INFO:flwr:              round 15: 0.5553128163931846
+INFO :                  round 16: 0.5529118900299926
+INFO:flwr:              round 16: 0.5529118900299926
+INFO :                  round 17: 0.5493683717664678
+INFO:flwr:              round 17: 0.5493683717664678
+INFO :                  round 18: 0.5432108896111646
+INFO:flwr:              round 18: 0.5432108896111646
+INFO :                  round 19: 0.5442578663000142
+INFO:flwr:              round 19: 0.5442578663000142
+INFO :                  round 20: 0.5361611452264264
+INFO:flwr:              round 20: 0.5361611452264264
+INFO :                  round 21: 0.5351267476884671
+INFO:flwr:              round 21: 0.5351267476884671
+INFO :                  round 22: 0.5305896715650232
+INFO:flwr:              round 22: 0.5305896715650232
+INFO :                  round 23: 0.5304974622347167
+INFO:flwr:              round 23: 0.5304974622347167
+INFO :                  round 24: 0.5259822992222317
+INFO:flwr:              round 24: 0.5259822992222317
+INFO :                  round 25: 0.5274415683050228
+INFO:flwr:              round 25: 0.5274415683050228
+INFO :                  round 26: 0.5215068088332023
+INFO:flwr:              round 26: 0.5215068088332023
+INFO :                  round 27: 0.5215104077756474
+INFO:flwr:              round 27: 0.5215104077756474
+INFO :                  round 28: 0.5225967514321131
+INFO:flwr:              round 28: 0.5225967514321131
+INFO :                  round 29: 0.5174648821752712
+INFO:flwr:              round 29: 0.5174648821752712
+INFO :                  round 30: 0.5146378552034317
+INFO:flwr:              round 30: 0.5146378552034317
+INFO :                  round 31: 0.5138685528078438
+INFO:flwr:              round 31: 0.5138685528078438
+INFO :                  round 32: 0.5162291386005557
+INFO:flwr:              round 32: 0.5162291386005557
+INFO :                  round 33: 0.5111844742718008
+INFO:flwr:              round 33: 0.5111844742718008
+INFO :                  round 34: 0.5101638518474282
+INFO:flwr:              round 34: 0.5101638518474282
+INFO :                  round 35: 0.5105063147766659
+INFO:flwr:              round 35: 0.5105063147766659
+INFO :                  round 36: 0.5075382273668081
+INFO:flwr:              round 36: 0.5075382273668081
+INFO :                  round 37: 0.5068158874862028
+INFO:flwr:              round 37: 0.5068158874862028
+INFO :                  round 38: 0.5088459328071712
+INFO:flwr:              round 38: 0.5088459328071712
+INFO :                  round 39: 0.5063108373353729
+INFO:flwr:              round 39: 0.5063108373353729
+INFO :                  round 40: 0.505411006123075
+INFO:flwr:              round 40: 0.505411006123075
+INFO :                  round 41: 0.5029742416032753
+INFO:flwr:              round 41: 0.5029742416032753
+INFO :                  round 42: 0.5038590327636974
+INFO:flwr:              round 42: 0.5038590327636974
+INFO :                  round 43: 0.5055195176580528
+INFO:flwr:              round 43: 0.5055195176580528
+INFO :                  round 44: 0.5008955498445954
+INFO:flwr:              round 44: 0.5008955498445954
+INFO :                  round 45: 0.5004368785106391
+INFO:flwr:              round 45: 0.5004368785106391
+INFO :                  round 46: 0.4987393289373757
+INFO:flwr:              round 46: 0.4987393289373757
+INFO :                  round 47: 0.5008965975446746
+INFO:flwr:              round 47: 0.5008965975446746
+INFO :                  round 48: 0.5000522949423429
+INFO:flwr:              round 48: 0.5000522949423429
+INFO :                  round 49: 0.5005954371165019
+INFO:flwr:              round 49: 0.5005954371165019
+INFO :                  round 50: 0.4992042434116584
+INFO:flwr:              round 50: 0.4992042434116584
+INFO :          History (metrics, distributed, evaluate):
+INFO:flwr:      History (metrics, distributed, evaluate):
+INFO:flwr:      {'accuracy': [(1, 0.49990626288885276),
+INFO:flwr:                    (2, 0.5060772893727112),
+INFO:flwr:                    (3, 0.5625601479796528),
+INFO:flwr:                    (4, 0.6066322130707028),
+INFO:flwr:                    (5, 0.6264263663746235),
+INFO:flwr:                    (6, 0.6455424879079127),
+INFO:flwr:                    (7, 0.6603529514691729),
+INFO:flwr:                    (8, 0.6689423954206296),
+INFO:flwr:                    (9, 0.6816750196847934),
+INFO:flwr:                    (10, 0.6882303683243554),
+INFO:flwr:                    (11, 0.6919361087850421),
+INFO:flwr:                    (12, 0.7013160690405069),
+INFO:flwr:                    (13, 0.7057217132644261),
+INFO:flwr:                    (14, 0.713811225956431),
+INFO:flwr:                    (15, 0.7157140893127195),
+INFO:flwr:                    (16, 0.7190136356251016),
+INFO:flwr:                    (17, 0.7208446338628438),
+INFO:flwr:                    (18, 0.7259345589981377),
+INFO:flwr:                    (19, 0.7252284060941621),
+INFO:flwr:                    (20, 0.73012773243679),
+INFO:flwr:                    (21, 0.7311588406594093),
+INFO:flwr:                    (22, 0.7334835210158603),
+INFO:flwr:                    (23, 0.7337553586381872),
+INFO :                        (24, 0.7370267838172251),
+INFO :                        (25, 0.7370174101061104),
+INFO :                        (26, 0.7403138318481208),
+INFO :                        (27, 0.73949831898114),
+INFO :                        (28, 0.740357575833323),
+INFO :                        (29, 0.7418542450413068),
+INFO :                        (30, 0.744185174538501),
+INFO :                        (31, 0.7452319056129783),
+INFO :                        (32, 0.7440289460199223),
+INFO:flwr:                    (33, 0.746809813650623),
+INFO :                        (34, 0.7470316581470048),
+INFO :                        (35, 0.7464098686430616),
+INFO :                        (36, 0.7483002337178638),
+INFO :                        (37, 0.7494250790516304),
+INFO :                        (38, 0.7489345215032933),
+INFO :                        (39, 0.7500656159778031),
+INFO :                        (40, 0.7509342465411006),
+INFO :                        (41, 0.7516747697191636),
+INFO :                        (42, 0.75134981440052),
+INFO :                        (43, 0.7509154991188711),
+INFO :                        (44, 0.753974453512642),
+INFO :                        (45, 0.7539369586681831),
+INFO :                        (46, 0.7541150591793628),
+INFO :                        (47, 0.7538619689792654),
+INFO :                        (48, 0.7540650660534176),
+INFO:flwr:                    (49, 0.7538838409718663),
+INFO:flwr:                    (50, 0.7551024234167802)]}

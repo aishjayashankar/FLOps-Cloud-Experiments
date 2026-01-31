@@ -1,0 +1,742 @@
+Loading project configuration... 
+Success
+🎊 Successfully built defadmin.flops-infra-drift.1-0-0.180a4f28.fab
+🎊 Successfully started run 1803475681418756965
+[92mINFO [0m:      Starting Flower ServerApp
+[32m[1m🎊 Successfully installed flops-infra-drift to /home/defadmin/.flwr/apps/defadmin.flops-infra-drift.1.0.0.180a4f28.[0m
+[92mINFO [0m:      Starting Flower ServerApp, config: num_rounds=50, no round_timeout
+[92mINFO [0m:      
+[92mINFO [0m:      [INIT]
+[92mINFO [0m:      Requesting initial parameters from one random client
+[92mINFO [0m:      Received initial parameters from one random client
+[92mINFO [0m:      Starting evaluation of initial global parameters
+[92mINFO [0m:      Evaluation returned no results (`None`)
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 1.
+Number of results after substitution: 5
+[93mWARNING [0m:   No fit_metrics_aggregation_fn provided
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (2.2496073010393696, {'accuracy': 0.1938612277544491})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 2.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.9774023995325205, {'accuracy': 0.27214557088582286})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 3.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.8234390205806985, {'accuracy': 0.3313337332533493})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 4.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.707075230293612, {'accuracy': 0.3754249150169966})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 5.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.6073833242862476, {'accuracy': 0.4122175564887023})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 6.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5256300290690201, {'accuracy': 0.4573085382923415})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '3073292452779100951', '15315160810977673420', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 9, 6: 105, 0: 12, 7: 11, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 16, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}}
+/home/defadmin/flops-env/lib/python3.12/site-packages/flwr/server/compat/driver_client_proxy.py:114: UserWarning: A custom TTL was set, but note that the SuperLink does not enforce the TTL yet. The SuperLink will start enforcing the TTL in a future version of Flower.
+  message = self.driver.create_message(
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4778650119006078, {'accuracy': 0.4761047790441912})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '3073292452779100951', '6464321808601147486', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '3073292452779100951': {9: 99, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 17, 0: 12, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '6831924869610440348': {9: 20, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 137, 0: 545, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4005335218107937, {'accuracy': 0.5046990601879624})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['3073292452779100951', '6464321808601147486', '6831924869610440348', '15315160810977673420']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {3: 3345, 4: 3951, 1: 3793, 6: 3369, 5: 3928, 7: 3941, 8: 3846, 0: 2187, 9: 1557, 2: 3447}
+Subset distribution for active clients: {9: 1557, 3: 433, 4: 34, 1: 117, 6: 418, 5: 1, 7: 42, 8: 67, 0: 1127, 2: 374}
+Subset distribution per client: {'3073292452779100951': {9: 99, 3: 144, 4: 9, 1: 30, 6: 105, 5: 1, 7: 11, 8: 17, 0: 12, 2: 17}, '6464321808601147486': {9: 1158, 3: 144, 4: 9, 1: 29, 6: 105, 7: 11, 8: 17, 0: 545, 2: 137}, '6831924869610440348': {9: 20, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 17, 0: 545, 2: 137}, '15315160810977673420': {9: 280, 3: 1, 4: 8, 1: 29, 6: 104, 7: 10, 8: 16, 0: 25, 2: 83}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3442202936711318, {'accuracy': 0.5322935412917417})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6464321808601147486', '15315160810977673420', '6831924869610440348', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {4: 3951, 9: 1557, 6: 3369, 2: 3447, 5: 3928, 8: 3846, 3: 3345, 1: 3793, 7: 3941, 0: 2187}
+Subset distribution for active clients: {9: 1557, 4: 34, 6: 418, 2: 374, 5: 1, 8: 67, 3: 433, 1: 117, 7: 42, 0: 1127}
+Subset distribution per client: {'6464321808601147486': {9: 1158, 4: 9, 6: 105, 2: 137, 5: 1, 8: 17, 3: 144, 1: 30, 7: 11, 0: 545}, '15315160810977673420': {9: 280, 4: 9, 6: 105, 2: 83, 8: 17, 3: 1, 1: 29, 7: 11, 0: 25}, '6831924869610440348': {9: 20, 4: 8, 6: 104, 2: 137, 8: 17, 3: 144, 1: 29, 7: 10, 0: 545}, '3073292452779100951': {9: 99, 4: 8, 6: 104, 2: 17, 8: 16, 3: 144, 1: 29, 7: 10, 0: 12}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.344701436791921, {'accuracy': 0.533493301339732})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 11]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['3073292452779100951', '15315160810977673420', '6464321808601147486', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {3: 3345, 4: 3951, 1: 3793, 6: 3369, 5: 3928, 7: 3941, 8: 3846, 0: 2187, 9: 1557, 2: 3447}
+Subset distribution for active clients: {9: 1557, 3: 433, 4: 34, 1: 117, 6: 418, 5: 1, 7: 42, 8: 67, 0: 1127, 2: 374}
+Subset distribution per client: {'3073292452779100951': {9: 99, 3: 144, 4: 9, 1: 30, 6: 105, 5: 1, 7: 11, 8: 17, 0: 12, 2: 17}, '15315160810977673420': {9: 280, 3: 1, 4: 9, 1: 29, 6: 105, 7: 11, 8: 17, 0: 25, 2: 83}, '6464321808601147486': {9: 1158, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 17, 0: 545, 2: 137}, '6831924869610440348': {9: 20, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 16, 0: 545, 2: 137}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3126074978925653, {'accuracy': 0.5445910817836432})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 12]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '15315160810977673420', '6464321808601147486', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 9, 6: 105, 0: 25, 7: 11, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 16, 4: 8, 6: 104, 0: 12, 7: 10, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2470736606465704, {'accuracy': 0.5687862427514497})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 13]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '15315160810977673420', '6464321808601147486', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 9, 6: 105, 0: 25, 7: 11, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 16, 4: 8, 6: 104, 0: 12, 7: 10, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2330609290020917, {'accuracy': 0.5867826434713057})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 14]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '6831924869610440348', '3073292452779100951', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '6831924869610440348': {9: 20, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 137, 0: 545, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 17, 0: 12, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 137, 0: 545, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2254551675390934, {'accuracy': 0.5889822035592881})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 15]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '3073292452779100951', '15315160810977673420', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 9, 6: 105, 0: 12, 7: 11, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 16, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2156760470913444, {'accuracy': 0.5974805038992201})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 16]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['3073292452779100951', '15315160810977673420', '6831924869610440348', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {3: 3345, 4: 3951, 1: 3793, 6: 3369, 5: 3928, 7: 3941, 8: 3846, 0: 2187, 9: 1557, 2: 3447}
+Subset distribution for active clients: {9: 1557, 3: 433, 4: 34, 1: 117, 6: 418, 5: 1, 7: 42, 8: 67, 0: 1127, 2: 374}
+Subset distribution per client: {'3073292452779100951': {9: 99, 3: 144, 4: 9, 1: 30, 6: 105, 5: 1, 7: 11, 8: 17, 0: 12, 2: 17}, '15315160810977673420': {9: 280, 3: 1, 4: 9, 1: 29, 6: 105, 7: 11, 8: 17, 0: 25, 2: 83}, '6831924869610440348': {9: 20, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 17, 0: 545, 2: 137}, '6464321808601147486': {9: 1158, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 16, 0: 545, 2: 137}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2065192092462507, {'accuracy': 0.6055788842231554})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 17]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '3073292452779100951', '6464321808601147486', '15315160810977673420']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 9, 6: 105, 0: 12, 7: 11, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 16, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.1934185864169857, {'accuracy': 0.6058788242351529})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 18]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '6464321808601147486', '6831924869610440348', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 137, 0: 545, 3: 144}, '6831924869610440348': {9: 20, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 17, 0: 12, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.172646866196561, {'accuracy': 0.6209758048390321})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 19]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '6464321808601147486', '6831924869610440348', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 137, 0: 545, 3: 144}, '6831924869610440348': {9: 20, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 17, 0: 12, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.1892555122127975, {'accuracy': 0.6214757048590281})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 20]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '3073292452779100951', '6464321808601147486', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '3073292452779100951': {9: 99, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 17, 0: 12, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '6831924869610440348': {9: 20, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 137, 0: 545, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.194714110634741, {'accuracy': 0.6250749850029994})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 21]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '6464321808601147486', '3073292452779100951', '15315160810977673420']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 8, 6: 104, 0: 12, 7: 10, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 16, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2187966018952514, {'accuracy': 0.623375324935013})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 22]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '6464321808601147486', '3073292452779100951', '15315160810977673420']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 8, 6: 104, 0: 12, 7: 10, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 16, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2251072284180464, {'accuracy': 0.6290741851629674})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 23]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '3073292452779100951', '6464321808601147486', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '3073292452779100951': {9: 99, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 17, 0: 12, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '6831924869610440348': {9: 20, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 137, 0: 545, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2183862898808664, {'accuracy': 0.6272745450909818})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 24]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6464321808601147486', '15315160810977673420', '3073292452779100951', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {4: 3951, 9: 1557, 6: 3369, 2: 3447, 5: 3928, 8: 3846, 3: 3345, 1: 3793, 7: 3941, 0: 2187}
+Subset distribution for active clients: {9: 1557, 4: 34, 6: 418, 2: 374, 5: 1, 8: 67, 3: 433, 1: 117, 7: 42, 0: 1127}
+Subset distribution per client: {'6464321808601147486': {9: 1158, 4: 9, 6: 105, 2: 137, 5: 1, 8: 17, 3: 144, 1: 30, 7: 11, 0: 545}, '15315160810977673420': {9: 280, 4: 9, 6: 105, 2: 83, 8: 17, 3: 1, 1: 29, 7: 11, 0: 25}, '3073292452779100951': {9: 99, 4: 8, 6: 104, 2: 17, 8: 17, 3: 144, 1: 29, 7: 10, 0: 12}, '6831924869610440348': {9: 20, 4: 8, 6: 104, 2: 137, 8: 16, 3: 144, 1: 29, 7: 10, 0: 545}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2905515061525834, {'accuracy': 0.6246750649870026})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 25]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '3073292452779100951', '15315160810977673420', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 17, 4: 9, 6: 105, 0: 12, 7: 11, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 16, 4: 8, 6: 104, 0: 545, 7: 10, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2766050389732073, {'accuracy': 0.6317736452709458})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 26]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['3073292452779100951', '6464321808601147486', '15315160810977673420', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {3: 3345, 4: 3951, 1: 3793, 6: 3369, 5: 3928, 7: 3941, 8: 3846, 0: 2187, 9: 1557, 2: 3447}
+Subset distribution for active clients: {9: 1557, 3: 433, 4: 34, 1: 117, 6: 418, 5: 1, 7: 42, 8: 67, 0: 1127, 2: 374}
+Subset distribution per client: {'3073292452779100951': {9: 99, 3: 144, 4: 9, 1: 30, 6: 105, 5: 1, 7: 11, 8: 17, 0: 12, 2: 17}, '6464321808601147486': {9: 1158, 3: 144, 4: 9, 1: 29, 6: 105, 7: 11, 8: 17, 0: 545, 2: 137}, '15315160810977673420': {9: 280, 3: 1, 4: 8, 1: 29, 6: 104, 7: 10, 8: 17, 0: 25, 2: 83}, '6831924869610440348': {9: 20, 3: 144, 4: 8, 1: 29, 6: 104, 7: 10, 8: 16, 0: 545, 2: 137}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2873164077939836, {'accuracy': 0.6322735452909418})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 27]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6464321808601147486', '3073292452779100951', '15315160810977673420', '6831924869610440348']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {4: 3951, 9: 1557, 6: 3369, 2: 3447, 5: 3928, 8: 3846, 3: 3345, 1: 3793, 7: 3941, 0: 2187}
+Subset distribution for active clients: {9: 1557, 4: 34, 6: 418, 2: 374, 5: 1, 8: 67, 3: 433, 1: 117, 7: 42, 0: 1127}
+Subset distribution per client: {'6464321808601147486': {9: 1158, 4: 9, 6: 105, 2: 137, 5: 1, 8: 17, 3: 144, 1: 30, 7: 11, 0: 545}, '3073292452779100951': {9: 99, 4: 9, 6: 105, 2: 17, 8: 17, 3: 144, 1: 29, 7: 11, 0: 12}, '15315160810977673420': {9: 280, 4: 8, 6: 104, 2: 83, 8: 17, 3: 1, 1: 29, 7: 10, 0: 25}, '6831924869610440348': {9: 20, 4: 8, 6: 104, 2: 137, 8: 16, 3: 144, 1: 29, 7: 10, 0: 545}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3185357436996856, {'accuracy': 0.6308738252349531})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 28]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '6831924869610440348', '6464321808601147486', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '6831924869610440348': {9: 20, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 137, 0: 545, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 137, 0: 545, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 17, 0: 12, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3494720509152212, {'accuracy': 0.6349730053989202})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 29]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['15315160810977673420', '6831924869610440348', '3073292452779100951', '6464321808601147486']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 4: 3951, 7: 3941, 8: 3846, 6: 3369, 9: 1557, 2: 3447, 0: 2187, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 4: 34, 7: 42, 8: 67, 6: 418, 2: 374, 0: 1127, 5: 1, 3: 433}
+Subset distribution per client: {'15315160810977673420': {9: 280, 1: 30, 4: 9, 7: 11, 8: 17, 6: 105, 2: 83, 0: 25, 5: 1, 3: 1}, '6831924869610440348': {9: 20, 1: 29, 4: 9, 7: 11, 8: 17, 6: 105, 2: 137, 0: 545, 3: 144}, '3073292452779100951': {9: 99, 1: 29, 4: 8, 7: 10, 8: 17, 6: 104, 2: 17, 0: 12, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 4: 8, 7: 10, 8: 16, 6: 104, 2: 137, 0: 545, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4106923746362556, {'accuracy': 0.634373125374925})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 30]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 4 results and 1 failures
+Number of results before substitution: 4
+Dropped clients IDs: {'15641887677636905312'}
+Active clients IDs: ['6831924869610440348', '6464321808601147486', '15315160810977673420', '3073292452779100951']
+Dropped clients distribution: {0: 1792, 6: 665, 2: 595, 9: 2474, 3: 689, 4: 55, 8: 107, 1: 186, 7: 68, 5: 3}
+Active clients distribution: {1: 3793, 2: 3447, 8: 3846, 4: 3951, 6: 3369, 0: 2187, 7: 3941, 9: 1557, 5: 3928, 3: 3345}
+Subset distribution for active clients: {9: 1557, 1: 117, 2: 374, 8: 67, 4: 34, 6: 418, 0: 1127, 7: 42, 5: 1, 3: 433}
+Subset distribution per client: {'6831924869610440348': {9: 20, 1: 30, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 5: 1, 3: 144}, '6464321808601147486': {9: 1158, 1: 29, 2: 137, 8: 17, 4: 9, 6: 105, 0: 545, 7: 11, 3: 144}, '15315160810977673420': {9: 280, 1: 29, 2: 83, 8: 17, 4: 8, 6: 104, 0: 25, 7: 10, 3: 1}, '3073292452779100951': {9: 99, 1: 29, 2: 17, 8: 16, 4: 8, 6: 104, 0: 12, 7: 10, 3: 144}}
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3529130961973752, {'accuracy': 0.6414717056588682})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 31]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 31.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.2997662111434445, {'accuracy': 0.6335732853429314})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 32]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 32.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3691395394338035, {'accuracy': 0.6394721055788842})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 33]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 33.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.3482811036580347, {'accuracy': 0.6386722655468906})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 34]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 34.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.362967285784555, {'accuracy': 0.6451709658068386})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 35]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 35.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4357211187690486, {'accuracy': 0.629374125174965})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 36]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 36.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4308456728544252, {'accuracy': 0.638372325534893})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 37]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 37.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4393238451130355, {'accuracy': 0.646870625874825})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 38]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 38.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4695616129868765, {'accuracy': 0.6451709658068386})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 39]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 39.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4722697134828404, {'accuracy': 0.6411717656468706})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 40]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 40.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4664270955903342, {'accuracy': 0.6442711457708459})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 41]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 41.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.4681832053864439, {'accuracy': 0.6434713057388523})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 42]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 42.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5221880738587086, {'accuracy': 0.6454709058188363})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 43]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 43.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5150082606350235, {'accuracy': 0.6512697460507898})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 44]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 44.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5361891005370487, {'accuracy': 0.6476704659068186})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 45]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 45.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5419562716619015, {'accuracy': 0.6485702859428114})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 46]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 46.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.5641407247846322, {'accuracy': 0.647370525894821})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 47]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 47.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.628082251331918, {'accuracy': 0.6510697860427914})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 48]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 48.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.589687855879051, {'accuracy': 0.6512697460507898})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 49]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 49.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.6508438748126029, {'accuracy': 0.6509698060387923})
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 50]
+[92mINFO [0m:      configure_fit: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_fit: received 5 results and 0 failures
+Number of results before substitution: 5
+No dropped clients to substitute in round 50.
+Number of results after substitution: 5
+[92mINFO [0m:      configure_evaluate: strategy sampled 5 clients (out of 5)
+[92mINFO [0m:      aggregate_evaluate: received 5 results and 0 failures
+Results of aggregate evaluate: (1.6920548554116634, {'accuracy': 0.6489702059588083})
+[92mINFO [0m:      
+[92mINFO [0m:      [SUMMARY]
+[92mINFO [0m:      Run finished 50 round(s) in 8141.93s
+[92mINFO [0m:      	History (loss, distributed):
+[92mINFO [0m:      		round 1: 2.2496073010393696
+[92mINFO [0m:      		round 2: 1.9774023995325205
+[92mINFO [0m:      		round 3: 1.8234390205806985
+[92mINFO [0m:      		round 4: 1.707075230293612
+[92mINFO [0m:      		round 5: 1.6073833242862476
+[92mINFO [0m:      		round 6: 1.5256300290690201
+[92mINFO [0m:      		round 7: 1.4778650119006078
+[92mINFO [0m:      		round 8: 1.4005335218107937
+[92mINFO [0m:      		round 9: 1.3442202936711318
+[92mINFO [0m:      		round 10: 1.344701436791921
+[92mINFO [0m:      		round 11: 1.3126074978925653
+[92mINFO [0m:      		round 12: 1.2470736606465704
+[92mINFO [0m:      		round 13: 1.2330609290020917
+[92mINFO [0m:      		round 14: 1.2254551675390934
+[92mINFO [0m:      		round 15: 1.2156760470913444
+[92mINFO [0m:      		round 16: 1.2065192092462507
+[92mINFO [0m:      		round 17: 1.1934185864169857
+[92mINFO [0m:      		round 18: 1.172646866196561
+[92mINFO [0m:      		round 19: 1.1892555122127975
+[92mINFO [0m:      		round 20: 1.194714110634741
+[92mINFO [0m:      		round 21: 1.2187966018952514
+[92mINFO [0m:      		round 22: 1.2251072284180464
+[92mINFO [0m:      		round 23: 1.2183862898808664
+[92mINFO [0m:      		round 24: 1.2905515061525834
+[92mINFO [0m:      		round 25: 1.2766050389732073
+[92mINFO [0m:      		round 26: 1.2873164077939836
+[92mINFO [0m:      		round 27: 1.3185357436996856
+[92mINFO [0m:      		round 28: 1.3494720509152212
+[92mINFO [0m:      		round 29: 1.4106923746362556
+[92mINFO [0m:      		round 30: 1.3529130961973752
+[92mINFO [0m:      		round 31: 1.2997662111434445
+[92mINFO [0m:      		round 32: 1.3691395394338035
+[92mINFO [0m:      		round 33: 1.3482811036580347
+[92mINFO [0m:      		round 34: 1.362967285784555
+[92mINFO [0m:      		round 35: 1.4357211187690486
+[92mINFO [0m:      		round 36: 1.4308456728544252
+[92mINFO [0m:      		round 37: 1.4393238451130355
+[92mINFO [0m:      		round 38: 1.4695616129868765
+[92mINFO [0m:      		round 39: 1.4722697134828404
+[92mINFO [0m:      		round 40: 1.4664270955903342
+[92mINFO [0m:      		round 41: 1.4681832053864439
+[92mINFO [0m:      		round 42: 1.5221880738587086
+[92mINFO [0m:      		round 43: 1.5150082606350235
+[92mINFO [0m:      		round 44: 1.5361891005370487
+[92mINFO [0m:      		round 45: 1.5419562716619015
+[92mINFO [0m:      		round 46: 1.5641407247846322
+[92mINFO [0m:      		round 47: 1.628082251331918
+[92mINFO [0m:      		round 48: 1.589687855879051
+[92mINFO [0m:      		round 49: 1.6508438748126029
+[92mINFO [0m:      		round 50: 1.6920548554116634
+[92mINFO [0m:      	History (metrics, distributed, evaluate):
+[92mINFO [0m:      	{'accuracy': [(1, 0.1938612277544491),
+[92mINFO [0m:      	              (2, 0.27214557088582286),
+[92mINFO [0m:      	              (3, 0.3313337332533493),
+[92mINFO [0m:      	              (4, 0.3754249150169966),
+[92mINFO [0m:      	              (5, 0.4122175564887023),
+[92mINFO [0m:      	              (6, 0.4573085382923415),
+[92mINFO [0m:      	              (7, 0.4761047790441912),
+[92mINFO [0m:      	              (8, 0.5046990601879624),
+[92mINFO [0m:      	              (9, 0.5322935412917417),
+[92mINFO [0m:      	              (10, 0.533493301339732),
+[92mINFO [0m:      	              (11, 0.5445910817836432),
+[92mINFO [0m:      	              (12, 0.5687862427514497),
+[92mINFO [0m:      	              (13, 0.5867826434713057),
+[92mINFO [0m:      	              (14, 0.5889822035592881),
+[92mINFO [0m:      	              (15, 0.5974805038992201),
+[92mINFO [0m:      	              (16, 0.6055788842231554),
+[92mINFO [0m:      	              (17, 0.6058788242351529),
+[92mINFO [0m:      	              (18, 0.6209758048390321),
+[92mINFO [0m:      	              (19, 0.6214757048590281),
+[92mINFO [0m:      	              (20, 0.6250749850029994),
+[92mINFO [0m:      	              (21, 0.623375324935013),
+[92mINFO [0m:      	              (22, 0.6290741851629674),
+[92mINFO [0m:      	              (23, 0.6272745450909818),
+[92mINFO [0m:      	              (24, 0.6246750649870026),
+[92mINFO [0m:      	              (25, 0.6317736452709458),
+[92mINFO [0m:      	              (26, 0.6322735452909418),
+[92mINFO [0m:      	              (27, 0.6308738252349531),
+[92mINFO [0m:      	              (28, 0.6349730053989202),
+[92mINFO [0m:      	              (29, 0.634373125374925),
+[92mINFO [0m:      	              (30, 0.6414717056588682),
+[92mINFO [0m:      	              (31, 0.6335732853429314),
+[92mINFO [0m:      	              (32, 0.6394721055788842),
+[92mINFO [0m:      	              (33, 0.6386722655468906),
+[92mINFO [0m:      	              (34, 0.6451709658068386),
+[92mINFO [0m:      	              (35, 0.629374125174965),
+[92mINFO [0m:      	              (36, 0.638372325534893),
+[92mINFO [0m:      	              (37, 0.646870625874825),
+[92mINFO [0m:      	              (38, 0.6451709658068386),
+[92mINFO [0m:      	              (39, 0.6411717656468706),
+[92mINFO [0m:      	              (40, 0.6442711457708459),
+[92mINFO [0m:      	              (41, 0.6434713057388523),
+[92mINFO [0m:      	              (42, 0.6454709058188363),
+[92mINFO [0m:      	              (43, 0.6512697460507898),
+[92mINFO [0m:      	              (44, 0.6476704659068186),
+[92mINFO [0m:      	              (45, 0.6485702859428114),
+[92mINFO [0m:      	              (46, 0.647370525894821),
+[92mINFO [0m:      	              (47, 0.6510697860427914),
+[92mINFO [0m:      	              (48, 0.6512697460507898),
+[92mINFO [0m:      	              (49, 0.6509698060387923),
+[92mINFO [0m:      	              (50, 0.6489702059588083)]}
+[92mINFO [0m:      
