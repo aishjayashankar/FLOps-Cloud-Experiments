@@ -9,8 +9,10 @@ from flwr.common import (
     FitRes,
     Parameters,
     Scalar,
-    ndarrays_to_parameters
+    ndarrays_to_parameters,
+    parameters_to_ndarrays,
 )
+import numpy as np
 from flwr.server.client_manager import ClientManager
 from flwr.server.client_proxy import ClientProxy
 from flwr.server.strategy import  FedAvg
@@ -45,6 +47,9 @@ class DIWS(Strategy):
         self.aggregator_strategy = aggregator_strategy
         self.global_parameters = None
         self.label_distribution = {}
+        # MIFA - Keep track of client updates
+        self.client_deltas = {}  # cid -> delta (list of numpy arrays)
+
 
     def __repr__(self) -> str:
         return repr(self.aggregator_strategy)
@@ -86,7 +91,8 @@ class DIWS(Strategy):
                 self.label_distribution[client_proxy.cid] = client_label_distribution
 
         print(f"Number of results before substitution: {len(results)}")
-        self.substitute_dropped_clients(server_round, results, failures)
+        # self.substitute_dropped_clients(server_round, results, failures)
+        self.mifa_substitute(server_round, results, failures)
         print(f"Number of results after substitution: {len(results)}")
 
         return self.aggregator_strategy.aggregate_fit(server_round, results, failures)
@@ -124,6 +130,71 @@ class DIWS(Strategy):
 
         substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
         results.append((None, substituted_parameters_fitRes))
+
+    def mifa_substitute(
+        self,
+        server_round: int,
+        results: list[tuple[ClientProxy, FitRes]],
+        failures: list[Union[tuple[ClientProxy, FitRes], BaseException]],
+    ) -> None:
+        """
+        MIFA Logic:
+        1. Store the latest update (delta) for each active client.
+        2. For any client that has been seen before but is missing in the current results,
+           substitute with (current_global - stored_update).
+        """
+        # --- 1. Update stored deltas for active clients ---
+        if self.global_parameters is None:
+            # Should not happen if configure_fit was called, but safety check
+            print("Warning: global_parameters is None, skipping update tracking.")
+            return
+
+        current_weights = parameters_to_ndarrays(self.global_parameters)
+
+        # Refined loop with num_examples storage
+        for client_proxy, fit_res in results:
+             # Redoing this part to capture num_examples
+             new_weights = parameters_to_ndarrays(fit_res.parameters)
+             delta = [w_global - w_local for w_global, w_local in zip(current_weights, new_weights)]
+             # Store delta AND num_examples
+             self.client_deltas[client_proxy.cid] = (delta, fit_res.num_examples)
+
+        # Re-calc missing
+        active_cids = {client_proxy.cid for client_proxy, _ in results}
+        # known_cids needs to be re-fetched after update (though keys don't change if existing)
+        known_cids = set(self.client_deltas.keys())
+        missing_cids = known_cids - active_cids
+
+        for cid in missing_cids:
+            stored_data = self.client_deltas[cid]
+            # stored_data is (delta, num_examples)
+            delta, num_examples = stored_data
+            
+            virtual_weights = [w_global - d for w_global, d in zip(current_weights, delta)]
+            
+            # Create "virtual" ClientProxy
+            # We need a proper ClientProxy object or similar for the aggregator.
+            # However, aggregate_fit expects (ClientProxy, FitRes). 
+            # The ClientProxy is mainly used for cid.
+            class VirtualClientProxy(ClientProxy):
+                def __init__(self, cid):
+                    super().__init__(cid)
+                def get_properties(self, ins, timeout, group_id): return None
+                def get_parameters(self, ins, timeout, group_id): return None
+                def fit(self, ins, timeout, group_id): return None
+                def evaluate(self, ins, timeout, group_id): return None
+                def reconnect(self, reconnect_msg, timeout): return None
+            
+            virtual_proxy = VirtualClientProxy(cid)
+            
+            virtual_fit_res = FitRes(
+                parameters=ndarrays_to_parameters(virtual_weights),
+                num_examples=num_examples,
+                metrics={}, # Empty metrics for now
+                status=None # Status not strictly used by FedAvg aggregator logic usually
+            )
+            
+            results.append((virtual_proxy, virtual_fit_res))
 
 
     def consolidate_label_distributions(self, active_clients_ids):
