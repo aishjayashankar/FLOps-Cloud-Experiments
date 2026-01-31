@@ -185,6 +185,9 @@ class CustomFedAvg(Strategy):
         config["current_round"] = server_round
         fit_ins = FitIns(parameters, config)
 
+        # Trace initial parameters for this round to calculate deltas later
+        self.current_round_initial_parameters = parameters
+
         # Sample clients
         sample_size, min_num_clients = self.num_fit_clients(
             client_manager.num_available()
@@ -255,7 +258,9 @@ class CustomFedAvg(Strategy):
             norm_w2 = np.linalg.norm(w2)
             if norm_w1 == 0 or norm_w2 == 0:
                 return 0.0
-            return np.dot(w1, w2) / (norm_w1 * norm_w2)
+            # Normalize to [0, 1] as per official implementation: 0.5 * (cos_sim + 1)
+            cos_sim = np.dot(w1, w2) / (norm_w1 * norm_w2)
+            return 0.5 * (cos_sim + 1)
 
         # Filter out failures and get successful results
         successful_results = results
@@ -264,6 +269,10 @@ class CustomFedAvg(Strategy):
         
         successful_cids = set()
         current_round_weights = {}
+
+        # Prepare global weights for delta calculation
+        global_weights_ndarrays = parameters_to_ndarrays(self.current_round_initial_parameters)
+        flat_global_weights = flatten_weights(global_weights_ndarrays)
         
         # Store weights for successful clients and prepare for pairwise calculation
         for client_proxy, fit_res in successful_results:
@@ -271,7 +280,12 @@ class CustomFedAvg(Strategy):
             successful_cids.add(cid)
             current_weights = parameters_to_ndarrays(fit_res.parameters)
             flat_weights = flatten_weights(current_weights)
-            current_round_weights[cid] = flat_weights
+
+            # Calculate delta: w_i - w_global
+            delta_weights = flat_weights - flat_global_weights
+
+            # Use delta weights for specific similarity Check
+            current_round_weights[cid] = delta_weights
             
             # Update last known weights (still useful for fallback or other logic)
             self.last_client_weights[cid] = flat_weights
@@ -371,6 +385,9 @@ class CustomFedAvg(Strategy):
         elif server_round == 1:  # Only log this warning once
             log(WARNING, "No fit_metrics_aggregation_fn provided")
 
+        # Cleanup memory
+        self.current_round_initial_parameters = None
+        
         return parameters_aggregated, metrics_aggregated
 
     def aggregate_evaluate(
