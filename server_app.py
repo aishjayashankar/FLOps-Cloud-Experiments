@@ -1,6 +1,7 @@
 """flops-infra-drift: A Flower / PyTorch app."""
 
-from flops_infra_drift.diws import DIWS
+# from flops_infra_drift.diws import DIWS
+from flops_infra_drift.mimic import MimiC
 from flwr.common import Context
 from flwr.server import ServerApp, ServerAppComponents, ServerConfig
 from flwr.server.strategy import FedAvg
@@ -34,8 +35,9 @@ def server_fn(context: Context):
             "current_round": server_round,
         },
     )
-    strategy = DIWS(aggregator_strategy=aggregator_strategy)
-  
+    # strategy = DIWS(aggregator_strategy=aggregator_strategy)
+    strategy = MimiC(aggregator_strategy=aggregator_strategy)
+    
     config = ServerConfig(num_rounds=num_rounds)
 
     return ServerAppComponents(strategy=strategy, config=config)
