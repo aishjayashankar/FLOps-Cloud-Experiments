@@ -45,6 +45,7 @@ class DIWS(Strategy):
         self.aggregator_strategy = aggregator_strategy
         self.global_parameters = None
         self.label_distribution = {}
+        self.cid_to_partition = {}
 
     def __repr__(self) -> str:
         return repr(self.aggregator_strategy)
@@ -84,6 +85,7 @@ class DIWS(Strategy):
             for client_proxy, fitres in results:
                 client_label_distribution = pickle.loads(fitres.metrics.get("label_distribution"))
                 self.label_distribution[client_proxy.cid] = client_label_distribution
+                self.cid_to_partition[client_proxy.cid] = fitres.metrics.get("partition_id")
 
         print(f"Number of results before substitution: {len(results)}")
         self.substitute_dropped_clients(server_round, results, failures)
@@ -114,15 +116,48 @@ class DIWS(Strategy):
         dropped_clients_ids = set(self.label_distribution.keys()) - set(active_clients_ids)
         print(f"Dropped clients IDs: {dropped_clients_ids}")
 
-        # Get active clients distribution
-        _, active_clients_distribution = self.consolidate_label_distributions(active_clients_ids)
-
         for dropped_cid in dropped_clients_ids:
             print(f"Substituting for dropped client: {dropped_cid}")
+            
+            # Find the group for this dropped client
+            dropped_partition_id = self.cid_to_partition.get(dropped_cid)
+            if dropped_partition_id is None:
+                raise ValueError(f"No partition ID found map for dropped CID {dropped_cid}.")
+
+            target_group = None
+            for group in consts.CLIENT_GROUPS:
+                if dropped_partition_id in group:
+                    target_group = group
+                    break
+            
+            if target_group is None:
+                raise ValueError(f"Dropped client partition {dropped_partition_id} does not belong to any defined group.")
+
+            # Identify active clients within the same group
+            group_active_clients_ids = []
+            for cid in active_clients_ids:
+                pid = self.cid_to_partition.get(cid)
+                if pid is not None and pid in target_group:
+                    group_active_clients_ids.append(cid)
+            
+            if not group_active_clients_ids:
+                print(f"No active clients found in group {target_group} for dropped client {dropped_partition_id}")
+                continue
+
+            group_active_clients_partition_ids = [self.cid_to_partition.get(cid) for cid in group_active_clients_ids]
+            print(f"Active clients in group for {dropped_partition_id}: {group_active_clients_partition_ids}")
+
+            # Calculate label distribution for the active group members
+            group_active_clients_distribution = {}
+            for cid in group_active_clients_ids:
+                client_dist = self.label_distribution.get(cid, {})
+                for label, count in client_dist.items():
+                    group_active_clients_distribution[label] = group_active_clients_distribution.get(label, 0) + count
+
             dropped_client_distribution = self.label_distribution.get(dropped_cid, {})
             
             client_subset_distributions = self.get_subset_distribution_for_active_clients(
-                dropped_client_distribution, active_clients_distribution, active_clients_ids)
+                dropped_client_distribution, group_active_clients_distribution, group_active_clients_ids)
 
             outputs = []
             for client_proxy, _ in results:
@@ -235,6 +270,8 @@ class DIWS(Strategy):
                     total_needed -= 1
                 idx += 1
 
+        print(f"Dropped clients distribution: {dropped_clients_distribution}")
+        print(f"Representative subset distribution: {representative_subset_distribution}")
         print(f"Subset distribution per client: {subset_distribution_per_client}")
         return subset_distribution_per_client
     

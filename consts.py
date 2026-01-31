@@ -1,4 +1,17 @@
-CLIENT_DROP_ROUND_START = 2
-CLIENT_DROP_ROUND_END = 3
+CLIENT_DROP_ROUND_START = 7
+CLIENT_DROP_ROUND_END = 31
 DROPPED_CLIENT_PARITIONS_IDS = [12, 22, 4, 20, 0, 2, 30, 27, 3, 19, 46, 43, 16, 33, 21]
 SUBSTITUTION_TIMEOUT = 600.0
+
+CLIENT_GROUPS = [
+    [33, 21, 11, 37, 39],
+    [43, 16, 23, 14, 15],
+    [19, 46, 10, 5, 31],
+    [27, 3, 48, 34, 13],
+    [2, 30, 35, 25, 32],
+    [0, 24, 1, 49, 18],
+    [20, 40, 41, 7, 42],
+    [4, 38, 9, 44, 6],
+    [22, 28, 17, 29, 26],
+    [12, 47, 8, 36, 45]
+]

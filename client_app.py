@@ -85,7 +85,7 @@ class FlowerClient(NumPyClient):
         runtime = end_time - start_time
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
 
-        metrics = {"train_loss": train_loss}
+        metrics = {"train_loss": train_loss, "partition_id": self.partition_id}
         # Share label distribution if it's the first round
         if config["current_round"] == 1:
             label_distribution = self.get_label_distribution()
