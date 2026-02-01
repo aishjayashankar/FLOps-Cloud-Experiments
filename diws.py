@@ -57,6 +57,7 @@ class DIWS(Strategy):
         self.global_parameters = None
         self.label_distribution = {}
         self.context = None
+        self.computation_cache = {}
 
     def __repr__(self) -> str:
         return repr(self.aggregator_strategy)
@@ -181,6 +182,41 @@ class DIWS(Strategy):
              print("No dropped clients to substitute.")
              return
 
+        # Generate Cache Key
+        cache_key = hash((tuple(sorted(active_cids)), tuple(sorted(actual_dropped))))
+        
+        if cache_key in self.computation_cache:
+            print("Cache hit! Using cached substitution shares.")
+            log_debug("Cache hit! Using cached substitution shares.")
+            final_shares = self.computation_cache[cache_key]
+        else:
+            print("Cache miss. Computing substitution shares...")
+            final_shares = self._compute_substitution_shares(active_cids, active_client_proxies, actual_dropped, server_round)
+            self.computation_cache[cache_key] = final_shares
+
+
+
+        # 4. Trigger Subset Training with Final Encrypted Shares
+        with ThreadPoolExecutor() as executor:
+            futures = []
+            for client_proxy in active_client_proxies:
+                cid = client_proxy.cid
+                share_map = final_shares.get(cid, {})
+                
+                # Serialize shares
+                serialized_shares = {l: v.serialize() for l, v in share_map.items()}
+                
+                config = {"subset_distribution": pickle.dumps(serialized_shares),
+                          "custom_rpc": "handle_missing_clients"}
+                fitIns = FitIns(parameters=self.global_parameters, config=config)
+                futures.append(executor.submit(client_proxy.fit, fitIns, consts.SUBSTITUTION_TIMEOUT, server_round))
+            outputs = [f.result() for f in futures]
+
+        substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
+        results.append((None, substituted_parameters_fitRes))
+
+    
+    def _compute_substitution_shares(self, active_cids, active_client_proxies, actual_dropped, server_round):
         print(f"Substituting for dropped clients: {actual_dropped}")
         log_debug(f"Substituting for dropped clients: {actual_dropped}")
         log_debug(f"Available label distributions for CIDs: {list(self.label_distribution.keys())}")
@@ -442,26 +478,10 @@ class DIWS(Strategy):
             for client in active_clients:
                  final_shares[client.cid][label] = fair_share
 
-        # 4. Trigger Subset Training with Final Encrypted Shares
-        with ThreadPoolExecutor() as executor:
-            futures = []
-            for client_proxy in active_client_proxies:
-                cid = client_proxy.cid
-                share_map = final_shares.get(cid, {})
-                
-                # Serialize shares
-                serialized_shares = {l: v.serialize() for l, v in share_map.items()}
-                
-                config = {"subset_distribution": pickle.dumps(serialized_shares),
-                          "custom_rpc": "handle_missing_clients"}
-                fitIns = FitIns(parameters=self.global_parameters, config=config)
-                futures.append(executor.submit(client_proxy.fit, fitIns, consts.SUBSTITUTION_TIMEOUT, server_round))
-            outputs = [f.result() for f in futures]
+        return final_shares
 
-        substituted_parameters_fitRes = self.aggregate_substitution_parameters(outputs)
-        results.append((None, substituted_parameters_fitRes))
 
-    
+
     def aggregate_substitution_parameters(self, results: list[FitRes]) -> FitRes:
         results = [(None, fitRes) for fitRes in results]
         aggregated_parameters = aggregate_inplace(results)
