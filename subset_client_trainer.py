@@ -44,9 +44,6 @@ class SubsetClientTrainer:
         start_time = time.time()
 
         self.set_parameters(parameters)
-        # if len(self.trainloader) == 0:
-        #     print("SubsetClientTrainer: Empty trainloader, skipping training.")
-        #     return (self.get_parameters(), 0, {})
 
         train_loss = train(
             self.model,
@@ -65,10 +62,6 @@ class SubsetClientTrainer:
 def load_subset_data(
         subset_distribution: dict,
         trainloader: DataLoader) -> DataLoader:
-    """
-    This method is called when a client receives a custom RPC to handle missing clients.
-    It trains the model using a representative subset of active clients.
-    """
 
     current_counts = {label: 0 for label in subset_distribution}
     collected_inputs = []
@@ -90,12 +83,6 @@ def load_subset_data(
                 break
         if all(current_counts[l] >= subset_distribution[l] for l in subset_distribution):
             break 
-
-    # if not collected_inputs:
-    #     print("Warning: No inputs collected for subset training.")
-    #     # Create empty dataset/dataloader
-    #     target_dataset = DictStyleDataset([], [])
-    #     return DataLoader(target_dataset, batch_size=trainloader.batch_size, shuffle=False)
 
     inputs_tensor = torch.stack(collected_inputs)
     labels_tensor = torch.stack(collected_labels)

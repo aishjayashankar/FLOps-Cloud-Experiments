@@ -153,20 +153,10 @@ class DIWS(Strategy):
                                 failures: list[Union[tuple[ClientProxy, FitRes], BaseException]]) -> None:
         """Substitute dropped clients with subset training, if required"""
         
-        # Identify dropped clients (naive check based on previous knowledge or assumption)
-        # In this simulation, we know who dropped based on results vs expected?
-        # Actually failures list contains the dropped ones if they failed during fit.
-        # But if they simply didn't participate, we need to know who was SUPPOSED to.
-        # For this specific task, we rely on `failures` or explicit check.
-        # If failures is empty but we expect substitution, it might be that they were not sampled?
-        # The prompt implies we substitute the *missing* contribution.
-        
-        # Let's assume we substitute for explicit dropouts as defined in consts for simulation
         dropped_cids = [str(cid) for cid in consts.DROPPED_CLIENT_PARITIONS_IDS]
         active_client_proxies = [res[0] for res in results]
         active_cids = [p.cid for p in active_client_proxies]
         
-        # Map active CIDs to partition IDs for comparison
         active_pids = []
         for cid in active_cids:
             if cid in self.cid_to_partition:
@@ -174,8 +164,6 @@ class DIWS(Strategy):
             else:
                 active_pids.append(str(cid)) # Fallback
                 
-        # Filter dropped_cids that are NOT in active_pids
-        # dropped_cids are partition IDs (e.g. "1")
         actual_dropped = [pid for pid in dropped_cids if pid not in active_pids]
         
         if not actual_dropped:
@@ -196,7 +184,6 @@ class DIWS(Strategy):
 
 
 
-        # 4. Trigger Subset Training with Final Encrypted Shares
         with ThreadPoolExecutor() as executor:
             futures = []
             for client_proxy in active_client_proxies:
@@ -217,17 +204,10 @@ class DIWS(Strategy):
 
     
     def _compute_substitution_shares(self, active_cids, active_client_proxies, actual_dropped, server_round):
-        print(f"Substituting for dropped clients: {actual_dropped}")
-        log_debug(f"Substituting for dropped clients: {actual_dropped}")
-        log_debug(f"Available label distributions for CIDs: {list(self.label_distribution.keys())}")
-        print(f"Available label distributions for CIDs: {list(self.label_distribution.keys())}")
 
-        # 1. Calculate Total Dropped Demand (Encrypted)
         dropped_demand = {}
         for cid in actual_dropped:
             dist = self.label_distribution.get(cid, {})
-            log_debug(f"Dist for {cid}: {len(dist)} labels")
-            print(f"Dist for {cid}: {len(dist)} labels")
             for label, count_enc in dist.items():
                 if label not in dropped_demand:
                     dropped_demand[label] = count_enc.copy()
@@ -237,11 +217,6 @@ class DIWS(Strategy):
         print(f"Dropped Demand Keys: {list(dropped_demand.keys())}")
         log_debug(f"Dropped Demand Keys: {list(dropped_demand.keys())}")
 
-        # --- Distributed Target Scaling (Blind Binary Search) ---
-        # Calculate Scaled Target to ensure global feasibility
-        # Target = min(1.0, Total_Active / Total_Dropped) * Total_Dropped
-        
-        # 1. Aggregate Active Stock (Encrypted)
         active_stock = {}
         for cid in active_cids:
             cid_key = self.cid_to_partition.get(cid, cid)
@@ -255,13 +230,10 @@ class DIWS(Strategy):
                     active_stock[label] += count_enc
 
 
-        # 2. Blind Binary Search for Scaling Factor k
-        # We need a helper client to check feasibility (Oracle)
         helper_proxy = active_client_proxies[0]
         
         k_min = 0.0
         k_max = 1.0
-        # Precision: 5 iterations gives ~3% error margin (1/32), sufficient for rough scaling
         iterations = 5 
         
         print(f"Starting Blind Binary Search for Scaling Factor (5 iterations)...")
@@ -269,16 +241,9 @@ class DIWS(Strategy):
         for i in range(iterations):
             k_mid = (k_min + k_max) / 2.0
             
-            # Check Feasibility: Active >= k_mid * Dropped for ALL labels?
-            # Metric: Diff = Active - (Dropped * k_mid)
-            # Blinded = Diff * Mask
-            
             blinded_checks = {}
-            # Must check ALL dropped labels to preserve distribution ratio
             labels_to_check = list(dropped_demand.keys())
             
-            # Generate k_mid encrypted scalar
-            # Optimization: Cache k_mid encryption if possible, but it changes every iter
             k_enc = ts.ckks_vector(self.context, [k_mid])
             mask_val = random.uniform(10, 100)
             mask_enc = ts.ckks_vector(self.context, [mask_val])
@@ -300,23 +265,13 @@ class DIWS(Strategy):
             if not blinded_checks: # Should not happen if dropped_demand is not empty
                  k_min = 1.0; k_max = 1.0; break
 
-            # Send to Helper
             ins = EvaluateIns(
                  parameters=self.global_parameters,
                  config={"check_global_feasibility": pickle.dumps(blinded_checks)}
             )
             
-            # Synchronous call for simplicity in this logic block
-            # In production, could be async but we need result to proceed
-            # Note: We use the helper_proxy directly. We need to wrap in ClientManager/Ray logic?
-            # Strategy doesn't usually call proxy directly but we can try evaluate() on proxy
-            # Wait, verify proxy has evaluate method. Standard ClientProxy does.
             res = None
             try:
-                # We need to run this on the main thread or via the client manager? 
-                # Strategy runs in Driver. Proxy is a handle.
-                # However, calling evaluate directly on proxy is synchronous usually? 
-                # RayProxy might be async. Let's use the futures pattern from existing code.
                 with ThreadPoolExecutor(max_workers=1) as executor:
                     future = executor.submit(helper_proxy.evaluate, ins, consts.SUBSTITUTION_TIMEOUT, server_round)
                     res = future.result()
@@ -335,40 +290,25 @@ class DIWS(Strategy):
         final_k = k_min
         print(f"Converged Scaling Factor: {final_k:.4f}")
         
-        # 3. Apply Scaling to Dropped Demand
-        # Target = Dropped * final_k
         k_final_enc = ts.ckks_vector(self.context, [final_k])
         
         scaled_dropped_demand = {}
         for label, val in dropped_demand.items():
             scaled_dropped_demand[label] = val * k_final_enc
             
-        # Replace dropped_demand with scaled version for Protocol
-        # But we need to keep 'dropped_demand' variable name for next steps
         original_dropped_demand = dropped_demand
         dropped_demand = scaled_dropped_demand
-        # --------------------------------------------------------
-        
-        # 2. Run Masked Interactive Protocol
-        # We process all labels in parallel (conceptually) but loop per iteration
-        
-        # Final shares to be assigned to active clients
         final_shares = {cid: {} for cid in active_cids} 
         
-        # Helper to track remaining demand per label
         remaining_demand = dropped_demand.copy()
         
-        # Helper to track active clients per label (initially all)
-        # We need the set of labels under consideration
         all_labels = set(remaining_demand.keys())
         active_set = {label: list(active_client_proxies) for label in all_labels}
 
-        # Iteration Loop (Max 2-3 iterations)
         for i_loop in range(3):
             print(f"--- Protocol Iteration {i_loop + 1} ---")
             log_debug(f"--- Protocol Iteration {i_loop + 1} ---")
             
-            # Prepare Blinded Checks
             blinded_checks_per_client = {cid: {} for cid in active_cids}
             client_proxy_map = {p.cid: p for p in active_client_proxies}
             
@@ -444,9 +384,6 @@ class DIWS(Strategy):
                     
                     for label, is_capped in is_capped_map.items():
                         if is_capped:
-                             # Client is Capped
-                             # Final Share = Stock
-                             # Final Share = Stock
                              cid_key = self.cid_to_partition.get(cid, cid)
                              dist = self.label_distribution.get(str(cid_key), {})
                              if not dist:
@@ -454,20 +391,14 @@ class DIWS(Strategy):
                              stock = dist.get(label, ts.ckks_vector(self.context, [0]))
                              final_shares[cid][label] = stock
                              
-                             # Subtract Stock from Remaining Demand
                              remaining_demand[label] -= stock
                              
-                             # Remove from Active Set
-                             # Find proxy by cid
                              proxy = client_proxy_map[cid]
                              if proxy in active_set[label]:
                                  active_set[label].remove(proxy)
                         else:
-                             # Client is Capable
-                             # Keep in active set, wait for next round or final assignment
                              pass
 
-        # 3. Final Assignment for Remaining Active Clients
         for label in all_labels:
             active_clients = active_set[label]
             if not active_clients: continue

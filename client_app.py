@@ -64,12 +64,10 @@ class FlowerClient(NumPyClient):
             encrypted_target = pickle.loads(config["subset_distribution"])
             target_distribution = {}
             for label, enc_data in encrypted_target.items():
-                 # Decrypt: Result is a vector, take 0th element
                  val = ts.ckks_vector_from(self.context, enc_data).decrypt()[0]
                  target_distribution[label] = max(0, int(round(val)))
 
             print("Perform fit on representative subset", target_distribution)
-            # Use deepcopy to prevent in-place modification of the client's main model
             subsetClientTrainer = get_subset_client_trainer(
                 copy.deepcopy(self.model),
                 target_distribution,
@@ -86,7 +84,6 @@ class FlowerClient(NumPyClient):
                 " for round: ",
                 config["current_round"],
             )
-            # Return dropped signal instead of raising exception to preserve simulation flow
             return [], 0, {"is_dropped": True}
         
         self.set_parameters(parameters)
@@ -101,7 +98,6 @@ class FlowerClient(NumPyClient):
         runtime = end_time - start_time
         print(f"Client: {self.partition_id} took {runtime:.4f} seconds to fit.")
         
-        # Explicit GC to prevent memory leaks in Ray actors
         import gc
         gc.collect()
 
@@ -130,10 +126,6 @@ class FlowerClient(NumPyClient):
             blinded_diff_map = pickle.loads(config["blinded_diff"])
             is_capped_map = {}
             for label, enc_diff in blinded_diff_map.items():
-                # Decrypt: (Fair - Stock) * Mask
-                # Mask is positive, so sign is preserved.
-                # If > 0: Capped (Fair > Stock)
-                # If < 0: Capable (Stock > Fair)
                 val = ts.ckks_vector_from(self.context, enc_diff).decrypt()[0]
                 is_capped_map[label] = (val > 0)
             
