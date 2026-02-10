@@ -9,7 +9,6 @@ def create_and_save_context(server_path: str, client_path: str):
         coeff_mod_bit_sizes=[60, 29, 29, 29, 29, 29, 29, 29, 60]
     )
     context.global_scale = 2**29
-    # context.generate_galois_keys() # Not needed for element-wise ops, saves huge memory
     
     # Save the context with secret key (for clients)
     with open(client_path, "wb") as f:

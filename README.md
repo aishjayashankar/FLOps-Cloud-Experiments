@@ -22,6 +22,7 @@ This project is built using the **Flower** (Flwr) framework for Federated Learni
 
 *   **Python**: Version 3.10 or higher is recommended.
 *   **Virtual Environment**: It is highly recommended to run this project within a dedicated virtual environment.
+*   **NVIDIA GPU**: Required for running ML training, can be substituted with CPU equivalent, but requirements.txt needs to be modified accordingly.
 
 ### Installation
 
